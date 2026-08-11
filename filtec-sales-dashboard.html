@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Filtec Sales Dashboard — Brand</title>
+<link rel="apple-touch-icon" href="../filtec-apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="512x512" href="../filtec-icon-512.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../filtec-icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue: #4a6cf7;
+  --accent: #f4813f;
+  --bg: #0d0f1a;
+  --card: #151826;
+  --text: #e8eaf0;
+  --muted: #8b8fa8;
+  --border: rgba(255,255,255,0.08);
+  --gold: #f59e0b;
+  --red: #f85149;
+  --green: #3fb950;
+  --series-1: #3987e5;
+  --series-2: #d95926;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Source Serif 4', Georgia, serif; background: var(--bg); color: var(--text); line-height: 1.85; font-size: 1.05rem; }
+
+.hero {
+  background: linear-gradient(135deg, #060310 0%, #0a1a2e 40%, #0a2419 75%, #0d0f1a 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 72px 20px 56px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background:
+    radial-gradient(ellipse at 30% 60%, rgba(74,108,247,0.14) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 40%, rgba(63,185,80,0.09) 0%, transparent 50%);
+  pointer-events: none;
+}
+.label {
+  display: inline-block;
+  background: rgba(74,108,247,0.12);
+  border: 1px solid rgba(74,108,247,0.35);
+  color: var(--blue);
+  font-size: 0.75rem; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 5px 14px; border-radius: 20px; margin-bottom: 20px;
+}
+.hero h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.8rem, 5vw, 2.8rem); font-weight: 700;
+  color: #fff; line-height: 1.25;
+  max-width: 720px; margin: 0 auto 16px;
+}
+.hero h1 span { color: var(--accent); font-style: italic; }
+.hero-sub {
+  color: var(--muted); font-size: 1rem; max-width: 560px;
+  margin: 0 auto 8px; line-height: 1.6;
+}
+.meta { color: var(--muted); font-size: 0.85rem; letter-spacing: 0.04em; margin-top: 10px; }
+
+.lang-bar { position: absolute; top: 18px; right: 18px; display: flex; gap: 6px; }
+.lang-btn { padding: 5px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); background: transparent; color: #8b8fa8; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: all 0.2s; font-family: 'Source Serif 4', serif; }
+.lang-btn.active { background: rgba(74,108,247,0.15); border-color: rgba(74,108,247,0.5); color: var(--blue); }
+
+.zh { display: none; }
+.id { display: none; }
+body.lang-zh .zh { display: inline; }
+body.lang-zh .en { display: none; }
+body.lang-zh .id { display: none; }
+body.lang-id .id { display: inline; }
+body.lang-id .en { display: none; }
+body.lang-id .zh { display: none; }
+.zh-block { display: none; }
+.id-block { display: none; }
+body.lang-zh .zh-block { display: block; }
+body.lang-zh .en-block { display: none; }
+body.lang-zh .id-block { display: none; }
+body.lang-id .id-block { display: block; }
+body.lang-id .en-block { display: none; }
+body.lang-id .zh-block { display: none; }
+
+.share-toast { display:none; position:fixed; bottom:32px; left:50%; transform:translateX(-50%); background:#1c1c1e; color:#fff; padding:10px 24px; border-radius:24px; font-size:.9rem; z-index:9999; box-shadow:0 4px 16px rgba(0,0,0,.3); }
+
+.page-menu-wrap { position:absolute; top:58px; right:18px; z-index:5; }
+.page-menu-btn { width:32px; height:32px; border-radius:50%; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.25); color:var(--text); font-size:1.1rem; font-weight:800; cursor:pointer; line-height:1; font-family:'Source Serif 4',serif; }
+.page-menu-btn:hover { background:rgba(255,255,255,.18); }
+.page-menu-dropdown { display:none; position:absolute; top:38px; right:0; background:var(--card); border:1px solid var(--border); border-radius:10px; box-shadow:0 8px 24px rgba(0,0,0,.5); min-width:180px; overflow:hidden; text-align:left; }
+.page-menu-dropdown.open { display:block; }
+.page-menu-dropdown button { display:flex; align-items:center; gap:8px; width:100%; background:none; border:none; color:var(--text); text-align:left; padding:12px 14px; font-size:.85rem; font-weight:700; cursor:pointer; font-family:'Source Serif 4',serif; }
+.page-menu-dropdown button:hover { background:rgba(255,255,255,.06); }
+
+.content { max-width: 760px; margin: 0 auto; padding: 40px 22px 20px; }
+
+.breadcrumb { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:6px; font-size:.75rem; font-weight:600; color:rgba(255,255,255,.55); margin-bottom:14px; }
+.breadcrumb a { color:rgba(255,255,255,.55); text-decoration:none; }
+.breadcrumb a:hover { color:#fff; }
+.breadcrumb .sep { color:rgba(255,255,255,.3); }
+.breadcrumb .current { color:#f4c869; }
+
+/* Page tabs */
+.tabs-bar {
+  display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+  max-width: 760px; margin: 0 auto; padding: 0 22px;
+  position: sticky; top: 0; z-index: 50;
+  background: var(--bg);
+  padding-top: 18px; padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.tab-btn {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-family: 'Source Serif 4', serif;
+  font-size: 0.85rem; font-weight: 700;
+  padding: 9px 16px; border-radius: 20px;
+  cursor: pointer; text-align: center;
+  transition: all 0.2s;
+  line-height: 1.3;
+}
+.tab-btn.active { background: rgba(74,108,247,0.15); border-color: rgba(74,108,247,0.5); color: var(--blue); }
+.tab-btn:hover:not(.active) { border-color: rgba(255,255,255,0.25); color: var(--text); }
+
+.page-panel { display: none; }
+.page-panel.active { display: block; }
+.page-head {
+  font-size: 0.78rem; color: var(--muted); letter-spacing: 0.04em;
+  margin-bottom: 4px; text-transform: uppercase; font-weight: 600;
+}
+
+/* Chart card */
+.chart-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px 22px 16px; margin: 1.2em 0; }
+.caveat {
+  display: flex; gap: 10px; align-items: flex-start;
+  background: rgba(217,89,38,0.08); border: 1px solid rgba(217,89,38,0.3);
+  border-radius: 10px; padding: 12px 14px; font-size: 0.85rem;
+  color: #d0d4e8; margin-bottom: 20px; line-height: 1.55;
+}
+.caveat strong { color: #fff; }
+.legend { display: flex; gap: 18px; margin-bottom: 16px; font-size: 0.85rem; color: var(--muted); flex-wrap: wrap; }
+.legend-item { display: flex; align-items: center; gap: 6px; }
+.swatch { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+.chart { display: flex; flex-direction: column; gap: 18px; margin-bottom: 8px; }
+.bar-label-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; font-size: 0.88rem; gap: 8px; flex-wrap: wrap; }
+.bar-name { font-weight: 700; color: #fff; }
+.bar-value { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 0.8rem; }
+.track { background: rgba(255,255,255,0.06); border-radius: 4px; height: 34px; width: 100%; overflow: hidden; }
+.fill { height: 100%; border-radius: 4px; display: flex; align-items: center; padding-left: 12px; color: #fff; font-size: 0.78rem; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; cursor: default; transition: filter 0.15s; }
+.fill:hover { filter: brightness(1.12); }
+.fill.s1 { background: var(--series-1); }
+.fill.s2 { background: var(--series-2); }
+.baseline-axis { border-top: 1px solid rgba(255,255,255,0.15); margin-top: 4px; padding-top: 6px; font-size: 0.74rem; color: var(--muted); }
+.foot-note { font-size: 0.78rem; color: var(--muted); margin-top: 18px; line-height: 1.5; }
+.toggle-btn { background: none; border: 1px solid var(--border); color: var(--muted); font-size: 0.78rem; font-weight: 700; padding: 6px 14px; border-radius: 20px; cursor: pointer; margin-top: 18px; font-family: 'Source Serif 4', serif; }
+.toggle-btn:hover { border-color: var(--muted); color: var(--text); }
+table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 0.85rem; display: none; }
+table.show { display: table; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); }
+th { color: var(--muted); font-weight: 700; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; }
+td.num { text-align: right; font-variant-numeric: tabular-nums; color: var(--text); }
+td.name { font-weight: 700; color: #fff; }
+
+.fill.s3 { background: #64748b; }
+.key-pill { display:inline-block; font-size:0.66rem; font-weight:700; padding:2px 8px; border-radius:10px; margin-left:8px; background:rgba(74,108,247,0.18); color:var(--blue); }
+.flag-overdue { color:#f85149; font-weight:600; font-size:0.82rem; }
+.flag-ok { color:var(--muted); font-size:0.82rem; }
+.stat-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px; margin-bottom:20px; }
+.stat-mini { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+.stat-mini .sv { font-size: 1.25rem; font-weight: 700; color: #fff; }
+.stat-mini .sl { font-size: 0.72rem; color: var(--muted); margin-top: 4px; }
+.stat-mini .sb { font-size: 0.7rem; color: var(--muted); margin-top: 2px; }
+.insight-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px 22px 18px; margin-top: 20px; }
+.insight-card h3 { font-size: 1.02rem; color: var(--blue); margin-bottom: 6px; }
+.insight-list { list-style: none; }
+.insight-list li { display:grid; grid-template-columns:auto 1fr; gap:10px; padding:10px 0; font-size:0.9rem; color:var(--text); border-top:1px solid var(--border); }
+.insight-list li:first-child { border-top:none; }
+.insight-num { color: var(--blue); font-weight: 700; }
+
+.neg { color: var(--red); font-weight: 700; }
+.pos { color: var(--green); }
+.fill.s4 { background: var(--red); }
+.heat-strip { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.heat-cell { flex: 1 1 76px; min-width: 76px; border-radius: 8px; padding: 10px 6px; text-align: center; }
+.heat-cell .hm { font-size: 0.66rem; color: rgba(255,255,255,0.85); font-weight: 700; letter-spacing: 0.03em; }
+.heat-cell .hp { font-size: 0.92rem; font-weight: 800; margin-top: 4px; color: #fff; }
+.heat-cell .hi { font-size: 0.62rem; color: rgba(255,255,255,0.7); margin-top: 2px; }
+.heat-legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 0.75rem; color: var(--muted); margin: 10px 0 4px; }
+.heat-legend > span { display: flex; align-items: center; gap: 5px; }
+.heat-legend i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+
+footer { text-align: center; padding: 40px 20px; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.85rem; margin-top: 60px; }
+footer a { color: var(--blue); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="lang-bar">
+    <button class="lang-btn active" onclick="setLang('en')">🇬🇧 English</button>
+    <button class="lang-btn" onclick="setLang('zh')">🇨🇳 中文</button>
+    <button class="lang-btn" onclick="setLang('id')">🇮🇩 Bahasa</button>
+  </div>
+
+  <div class="page-menu-wrap">
+    <button class="page-menu-btn" id="pageMenuBtn" onclick="togglePageMenu()" aria-label="Page menu">⋮</button>
+    <div class="page-menu-dropdown" id="pageMenuDropdown">
+      <button onclick="shareThisPage(); closePageMenu();">🔗 <span class="en">Share</span><span class="zh">分享</span><span class="id">Bagikan</span></button>
+    </div>
+  </div>
+
+  <div class="label">
+    <span class="en">Filtec · Sales Dashboard</span>
+    <span class="zh">Filtec · 销售仪表板</span>
+    <span class="id">Filtec · Dasbor Penjualan</span>
+  </div>
+  <div class="breadcrumb">
+    <a href="/index.html" target="_blank"><span class="en">Home</span><span class="zh">首页</span><span class="id">Beranda</span></a>
+    <span class="sep">›</span>
+    <span class="current"><span class="en">Filtec Sales Dashboard</span><span class="zh">Filtec销售仪表板</span><span class="id">Dasbor Penjualan Filtec</span></span>
+  </div>
+  <h1>
+    <span class="en">Filtec Sales <span>Dashboard</span></span>
+    <span class="zh">Filtec 销售<span>仪表板</span></span>
+    <span class="id">Filtec <span>Dasbor Penjualan</span></span>
+  </h1>
+  <p class="hero-sub">
+    <span class="en">Sales performance views for PT. Filtec, pulled live from ERPNext — tap a tab to switch views</span>
+    <span class="zh">PT. Filtec的销售业绩视图，实时来自ERPNext系统 — 点击下方标签切换视图</span>
+    <span class="id">Tampilan performa penjualan untuk PT. Filtec, diambil langsung dari ERPNext — ketuk tab untuk beralih tampilan</span>
+  </p>
+  <p class="meta">
+    <span class="en">Source: ERPNext (Filtec) · Submitted Sales Invoices</span>
+    <span class="zh">数据来源：ERPNext（Filtec）· 已提交的销售发票</span>
+    <span class="id">Sumber: ERPNext (Filtec) · Faktur Penjualan yang Sudah Disubmit</span>
+  </p>
+</div>
+<div class="share-toast" id="shareToast">✅ <span class="en">Link copied!</span><span class="zh">链接已复制！</span><span class="id">Tautan disalin!</span></div>
+
+<div class="tabs-bar">
+  <button class="tab-btn active" id="tab-1" onclick="setPage(1)"><span class="en">Brand</span><span class="zh">品牌</span><span class="id">Merek</span></button>
+  <button class="tab-btn" id="tab-2" onclick="setPage(2)"><span class="en">Key Accounts</span><span class="zh">重点客户</span><span class="id">Akun Utama</span></button>
+  <button class="tab-btn" id="tab-3" onclick="setPage(3)"><span class="en">GP %</span><span class="zh">毛利率</span><span class="id">GP %</span></button>
+  <button class="tab-btn" id="tab-4" onclick="setPage(4)"><span class="en">Retention</span><span class="zh">客户留存</span><span class="id">Retensi Pelanggan</span></button>
+  <button class="tab-btn" id="tab-5" onclick="setPage(5)"><span class="en">Segmentation</span><span class="zh">客户细分</span><span class="id">Segmentasi</span></button>
+  <button class="tab-btn" id="tab-6" onclick="setPage(6)"><span class="en">Expenses</span><span class="zh">支出</span><span class="id">Biaya</span></button>
+  <button class="tab-btn" id="tab-7" onclick="setPage(7)"><span class="en">Net Profit</span><span class="zh">净利润</span><span class="id">Laba Bersih</span></button>
+</div>
+
+<div class="content">
+
+  <!-- ============ TAB 1 : Brand ============ -->
+  <div class="page-panel active" id="page-1">
+    <div class="page-head">
+      <span class="en">Sales by Brand</span><span class="zh">按品牌划分的销售额</span><span class="id">Penjualan berdasarkan Merek</span>
+    </div>
+
+    <p>
+      <span class="en">Total sales grouped by the brand tagged on each item, across all submitted Sales Invoices. Amounts in IDR.</span>
+      <span class="zh">按每个商品所标记的品牌汇总的总销售额，涵盖所有已提交的销售发票。金额单位为印尼盾（IDR）。</span>
+      <span class="id">Total penjualan yang dikelompokkan berdasarkan merek yang ditandai pada setiap barang, mencakup semua Faktur Penjualan yang sudah disubmit. Nilai dalam IDR.</span>
+    </p>
+
+    <div class="chart-card">
+      <div class="caveat">
+        <span aria-hidden="true">⚠️</span>
+        <span>
+          <span class="en"><strong>Data quality note:</strong> only one brand ("Boll &amp; Kirch") is currently tagged in the Item master (17 of 75 items). The remaining 78.9% of sales — Rp 4,869,082,874 across 157 invoices — come from items with no brand assigned, shown here as "Unbranded" so the chart isn't misleading. Tag brands on more items in ERPNext for a fuller breakdown.</strong></span>
+          <span class="zh"><strong>数据质量提示：</strong>目前商品主数据中只有一个品牌被标记（"Boll &amp; Kirch"，75个商品中的17个）。其余78.9%的销售额——157笔发票共Rp 4,869,082,874——来自未标记品牌的商品，本图中标记为"未标记品牌"以避免误导。如需更完整的品牌拆分，请在ERPNext中为更多商品标记品牌。</span>
+          <span class="id"><strong>Catatan kualitas data:</strong> saat ini hanya satu merek ("Boll &amp; Kirch") yang ditandai di Item master (17 dari 75 barang). Sisanya 78,9% penjualan — Rp 4.869.082.874 dari 157 faktur — berasal dari barang tanpa merek yang ditetapkan, ditampilkan di sini sebagai "Tanpa Merek" agar grafik tidak menyesatkan. Tandai merek pada lebih banyak barang di ERPNext untuk rincian yang lebih lengkap.</span>
+        </span>
+      </div>
+
+      <div class="legend">
+        <span class="legend-item"><span class="swatch" style="background:var(--series-2)"></span><span class="en">Unbranded</span><span class="zh">未标记品牌</span><span class="id">Tanpa Merek</span></span>
+        <span class="legend-item"><span class="swatch" style="background:var(--series-1)"></span>Boll &amp; Kirch</span>
+      </div>
+
+      <div class="chart">
+        <div class="bar-row">
+          <div class="bar-label-row">
+            <span class="bar-name"><span class="en">Unbranded</span><span class="zh">未标记品牌</span><span class="id">Tanpa Merek</span></span>
+            <span class="bar-value">Rp 4,869,082,874 · <span class="en">157 invoices</span><span class="zh">157笔发票</span><span class="id">157 faktur</span></span>
+          </div>
+          <div class="track">
+            <div class="fill s2" style="width:100%" title="Unbranded: Rp 4,869,082,874 across 157 invoices">Rp 4.87B</div>
+          </div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label-row">
+            <span class="bar-name">Boll &amp; Kirch</span>
+            <span class="bar-value">Rp 1,302,481,000 · <span class="en">11 invoices</span><span class="zh">11笔发票</span><span class="id">11 faktur</span></span>
+          </div>
+          <div class="track">
+            <div class="fill s1" style="width:26.75%" title="Boll & Kirch: Rp 1,302,481,000 across 11 invoices">Rp 1.30B</div>
+          </div>
+        </div>
+      </div>
+      <div class="baseline-axis"><span class="en">0 — scaled to Rp 4,869,082,874</span><span class="zh">0 — 以Rp 4,869,082,874为基准</span><span class="id">0 — diskalakan ke Rp 4.869.082.874</span></div>
+
+      <button class="toggle-btn" id="toggleTable" onclick="toggleTable()"><span class="en">Show as table</span><span class="zh">以表格显示</span><span class="id">Tampilkan sebagai tabel</span></button>
+      <table id="dataTable">
+        <thead>
+          <tr>
+            <th><span class="en">Brand</span><span class="zh">品牌</span><span class="id">Merek</span></th>
+            <th><span class="en">Total Sales (IDR)</span><span class="zh">总销售额（IDR）</span><span class="id">Total Penjualan (IDR)</span></th>
+            <th><span class="en"># Invoices</span><span class="zh">发票数</span><span class="id"># Faktur</span></th>
+            <th><span class="en">Share</span><span class="zh">占比</span><span class="id">Persentase</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="name"><span class="en">Unbranded</span><span class="zh">未标记品牌</span><span class="id">Tanpa Merek</span></td><td class="num">Rp 4,869,082,874</td><td class="num">157</td><td class="num">78.9%</td></tr>
+          <tr><td class="name">Boll &amp; Kirch</td><td class="num">Rp 1,302,481,000</td><td class="num">11</td><td class="num">21.1%</td></tr>
+        </tbody>
+      </table>
+
+      <p class="foot-note">
+        <span class="en">Source: Sales Invoice Item × Item.brand, submitted invoices only (docstatus = 1). Total across both groups: Rp 6,171,563,874 across 168 invoices.</span>
+        <span class="zh">数据来源：销售发票明细 × 商品品牌字段，仅统计已提交的发票（docstatus = 1）。两组合计：168笔发票，共Rp 6,171,563,874。</span>
+        <span class="id">Sumber: Sales Invoice Item × Item.brand, hanya faktur yang sudah disubmit (docstatus = 1). Total kedua kelompok: Rp 6.171.563.874 dari 168 faktur.</span>
+      </p>
+    </div>
+  </div>
+
+  <!-- ============ TAB 2 : Key Accounts ============ -->
+  <div class="page-panel" id="page-2">
+    <div class="page-head">
+      <span class="en">Key Accounts</span><span class="zh">重点客户</span><span class="id">Akun Utama</span>
+    </div>
+
+    <p>
+      <span class="en">Top customers by sales, and how to grow more of them.</span>
+      <span class="zh">按销售额排列的重点客户，以及如何培养更多这样的客户。</span>
+      <span class="id">Pelanggan teratas berdasarkan penjualan, dan cara mengembangkan lebih banyak pelanggan seperti ini.</span>
+    </p>
+
+    <div class="chart-card">
+      <div class="caveat">
+        <span aria-hidden="true">⚠️</span>
+        <span>
+          <span class="en"><strong>Data quality note:</strong> built from the 40 most recent submitted invoices already loaded on the Filtec dashboard (26 May – 22 Jul 2026), not full all-time customer history — the live ERPNext customer-level query is currently blocked pending a connector approval issue. Treat this as directional, refresh once that's resolved.</span>
+          <span class="zh"><strong>数据质量提示：</strong>本页基于Filtec仪表板上已有的40笔最新已提交发票（2026年5月26日至7月22日）汇总而成，并非完整的历史客户数据 —— 目前ERPNext的实时客户级查询因连接器授权问题而受阻。请将此视为方向性参考，待问题解决后再更新。</span>
+          <span class="id"><strong>Catatan kualitas data:</strong> disusun dari 40 faktur yang sudah disubmit paling baru yang sudah dimuat di dasbor Filtec (26 Mei – 22 Jul 2026), bukan riwayat pelanggan sepanjang waktu secara lengkap — query tingkat-pelanggan langsung dari ERPNext saat ini terhambat karena masalah persetujuan konektor. Anggap ini sebagai gambaran arah saja, perbarui setelah masalah ini teratasi.</span>
+        </span>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-mini">
+          <div class="sv">Rp 2,499,535,236</div>
+          <div class="sl"><span class="en">Revenue from Top 6 Accounts</span><span class="zh">前6大客户贡献的收入</span><span class="id">Pendapatan dari 6 Akun Teratas</span></div>
+          <div class="sb"><span class="en">82.1% of this sample's Rp 3,044,423,167</span><span class="zh">占本样本Rp 3,044,423,167的82.1%</span><span class="id">82,1% dari Rp 3.044.423.167 pada sampel ini</span></div>
+        </div>
+        <div class="stat-mini">
+          <div class="sv">Rp 675,392,820</div>
+          <div class="sl"><span class="en">Overdue Among Top 6</span><span class="zh">前6大客户中的逾期金额</span><span class="id">Jatuh Tempo di Antara 6 Teratas</span></div>
+          <div class="sb"><span class="en">Harlyn Energi + Oil Terminal Karimun</span><span class="zh">Harlyn Energi + Oil Terminal Karimun</span><span class="id">Harlyn Energi + Oil Terminal Karimun</span></div>
+        </div>
+        <div class="stat-mini">
+          <div class="sv">8</div>
+          <div class="sl"><span class="en">Repeat Customers (2+ invoices)</span><span class="zh">重复下单客户（2笔以上发票）</span><span class="id">Pelanggan Berulang (2+ faktur)</span></div>
+          <div class="sb"><span class="en">out of 28 unique customers in this sample</span><span class="zh">本样本共28个独立客户中的8个</span><span class="id">dari 28 pelanggan unik dalam sampel ini</span></div>
+        </div>
+      </div>
+
+      <div class="legend">
+        <span class="legend-item"><span class="swatch" style="background:var(--series-1)"></span><span class="en">Top 6 (Key Account)</span><span class="zh">前6名（重点客户）</span><span class="id">6 Teratas (Akun Utama)</span></span>
+        <span class="legend-item"><span class="swatch" style="background:#64748b"></span><span class="en">Other top 10</span><span class="zh">其余前10名</span><span class="id">Sisa 10 Teratas</span></span>
+      </div>
+
+      <div class="chart">
+        <div class="bar-row">
+          <div class="bar-label-row"><span class="bar-name">PLN Indonesia Power (UBP Bali)</span><span class="bar-value">Rp 826,430,016 · <span class="en">1 invoice</span><span class="zh">1笔发票</span><span class="id">1 faktur</span></span></div>
+          <div class="track"><div class="fill s1" style="width:100%">Rp 826.4M</div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label-row"><span class="bar-name">Harlyn Energi Indonesia</span><span class="bar-value">Rp 471,783,300 · <span class="en">1 invoice</span><span class="zh">1笔发票</span><span class="id">1 faktur</span></span></div>
+          <div class="track"><div class="fill s1" style="width:57.1%">Rp 471.8M</div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label-row"><span class="bar-name">PLN Nusantara Power (Indramayu)</span><span class="bar-value">Rp 452,880,000 · <span class="en">2 invoices</span><span class="zh">2笔发票</span><span class="id">2 faktur</span></span></div>
+          <div class="track"><div class="fill s1" style="width:54.8%">Rp 452.9M</div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label-row"><span class="bar-name">PLN Indonesia Power (UBP Priok)</span><span class="bar-value">Rp 306,182,400 · <span class="en">1 invoice</span><span class="zh">1笔发票</span><span class="id">1 faktur</span></span></div>
+          <div class="track"><div class="fill s1" style="width:37.1%">Rp 306.2M</div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label-row"><span class="bar-name">PLTGU Muara Tawar</span><span class="bar-value">Rp 238,650,000 · <span class="en">1 invoice</span><span class="zh">1笔发票</span><span class="id">1 faktur</span></span></div>
+          <div class="track"><div class="fill s1" style="width:28.9%">Rp 238.7M</div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label-row"><span class="bar-name">Oil Terminal Karimun</span><span class="bar-value">Rp 203,609,520 · <span class="en">1 invoice</span><span class="zh">1笔发票</span><span class="id">1 faktur</span></span></div>
+          <div class="track"><div class="fill s1" style="width:24.6%">Rp 203.6M</div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label-row"><span class="bar-name">Unilever Indonesia</span><span class="bar-value">Rp 179,820,000 · <span class="en">3 invoices</span><span class="zh">3笔发票</span><span class="id">3 faktur</span></span></div>
+          <div class="track"><div class="fill s3" style="width:21.8%">Rp 179.8M</div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label-row"><span class="bar-name">Valmet Technology Center</span><span class="bar-value">Rp 58,275,000 · <span class="en">2 invoices</span><span class="zh">2笔发票</span><span class="id">2 faktur</span></span></div>
+          <div class="track"><div class="fill s3" style="width:7.1%">Rp 58.3M</div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label-row"><span class="bar-name">CV Mitra Andalan Sukses</span><span class="bar-value">Rp 49,950,000 · <span class="en">1 invoice</span><span class="zh">1笔发票</span><span class="id">1 faktur</span></span></div>
+          <div class="track"><div class="fill s3" style="width:6.0%">Rp 50.0M</div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label-row"><span class="bar-name">Euroasiatic Heat &amp; Power Systems</span><span class="bar-value">Rp 36,630,000 · <span class="en">1 invoice</span><span class="zh">1笔发票</span><span class="id">1 faktur</span></span></div>
+          <div class="track"><div class="fill s3" style="width:4.4%">Rp 36.6M</div></div>
+        </div>
+      </div>
+      <div class="baseline-axis"><span class="en">0 — scaled to Rp 826,430,016 (top account)</span><span class="zh">0 — 以Rp 826,430,016（最高客户）为基准</span><span class="id">0 — diskalakan ke Rp 826.430.016 (akun teratas)</span></div>
+
+      <button class="toggle-btn" id="toggleKaTable" onclick="toggleKaTable()"><span class="en">Show as table</span><span class="zh">以表格显示</span><span class="id">Tampilkan sebagai tabel</span></button>
+      <table id="kaDataTable">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th><span class="en">Customer</span><span class="zh">客户</span><span class="id">Pelanggan</span></th>
+            <th><span class="en">Sales</span><span class="zh">销售额</span><span class="id">Penjualan</span></th>
+            <th><span class="en">Invoices</span><span class="zh">发票数</span><span class="id">Faktur</span></th>
+            <th><span class="en">Cumulative %</span><span class="zh">累计占比</span><span class="id">% Kumulatif</span></th>
+            <th><span class="en">Status</span><span class="zh">状态</span><span class="id">Status</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td class="name">PLN Indonesia Power (UBP Bali)<span class="key-pill">KEY</span></td><td class="num">Rp 826,430,016</td><td class="num">1</td><td class="num">27.2%</td><td class="flag-ok"><span class="en">Paid</span><span class="zh">已付款</span><span class="id">Lunas</span></td></tr>
+          <tr><td>2</td><td class="name">Harlyn Energi Indonesia<span class="key-pill">KEY</span></td><td class="num">Rp 471,783,300</td><td class="num">1</td><td class="num">42.6%</td><td class="flag-overdue"><span class="en">Overdue</span><span class="zh">已逾期</span><span class="id">Jatuh Tempo</span></td></tr>
+          <tr><td>3</td><td class="name">PLN Nusantara Power (Indramayu)<span class="key-pill">KEY</span></td><td class="num">Rp 452,880,000</td><td class="num">2</td><td class="num">57.5%</td><td class="flag-ok"><span class="en">Paid</span><span class="zh">已付款</span><span class="id">Lunas</span></td></tr>
+          <tr><td>4</td><td class="name">PLN Indonesia Power (UBP Priok)<span class="key-pill">KEY</span></td><td class="num">Rp 306,182,400</td><td class="num">1</td><td class="num">67.6%</td><td class="flag-overdue"><span class="en">Partly Paid</span><span class="zh">部分付款</span><span class="id">Sebagian Lunas</span></td></tr>
+          <tr><td>5</td><td class="name">PLTGU Muara Tawar<span class="key-pill">KEY</span></td><td class="num">Rp 238,650,000</td><td class="num">1</td><td class="num">75.4%</td><td class="flag-ok"><span class="en">Unpaid</span><span class="zh">未付款</span><span class="id">Belum Lunas</span></td></tr>
+          <tr><td>6</td><td class="name">Oil Terminal Karimun<span class="key-pill">KEY</span></td><td class="num">Rp 203,609,520</td><td class="num">1</td><td class="num">82.1%</td><td class="flag-overdue"><span class="en">Overdue</span><span class="zh">已逾期</span><span class="id">Jatuh Tempo</span></td></tr>
+          <tr><td>7</td><td class="name">Unilever Indonesia</td><td class="num">Rp 179,820,000</td><td class="num">3</td><td class="num">88.0%</td><td class="flag-overdue"><span class="en">Has Overdue</span><span class="zh">含逾期</span><span class="id">Ada Jatuh Tempo</span></td></tr>
+          <tr><td>8</td><td class="name">Valmet Technology Center</td><td class="num">Rp 58,275,000</td><td class="num">2</td><td class="num">89.9%</td><td class="flag-overdue"><span class="en">Has Overdue</span><span class="zh">含逾期</span><span class="id">Ada Jatuh Tempo</span></td></tr>
+          <tr><td>9</td><td class="name">CV Mitra Andalan Sukses</td><td class="num">Rp 49,950,000</td><td class="num">1</td><td class="num">91.6%</td><td class="flag-ok"><span class="en">Paid</span><span class="zh">已付款</span><span class="id">Lunas</span></td></tr>
+          <tr><td>10</td><td class="name">Euroasiatic Heat &amp; Power Systems</td><td class="num">Rp 36,630,000</td><td class="num">1</td><td class="num">92.8%</td><td class="flag-ok"><span class="en">Paid</span><span class="zh">已付款</span><span class="id">Lunas</span></td></tr>
+        </tbody>
+      </table>
+
+      <p class="foot-note">
+        <span class="en">Source: recentInvoices sample (40 most recent submitted invoices), aggregated client-side by customer. Grand total this sample: Rp 3,044,423,167 across 40 invoices, 28 unique customers.</span>
+        <span class="zh">数据来源：40笔最新已提交发票样本，按客户在前端汇总。本样本合计：40笔发票共Rp 3,044,423,167，涉及28个独立客户。</span>
+        <span class="id">Sumber: sampel recentInvoices (40 faktur yang sudah disubmit paling baru), diagregasi di sisi klien berdasarkan pelanggan. Total keseluruhan sampel ini: Rp 3.044.423.167 dari 40 faktur, 28 pelanggan unik.</span>
+      </p>
+    </div>
+
+    <div class="insight-card">
+      <h3><span class="en">How to Build More Key Accounts</span><span class="zh">如何培养更多重点客户</span><span class="id">Cara Membangun Lebih Banyak Akun Utama</span></h3>
+      <ul class="insight-list">
+        <li><span class="insight-num">1</span><span>
+          <span class="en"><strong>Protect the concentrated base first.</strong> Just 6 customers make up 82% of sales in this sample, and 4 of them are power-utility plants (PLN Indonesia Power UBP Bali, PLN Nusantara Power PLTU Indramayu, PLN Indonesia Power UBP Priok, PLTGU Muara Tawar). Losing any one is a large hit — give these dedicated account contacts and proactive maintenance/reorder reminders before chasing new logos.</span>
+          <span class="zh"><strong>优先保住集中的核心客户群。</strong>本样本中仅6个客户就贡献了82%的销售额，其中4个是电力公司（PLN Indonesia Power UBP Bali、PLN Nusantara Power PLTU Indramayu、PLN Indonesia Power UBP Priok、PLTGU Muara Tawar）。失去其中任何一个都是重大损失——在开发新客户之前，应先为这些客户安排专属对接人及主动的维护/补货提醒。</span>
+          <span class="id"><strong>Lindungi dulu basis pelanggan yang terkonsentrasi.</strong> Hanya 6 pelanggan yang menyumbang 82% penjualan dalam sampel ini, dan 4 di antaranya adalah pembangkit listrik (PLN Indonesia Power UBP Bali, PLN Nusantara Power PLTU Indramayu, PLN Indonesia Power UBP Priok, PLTGU Muara Tawar). Kehilangan salah satunya adalah pukulan besar — berikan kontak akun khusus dan pengingat perawatan/pemesanan ulang secara proaktif untuk pelanggan ini sebelum mengejar pelanggan baru.</span>
+        </span></li>
+        <li><span class="insight-num">2</span><span>
+          <span class="en"><strong>Chase the overdue key accounts first.</strong> Harlyn Energi Indonesia (Rp 471.8M) and Oil Terminal Karimun (Rp 203.6M) — both top-6 accounts — are Overdue, and Unilever and Valmet (both repeat buyers just outside the top 6) also carry overdue invoices. That's real cash sitting at risk inside your best relationships; clearing it protects both cash flow and the account before you try to grow it.</span>
+          <span class="zh"><strong>优先催收逾期的重点客户欠款。</strong>Harlyn Energi Indonesia（Rp 471.8M）和Oil Terminal Karimun（Rp 203.6M）——均为前6大客户——已逾期，而Unilever和Valmet（紧随前6名之后的重复购买客户）也有逾期发票。这些真金白银的风险就藏在你最重要的客户关系中；先清收欠款，才能在扩大合作规模前保护好现金流和客户关系。</span>
+          <span class="id"><strong>Tagih dulu akun utama yang jatuh tempo.</strong> Harlyn Energi Indonesia (Rp 471,8 Jt) dan Oil Terminal Karimun (Rp 203,6 Jt) — keduanya termasuk 6 akun teratas — sudah jatuh tempo, dan Unilever serta Valmet (pembeli berulang tepat di luar 6 teratas) juga memiliki faktur jatuh tempo. Itu uang tunai riil yang berisiko berada di dalam hubungan terbaik Anda; menyelesaikannya melindungi arus kas sekaligus hubungan akun sebelum Anda mencoba mengembangkannya.</span>
+        </span></li>
+        <li><span class="insight-num">3</span><span>
+          <span class="en"><strong>Convert repeat buyers into contracts.</strong> Unilever, Cubic Indonesia, Fumira, and Tripper Nature each placed 3 orders in this 2-month window; Tsuchiya, Valmet, PLN Nusantara Power, and Nissin Foods placed 2. Repeat ad-hoc buying is the strongest signal of a graduating key account — move them onto an annual spare-parts/maintenance contract to lock in the recurring revenue and raise switching cost.</span>
+          <span class="zh"><strong>将重复购买客户转化为合同客户。</strong>Unilever、Cubic Indonesia、Fumira和Tripper Nature在这两个月内各下了3笔订单；Tsuchiya、Valmet、PLN Nusantara Power和Nissin Foods各下了2笔。重复的临时性采购是客户正在成长为重点客户的最强信号——应将他们转为年度备件/维护合同，锁定持续收入并提高更换供应商的成本。</span>
+          <span class="id"><strong>Ubah pembeli berulang menjadi kontrak.</strong> Unilever, Cubic Indonesia, Fumira, dan Tripper Nature masing-masing melakukan 3 pesanan dalam jangka waktu 2 bulan ini; Tsuchiya, Valmet, PLN Nusantara Power, dan Nissin Foods melakukan 2 pesanan. Pembelian ad-hoc yang berulang adalah sinyal terkuat dari akun utama yang sedang berkembang — pindahkan mereka ke kontrak suku cadang/perawatan tahunan untuk mengunci pendapatan berulang dan menaikkan biaya berpindah pemasok.</span>
+        </span></li>
+        <li><span class="insight-num">4</span><span>
+          <span class="en"><strong>Diversify beyond power-utility.</strong> The largest single tickets right now all sit in the power sector. Growing the F&amp;B/manufacturing repeat accounts (Unilever, Nissin Foods, Fumira, Cubic) into bigger standing orders would reduce reliance on a handful of utility-plant deals and smooth revenue month to month.</span>
+          <span class="zh"><strong>向电力行业以外拓展客户。</strong>目前最大的几笔订单都集中在电力行业。将食品饮料/制造业的重复客户（Unilever、Nissin Foods、Fumira、Cubic）培养成更大的常态化订单，能够降低对少数电力项目的依赖，使各月收入更加平稳。</span>
+          <span class="id"><strong>Diversifikasi di luar sektor kelistrikan.</strong> Transaksi tunggal terbesar saat ini semuanya berada di sektor kelistrikan. Mengembangkan akun berulang F&amp;B/manufaktur (Unilever, Nissin Foods, Fumira, Cubic) menjadi pesanan tetap yang lebih besar akan mengurangi ketergantungan pada segelintir kesepakatan pembangkit listrik dan membuat pendapatan lebih stabil dari bulan ke bulan.</span>
+        </span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ============ TAB 3 : GP % ============ -->
+  <div class="page-panel" id="page-3">
+    <div class="page-head">
+      <span class="en">Gross Profit %</span><span class="zh">毛利率</span><span class="id">Persentase Laba Kotor</span>
+    </div>
+
+    <p>
+      <span class="en">Revenue vs. cost of goods sold (COGS) across all 164 submitted invoices, and where to focus to raise the margin.</span>
+      <span class="zh">全部164笔已提交发票的收入与销货成本（COGS）对比，以及应从哪里入手提升利润率。</span>
+      <span class="id">Pendapatan dibandingkan harga pokok penjualan (HPP) di seluruh 164 faktur yang sudah disubmit, dan di mana harus fokus untuk menaikkan margin.</span>
+    </p>
+
+    <div class="chart-card">
+      <div class="caveat">
+        <span aria-hidden="true">⚠️</span>
+        <span>
+          <span class="en"><strong>Data quality note:</strong> ERPNext has no recorded item cost (incoming rate) for Rp 2,688,846,574 of revenue — 43.8%, across 89 invoice lines, mostly Aug 2025 and Jul 2026. Those lines are treated as Rp 0 cost below, so the blended 29.2% GP% is likely overstated. For the 56.2% of revenue where cost <em>is</em> recorded, GP is actually negative (-26.0%) — see Table 1312. Get valuation/incoming rates posted for every item before trusting either number as final.</span>
+          <span class="zh"><strong>数据质量提示：</strong>ERPNext中有Rp 2,688,846,574的收入（占43.8%，共89笔发票明细，主要在2025年8月和2026年7月）没有记录商品成本（进货单价）。下方计算将这些明细的成本按Rp 0处理，因此综合毛利率29.2%可能被高估。而在已记录成本的56.2%收入中，实际毛利为负（-26.0%）——见表1312。建议先为所有商品补齐库存计价/进货单价，再采信任一数字。</span>
+          <span class="id"><strong>Catatan kualitas data:</strong> ERPNext tidak memiliki catatan harga pokok barang (incoming rate) untuk Rp 2.688.846.574 pendapatan — 43,8%, dari 89 baris faktur, sebagian besar Agu 2025 dan Jul 2026. Baris-baris tersebut diperlakukan sebagai biaya Rp 0 di bawah, sehingga GP% gabungan 29,2% kemungkinan lebih tinggi dari yang sebenarnya. Untuk 56,2% pendapatan yang biayanya <em>tercatat</em>, GP sebenarnya negatif (-26,0%) — lihat Tabel 1312. Pastikan valuasi/incoming rate diposting untuk setiap barang sebelum mempercayai salah satu angka sebagai final.</span>
+        </span>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-mini">
+          <div class="sv">Rp 6,139,939,624</div>
+          <div class="sl"><span class="en">Revenue (A)</span><span class="zh">收入 (A)</span><span class="id">Pendapatan (A)</span></div>
+          <div class="sb"><span class="en">164 submitted invoices</span><span class="zh">164笔已提交发票</span><span class="id">164 faktur yang sudah disubmit</span></div>
+        </div>
+        <div class="stat-mini">
+          <div class="sv">Rp 4,346,716,128</div>
+          <div class="sl"><span class="en">Cost of Goods Sold (B)</span><span class="zh">销货成本 (B)</span><span class="id">Harga Pokok Penjualan (B)</span></div>
+          <div class="sb"><span class="en">Sum of incoming rate × qty</span><span class="zh">进货单价 × 数量之和</span><span class="id">Jumlah incoming rate × kuantitas</span></div>
+        </div>
+        <div class="stat-mini">
+          <div class="sv">Rp 1,793,223,496</div>
+          <div class="sl"><span class="en">Gross Profit (A−B)</span><span class="zh">毛利 (A−B)</span><span class="id">Laba Kotor (A−B)</span></div>
+          <div class="sb"><span class="en">Revenue minus COGS</span><span class="zh">收入减去销货成本</span><span class="id">Pendapatan dikurangi HPP</span></div>
+        </div>
+        <div class="stat-mini">
+          <div class="sv">29.2%</div>
+          <div class="sl"><span class="en">GP % (A−B)/A</span><span class="zh">毛利率 (A−B)/A</span><span class="id">GP % (A−B)/A</span></div>
+          <div class="sb"><span class="en">Blended, all invoices — see caveat</span><span class="zh">综合数值，含所有发票——见上方提示</span><span class="id">Gabungan, semua faktur — lihat catatan di atas</span></div>
+        </div>
+      </div>
+
+      <div class="page-head" style="margin-top:4px"><span class="en">Chart 2: Revenue by Cost-Data Coverage</span><span class="zh">图表2：收入按成本数据覆盖情况划分</span><span class="id">Grafik 2: Pendapatan berdasarkan Cakupan Data Biaya</span></div>
+      <div class="legend">
+        <span class="legend-item"><span class="swatch" style="background:var(--series-1)"></span><span class="en">Cost recorded</span><span class="zh">已记录成本</span><span class="id">Biaya tercatat</span></span>
+        <span class="legend-item"><span class="swatch" style="background:var(--red)"></span><span class="en">No cost recorded</span><span class="zh">未记录成本</span><span class="id">Biaya tidak tercatat</span></span>
+      </div>
+      <div class="chart">
+        <div class="bar-row">
+          <div class="bar-label-row">
+            <span class="bar-name"><span class="en">Cost recorded</span><span class="zh">已记录成本</span><span class="id">Biaya tercatat</span></span>
+            <span class="bar-value">Rp 3,451,093,050 · 56.2% · <span class="en">183 lines</span><span class="zh">183条明细</span><span class="id">183 baris</span></span>
+          </div>
+          <div class="track"><div class="fill s1" style="width:100%">Rp 3.45B</div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label-row">
+            <span class="bar-name"><span class="en">No cost recorded</span><span class="zh">未记录成本</span><span class="id">Biaya tidak tercatat</span></span>
+            <span class="bar-value">Rp 2,688,846,574 · 43.8% · <span class="en">89 lines</span><span class="zh">89条明细</span><span class="id">89 baris</span></span>
+          </div>
+          <div class="track"><div class="fill s4" style="width:77.9%">Rp 2.69B</div></div>
+        </div>
+      </div>
+      <div class="baseline-axis"><span class="en">0 — scaled to Rp 3,451,093,050 (cost-recorded revenue)</span><span class="zh">0 — 以已记录成本的收入Rp 3,451,093,050为基准</span><span class="id">0 — diskalakan ke Rp 3.451.093.050 (pendapatan berbiaya tercatat)</span></div>
+    </div>
+
+    <div class="chart-card">
+      <div class="page-head"><span class="en">Chart 3: GP % by Month (A−B)/A</span><span class="zh">图表3：按月毛利率 (A−B)/A</span><span class="id">Grafik 3: GP % per Bulan (A−B)/A</span></div>
+      <p class="foot-note" style="margin-top:0 0 10px">
+        <span class="en">Grey cells = no cost data recorded that month (see caveat above), not a real 100% margin.</span>
+        <span class="zh">灰色格子 = 当月无成本数据（见上方提示），并非真实的100%利润率。</span>
+        <span class="id">Sel abu-abu = tidak ada data biaya tercatat pada bulan itu (lihat catatan di atas), bukan margin 100% yang sebenarnya.</span>
+      </p>
+      <div class="heat-strip">
+        <div class="heat-cell" style="background:rgba(139,143,168,0.18)"><div class="hm">Aug '25</div><div class="hp">—</div><div class="hi"><span class="en">no cost data</span><span class="zh">无成本数据</span><span class="id">tanpa data biaya</span></div></div>
+        <div class="heat-cell" style="background:rgba(63,185,80,0.32)"><div class="hm">Sep '25</div><div class="hp">70.8%</div><div class="hi">2 <span class="en">inv</span><span class="zh">笔</span><span class="id">faktur</span></div></div>
+        <div class="heat-cell" style="background:rgba(248,81,73,0.18)"><div class="hm">Oct '25</div><div class="hp">-6.2%</div><div class="hi">19 <span class="en">inv</span><span class="zh">笔</span><span class="id">faktur</span></div></div>
+        <div class="heat-cell" style="background:rgba(248,81,73,0.55)"><div class="hm">Nov '25</div><div class="hp">-306.4%</div><div class="hi">14 <span class="en">inv</span><span class="zh">笔</span><span class="id">faktur</span></div></div>
+        <div class="heat-cell" style="background:rgba(248,81,73,0.18)"><div class="hm">Dec '25</div><div class="hp">-5.2%</div><div class="hi">10 <span class="en">inv</span><span class="zh">笔</span><span class="id">faktur</span></div></div>
+        <div class="heat-cell" style="background:rgba(63,185,80,0.32)"><div class="hm">Jan '26</div><div class="hp">72.0%</div><div class="hi">14 <span class="en">inv</span><span class="zh">笔</span><span class="id">faktur</span></div></div>
+        <div class="heat-cell" style="background:rgba(248,81,73,0.45)"><div class="hm">Feb '26</div><div class="hp">-169.1%</div><div class="hi">13 <span class="en">inv</span><span class="zh">笔</span><span class="id">faktur</span></div></div>
+        <div class="heat-cell" style="background:rgba(248,81,73,0.3)"><div class="hm">Mar '26</div><div class="hp">-73.4%</div><div class="hi">16 <span class="en">inv</span><span class="zh">笔</span><span class="id">faktur</span></div></div>
+        <div class="heat-cell" style="background:rgba(63,185,80,0.4)"><div class="hm">Apr '26</div><div class="hp">89.4%</div><div class="hi">13 <span class="en">inv</span><span class="zh">笔</span><span class="id">faktur</span></div></div>
+        <div class="heat-cell" style="background:rgba(245,158,11,0.2)"><div class="hm">May '26</div><div class="hp">6.7%</div><div class="hi">16 <span class="en">inv</span><span class="zh">笔</span><span class="id">faktur</span></div></div>
+        <div class="heat-cell" style="background:rgba(63,185,80,0.38)"><div class="hm">Jun '26</div><div class="hp">79.8%</div><div class="hi">25 <span class="en">inv</span><span class="zh">笔</span><span class="id">faktur</span></div></div>
+        <div class="heat-cell" style="background:rgba(139,143,168,0.18)"><div class="hm">Jul '26</div><div class="hp">—</div><div class="hi"><span class="en">no cost data</span><span class="zh">无成本数据</span><span class="id">tanpa data biaya</span></div></div>
+      </div>
+      <div class="heat-legend">
+        <span><i style="background:rgba(63,185,80,0.6)"></i><span class="en">Healthy GP %</span><span class="zh">健康毛利率</span><span class="id">GP % Sehat</span></span>
+        <span><i style="background:rgba(245,158,11,0.6)"></i><span class="en">Thin GP %</span><span class="zh">薄利</span><span class="id">GP % Tipis</span></span>
+        <span><i style="background:rgba(248,81,73,0.6)"></i><span class="en">Negative GP %</span><span class="zh">负毛利</span><span class="id">GP % Negatif</span></span>
+        <span><i style="background:rgba(139,143,168,0.5)"></i><span class="en">No cost data</span><span class="zh">无成本数据</span><span class="id">Tanpa data biaya</span></span>
+      </div>
+
+      <div class="page-head" style="margin-top:16px"><span class="en">Table 1311: GP % by Month (Detail)</span><span class="zh">表1311：按月毛利率明细</span><span class="id">Tabel 1311: GP % per Bulan (Detail)</span></div>
+      <button class="toggle-btn" id="toggleGpMonthTable" onclick="toggleGpMonthTable()"><span class="en">Show as table</span><span class="zh">以表格显示</span><span class="id">Tampilkan sebagai tabel</span></button>
+      <table id="gpMonthTable">
+        <thead>
+          <tr>
+            <th><span class="en">Month</span><span class="zh">月份</span><span class="id">Bulan</span></th>
+            <th><span class="en">Revenue (A)</span><span class="zh">收入 (A)</span><span class="id">Pendapatan (A)</span></th>
+            <th><span class="en">COGS (B)</span><span class="zh">销货成本 (B)</span><span class="id">HPP (B)</span></th>
+            <th><span class="en">Gross Profit (A−B)</span><span class="zh">毛利 (A−B)</span><span class="id">Laba Kotor (A−B)</span></th>
+            <th><span class="en">GP % (A−B)/A</span><span class="zh">毛利率 (A−B)/A</span><span class="id">GP % (A−B)/A</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="name">Aug '25</td><td class="num">Rp 167,000,000</td><td class="num">Rp 0</td><td class="num">Rp 167,000,000</td><td class="num"><span class="en">n/a — no cost data</span><span class="zh">无 — 无成本数据</span><span class="id">t/a — tanpa data biaya</span></td></tr>
+          <tr><td class="name">Sep '25</td><td class="num">Rp 337,075,000</td><td class="num">Rp 98,324,429</td><td class="num pos">Rp 238,750,571</td><td class="num pos">70.8%</td></tr>
+          <tr><td class="name">Oct '25</td><td class="num">Rp 247,509,600</td><td class="num">Rp 262,860,685</td><td class="num neg">-Rp 15,351,085</td><td class="num neg">-6.2%</td></tr>
+          <tr><td class="name">Nov '25</td><td class="num">Rp 401,238,000</td><td class="num">Rp 1,630,656,974</td><td class="num neg">-Rp 1,229,418,974</td><td class="num neg">-306.4%</td></tr>
+          <tr><td class="name">Dec '25</td><td class="num">Rp 173,754,200</td><td class="num">Rp 182,758,394</td><td class="num neg">-Rp 9,004,194</td><td class="num neg">-5.2%</td></tr>
+          <tr><td class="name">Jan '26</td><td class="num">Rp 318,290,500</td><td class="num">Rp 88,967,247</td><td class="num pos">Rp 229,323,253</td><td class="num pos">72.0%</td></tr>
+          <tr><td class="name">Feb '26</td><td class="num">Rp 300,897,000</td><td class="num">Rp 809,685,823</td><td class="num neg">-Rp 508,788,823</td><td class="num neg">-169.1%</td></tr>
+          <tr><td class="name">Mar '26</td><td class="num">Rp 465,573,000</td><td class="num">Rp 807,104,835</td><td class="num neg">-Rp 341,531,835</td><td class="num neg">-73.4%</td></tr>
+          <tr><td class="name">Apr '26</td><td class="num">Rp 785,658,000</td><td class="num">Rp 83,513,549</td><td class="num pos">Rp 702,144,451</td><td class="num pos">89.4%</td></tr>
+          <tr><td class="name">May '26</td><td class="num">Rp 215,150,750</td><td class="num">Rp 200,715,151</td><td class="num pos">Rp 14,435,599</td><td class="num pos">6.7%</td></tr>
+          <tr><td class="name">Jun '26</td><td class="num">Rp 900,538,628</td><td class="num">Rp 182,129,042</td><td class="num pos">Rp 718,409,586</td><td class="num pos">79.8%</td></tr>
+          <tr><td class="name">Jul '26</td><td class="num">Rp 1,827,254,946</td><td class="num">Rp 0</td><td class="num">Rp 1,827,254,946</td><td class="num"><span class="en">n/a — no cost data</span><span class="zh">无 — 无成本数据</span><span class="id">t/a — tanpa data biaya</span></td></tr>
+        </tbody>
+      </table>
+      <p class="foot-note">
+        <span class="en">Source: Sales Invoice Item (base_net_amount) × incoming_rate, submitted invoices only (docstatus = 1), both Filtec companies combined, grouped by posting month.</span>
+        <span class="zh">数据来源：销售发票明细（base_net_amount）× 进货单价，仅统计已提交发票（docstatus = 1），合并两家Filtec公司数据，按开票月份汇总。</span>
+        <span class="id">Sumber: Sales Invoice Item (base_net_amount) × incoming_rate, hanya faktur yang sudah disubmit (docstatus = 1), gabungan kedua perusahaan Filtec, dikelompokkan per bulan posting.</span>
+      </p>
+    </div>
+
+    <div class="chart-card">
+      <div class="page-head"><span class="en">Table 1312: Gross Profit by Item</span><span class="zh">表1312：按商品划分的毛利</span><span class="id">Tabel 1312: Laba Kotor per Barang</span></div>
+      <p>
+        <span class="en">Top 15 items by revenue, cost-tracked only (incoming rate &gt; 0) — this is the reliable 56.2% slice of revenue from the caveat above.</span>
+        <span class="zh">按收入排名前15的商品，仅含已记录成本的商品（进货单价&gt;0）——即上方提示中可信的56.2%收入部分。</span>
+        <span class="id">15 barang teratas berdasarkan pendapatan, hanya yang tercatat biayanya (incoming rate &gt; 0) — ini adalah bagian 56,2% pendapatan yang dapat diandalkan dari catatan di atas.</span>
+      </p>
+      <table class="show">
+        <thead>
+          <tr>
+            <th><span class="en">Item</span><span class="zh">商品</span><span class="id">Barang</span></th>
+            <th><span class="en">Revenue (A)</span><span class="zh">收入 (A)</span><span class="id">Pendapatan (A)</span></th>
+            <th><span class="en">COGS (B)</span><span class="zh">销货成本 (B)</span><span class="id">HPP (B)</span></th>
+            <th><span class="en">Gross Profit (A−B)</span><span class="zh">毛利 (A−B)</span><span class="id">Laba Kotor (A−B)</span></th>
+            <th><span class="en">GP % (A−B)/A</span><span class="zh">毛利率 (A−B)/A</span><span class="id">GP % (A−B)/A</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="name">BK-SP-FilterElement</td><td class="num">Rp 2,134,275,000</td><td class="num">Rp 2,916,090,328</td><td class="num neg">-Rp 781,815,328</td><td class="num neg">-36.6%</td></tr>
+          <tr><td class="name">FE-FE</td><td class="num">Rp 476,232,750</td><td class="num">Rp 95,561,013</td><td class="num pos">Rp 380,671,737</td><td class="num pos">79.9%</td></tr>
+          <tr><td class="name">HVAC-MF</td><td class="num">Rp 178,972,500</td><td class="num">Rp 100,962,500</td><td class="num pos">Rp 78,010,000</td><td class="num pos">43.6%</td></tr>
+          <tr><td class="name">BK-SP-StarPleated</td><td class="num">Rp 115,000,000</td><td class="num">Rp 82,461,569</td><td class="num pos">Rp 32,538,432</td><td class="num pos">28.3%</td></tr>
+          <tr><td class="name">WT-FC</td><td class="num">Rp 90,288,400</td><td class="num">Rp 137,261,938</td><td class="num neg">-Rp 46,973,538</td><td class="num neg">-52.0%</td></tr>
+          <tr><td class="name">BK-SP-DPI</td><td class="num">Rp 71,750,000</td><td class="num">Rp 23,042,203</td><td class="num pos">Rp 48,707,797</td><td class="num pos">67.9%</td></tr>
+          <tr><td class="name">COMP-AF</td><td class="num">Rp 50,489,000</td><td class="num">Rp 16,553,333</td><td class="num pos">Rp 33,935,667</td><td class="num pos">67.2%</td></tr>
+          <tr><td class="name">HVAC-PF</td><td class="num">Rp 48,720,000</td><td class="num">Rp 111,248,179</td><td class="num neg">-Rp 62,528,179</td><td class="num neg">-128.4%</td></tr>
+          <tr><td class="name">BK-SP-ORing</td><td class="num">Rp 43,946,400</td><td class="num">Rp 20,764,620</td><td class="num pos">Rp 23,181,780</td><td class="num pos">52.8%</td></tr>
+          <tr><td class="name">WT-FC2</td><td class="num">Rp 37,500,000</td><td class="num">Rp 550,000,000</td><td class="num neg">-Rp 512,500,000</td><td class="num neg">-1366.7%</td></tr>
+          <tr><td class="name">WT-MRO</td><td class="num">Rp 36,000,000</td><td class="num">Rp 30,600,000</td><td class="num pos">Rp 5,400,000</td><td class="num pos">15.0%</td></tr>
+          <tr><td class="name">HVAC-HF</td><td class="num">Rp 35,570,000</td><td class="num">Rp 21,250,000</td><td class="num pos">Rp 14,320,000</td><td class="num pos">40.3%</td></tr>
+          <tr><td class="name">WT-FC1</td><td class="num">Rp 20,790,000</td><td class="num">Rp 8,653,750</td><td class="num pos">Rp 12,136,250</td><td class="num pos">58.4%</td></tr>
+          <tr><td class="name">DC-BF</td><td class="num">Rp 16,028,000</td><td class="num">Rp 19,320,800</td><td class="num neg">-Rp 3,292,800</td><td class="num neg">-20.5%</td></tr>
+          <tr><td class="name">MESH-WM-EA</td><td class="num">Rp 15,556,000</td><td class="num">Rp 6,025,070</td><td class="num pos">Rp 9,530,930</td><td class="num pos">61.3%</td></tr>
+        </tbody>
+      </table>
+      <p class="foot-note">
+        <span class="en">Source: Sales Invoice Item grouped by item_code, submitted invoices only, incoming_rate &gt; 0. Remaining smaller cost-tracked items (below top 15) add ~Rp 80.0M more revenue not shown here.</span>
+        <span class="zh">数据来源：销售发票明细按商品编码汇总，仅统计已提交发票，且进货单价&gt;0。未列出的其余小额已记录成本商品还有约Rp 80.0M收入。</span>
+        <span class="id">Sumber: Sales Invoice Item dikelompokkan berdasarkan item_code, hanya faktur yang sudah disubmit, incoming_rate &gt; 0. Barang berbiaya-tercatat lainnya yang lebih kecil (di luar 15 teratas) menambah ~Rp 80,0 Jt pendapatan lagi yang tidak ditampilkan di sini.</span>
+      </p>
+    </div>
+
+    <div class="insight-card">
+      <h3><span class="en">How to Increase GP %</span><span class="zh">如何提升毛利率</span><span class="id">Cara Meningkatkan GP %</span></h3>
+      <ul class="insight-list">
+        <li><span class="insight-num">1</span><span>
+          <span class="en"><strong>Fix cost data capture first.</strong> 43.8% of revenue (Rp 2.69B, 89 lines) has no recorded item cost — mostly Aug 2025 and Jul 2026. Until every stock item has a valuation/incoming rate (Purchase Receipt posted before the matching Sales Invoice), neither the 29.2% blended figure nor the -26.0% cost-tracked figure can be trusted as the "real" GP%. This is the prerequisite to everything below.</span>
+          <span class="zh"><strong>优先补齐成本数据。</strong>43.8%的收入（Rp 2.69B，89条明细）没有记录商品成本——主要集中在2025年8月和2026年7月。在所有库存商品都补齐库存计价/进货单价（即采购收货单需在对应销售发票之前过账）之前，无论是29.2%的综合数字还是-26.0%的已记录成本数字都不能视为"真实"毛利率。这是下面所有措施的前提。</span>
+          <span class="id"><strong>Perbaiki dulu pencatatan data biaya.</strong> 43,8% pendapatan (Rp 2,69 M, 89 baris) tidak memiliki catatan biaya barang — sebagian besar Agu 2025 dan Jul 2026. Sampai setiap barang stok memiliki valuasi/incoming rate (Purchase Receipt diposting sebelum Sales Invoice yang sesuai), baik angka gabungan 29,2% maupun angka berbiaya-tercatat -26,0% tidak bisa dipercaya sebagai GP% yang "sebenarnya". Ini adalah prasyarat untuk semua hal di bawah ini.</span>
+        </span></li>
+        <li><span class="insight-num">2</span><span>
+          <span class="en"><strong>Investigate BK-SP-FilterElement's costing.</strong> It's your #1 revenue item (Rp 2.13B) but also the single biggest loss (-Rp 781.8M, -36.6%). Its recorded unit cost swings from Rp 0 to over Rp 101,000,000 per unit across different invoices for what should be the same item — that's a valuation/costing error, not necessarily a real pricing problem. One bad invoice (UBP Bali, Nov 2025) alone accounts for -Rp 1.0B of that swing and is most of why Nov 2025 shows -306.4% GP%. Correcting this item's costing could flip the whole company's GP% picture.</span>
+          <span class="zh"><strong>核查BK-SP-FilterElement的成本。</strong>该商品是收入第一名（Rp 2.13B），但也是最大的亏损来源（-Rp 781.8M，-36.6%）。同一商品在不同发票中的记录单价从Rp 0到超过Rp 101,000,000不等——这更像是库存计价/成本录入错误，而非真实的定价问题。仅UBP Bali一笔发票（2025年11月）就造成了-Rp 1.0B的偏差，也是2025年11月毛利率-306.4%的主因。修正该商品的成本核算，可能会扭转公司整体毛利率的局面。</span>
+          <span class="id"><strong>Selidiki perhitungan biaya BK-SP-FilterElement.</strong> Ini adalah barang pendapatan #1 Anda (Rp 2,13 M) tapi juga kerugian tunggal terbesar (-Rp 781,8 Jt, -36,6%). Biaya per unit yang tercatat berayun dari Rp 0 hingga lebih dari Rp 101.000.000 per unit di berbagai faktur untuk barang yang seharusnya sama — itu adalah kesalahan valuasi/perhitungan biaya, bukan berarti masalah harga yang sebenarnya. Satu faktur bermasalah (UBP Bali, Nov 2025) saja menyumbang -Rp 1,0 M dari ayunan tersebut dan menjadi penyebab utama mengapa Nov 2025 menunjukkan GP% -306,4%. Memperbaiki perhitungan biaya barang ini bisa membalikkan keseluruhan gambaran GP% perusahaan.</span>
+        </span></li>
+        <li><span class="insight-num">3</span><span>
+          <span class="en"><strong>Grow the proven high-margin items.</strong> FE-FE (79.9% margin, Rp 476.2M revenue), BK-SP-DPI (67.9%), COMP-AF (67.2%), MESH-WM-EA (61.3%) and HVAC-MF (43.6%) are comfortably profitable. Push these into the sales mix with existing Key Accounts before chasing new lower-margin business.</span>
+          <span class="zh"><strong>扩大已验证的高毛利商品销量。</strong>FE-FE（79.9%毛利率，Rp 476.2M收入）、BK-SP-DPI（67.9%）、COMP-AF（67.2%）、MESH-WM-EA（61.3%）和HVAC-MF（43.6%）都有稳健的盈利能力。应优先向现有重点客户推广这些商品，而非急于拓展利润更薄的新业务。</span>
+          <span class="id"><strong>Kembangkan barang bermargin tinggi yang terbukti.</strong> FE-FE (margin 79,9%, pendapatan Rp 476,2 Jt), BK-SP-DPI (67,9%), COMP-AF (67,2%), MESH-WM-EA (61,3%) dan HVAC-MF (43,6%) cukup menguntungkan. Dorong barang-barang ini ke dalam bauran penjualan dengan Akun Utama yang ada sebelum mengejar bisnis baru bermargin lebih tipis.</span>
+        </span></li>
+        <li><span class="insight-num">4</span><span>
+          <span class="en"><strong>Re-price or renegotiate the chronic loss items.</strong> WT-FC (-52.0%), HVAC-PF (-128.4%), DC-BF (-20.5%) and WT-FC2 (-1,366.7% on a single Rp 37.5M line) are consistently sold below cost. Either raise the sale price, negotiate a lower purchase cost from the supplier, or stop stocking them — each sale currently destroys margin instead of building it.</span>
+          <span class="zh"><strong>对长期亏损商品重新定价或议价。</strong>WT-FC（-52.0%）、HVAC-PF（-128.4%）、DC-BF（-20.5%）以及WT-FC2（单笔Rp 37.5M发票即-1,366.7%）长期低于成本销售。应提高售价、向供应商争取更低的采购成本，或干脆停止备货——目前每一笔销售都在侵蚀而非创造利润。</span>
+          <span class="id"><strong>Tentukan ulang harga atau negosiasikan ulang barang yang terus merugi.</strong> WT-FC (-52,0%), HVAC-PF (-128,4%), DC-BF (-20,5%) dan WT-FC2 (-1.366,7% pada satu baris Rp 37,5 Jt) secara konsisten dijual di bawah biaya. Naikkan harga jual, negosiasikan biaya pembelian yang lebih rendah dari pemasok, atau hentikan penyediaan stoknya — setiap penjualan saat ini menghancurkan margin, bukan membangunnya.</span>
+        </span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ============ TAB 4 : Retention ============ -->
+  <div class="page-panel" id="page-4">
+    <div class="page-head">
+      <span class="en">Customer Retention</span><span class="zh">客户留存</span><span class="id">Retensi Pelanggan</span>
+    </div>
+
+    <p>
+      <span class="en">How many customers in this sample bought more than once, and how much of the order volume they account for.</span>
+      <span class="zh">本样本中有多少客户购买了不止一次，以及他们占了多少订单量。</span>
+      <span class="id">Berapa banyak pelanggan dalam sampel ini yang membeli lebih dari sekali, dan berapa besar volume pesanan yang mereka wakili.</span>
+    </p>
+
+    <div class="chart-card">
+      <div class="caveat">
+        <span aria-hidden="true">⚠️</span>
+        <span>
+          <span class="en"><strong>Data quality note:</strong> built from the same 40-invoice sample as the Key Accounts tab (26 May – 22 Jul 2026, ~2 months) — not full all-time customer history. The live ERPNext customer-level query needed for a true multi-period retention/cohort report (who returned quarter over quarter, real churn) is currently blocked pending a connector approval issue, so this is a same-window repeat-purchase snapshot only. Rebuild this tab from full invoice history once that's resolved.</strong></span>
+          <span class="zh"><strong>数据质量提示：</strong>本页与"重点客户"标签使用同一批40笔发票样本（2026年5月26日至7月22日，约2个月），并非完整的历史客户数据。真正的多周期留存/群组分析（逐季度追踪谁回购、真实流失率）需要客户级的ERPNext实时查询，而该查询目前因连接器授权问题而受阻——因此本页只是同一时间窗口内的重复购买快照。待问题解决后，应基于完整发票历史重建此标签页。</span>
+          <span class="id"><strong>Catatan kualitas data:</strong> disusun dari sampel 40 faktur yang sama dengan tab Akun Utama (26 Mei – 22 Jul 2026, ~2 bulan) — bukan riwayat pelanggan sepanjang waktu secara lengkap. Query tingkat-pelanggan langsung dari ERPNext yang dibutuhkan untuk laporan retensi/kohort multi-periode yang sebenarnya (siapa yang kembali dari kuartal ke kuartal, churn yang riil) saat ini terhambat karena masalah persetujuan konektor, sehingga ini hanya cuplikan pembelian berulang dalam satu jendela waktu yang sama. Bangun ulang tab ini dari riwayat faktur lengkap setelah masalah itu teratasi.</span>
+        </span>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-mini">
+          <div class="sv">28</div>
+          <div class="sl"><span class="en">Unique Customers (D)</span><span class="zh">独立客户数 (D)</span><span class="id">Pelanggan Unik (D)</span></div>
+          <div class="sb"><span class="en">in this 40-invoice sample</span><span class="zh">本40笔发票样本中</span><span class="id">dalam sampel 40 faktur ini</span></div>
+        </div>
+        <div class="stat-mini">
+          <div class="sv">8</div>
+          <div class="sl"><span class="en">Repeat Customers (C)</span><span class="zh">重复购买客户 (C)</span><span class="id">Pelanggan Berulang (C)</span></div>
+          <div class="sb"><span class="en">ordered 2+ times in this sample</span><span class="zh">本样本中下单2次以上</span><span class="id">memesan 2+ kali dalam sampel ini</span></div>
+        </div>
+        <div class="stat-mini">
+          <div class="sv">28.6%</div>
+          <div class="sl"><span class="en">Repeat Purchase Rate (C/D)</span><span class="zh">重复购买率 (C/D)</span><span class="id">Tingkat Pembelian Berulang (C/D)</span></div>
+          <div class="sb"><span class="en">share of customers who returned</span><span class="zh">回购客户占比</span><span class="id">persentase pelanggan yang kembali</span></div>
+        </div>
+        <div class="stat-mini">
+          <div class="sv">50.0%</div>
+          <div class="sl"><span class="en">Repeat Invoice Share (E/F)</span><span class="zh">重复购买发票占比 (E/F)</span><span class="id">Pangsa Faktur Berulang (E/F)</span></div>
+          <div class="sb"><span class="en">20 of this sample's 40 invoices (E/F)</span><span class="zh">本样本40笔发票中的20笔 (E/F)</span><span class="id">20 dari 40 faktur dalam sampel ini (E/F)</span></div>
+        </div>
+      </div>
+
+      <div class="page-head" style="margin-top:4px"><span class="en">Chart 4: Customers by Purchase Frequency</span><span class="zh">图表4：按购买频率划分的客户</span><span class="id">Grafik 4: Pelanggan berdasarkan Frekuensi Pembelian</span></div>
+      <div class="legend">
+        <span class="legend-item"><span class="swatch" style="background:var(--series-1)"></span><span class="en">Repeat (2+ invoices)</span><span class="zh">重复购买（2笔以上）</span><span class="id">Berulang (2+ faktur)</span></span>
+        <span class="legend-item"><span class="swatch" style="background:#64748b"></span><span class="en">One-time (1 invoice)</span><span class="zh">仅一次（1笔）</span><span class="id">Sekali (1 faktur)</span></span>
+      </div>
+      <div class="chart">
+        <div class="bar-row">
+          <div class="bar-label-row">
+            <span class="bar-name"><span class="en">Repeat customers</span><span class="zh">重复购买客户</span><span class="id">Pelanggan berulang</span></span>
+            <span class="bar-value">8 <span class="en">customers</span><span class="zh">名客户</span><span class="id">pelanggan</span> · 20 <span class="en">invoices</span><span class="zh">笔发票</span><span class="id">faktur</span> · 50.0%</span>
+          </div>
+          <div class="track"><div class="fill s1" style="width:100%">20</div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label-row">
+            <span class="bar-name"><span class="en">One-time customers</span><span class="zh">仅一次购买客户</span><span class="id">Pelanggan sekali beli</span></span>
+            <span class="bar-value">20 <span class="en">customers</span><span class="zh">名客户</span><span class="id">pelanggan</span> · 20 <span class="en">invoices</span><span class="zh">笔发票</span><span class="id">faktur</span> · 50.0%</span>
+          </div>
+          <div class="track"><div class="fill s3" style="width:100%">20</div></div>
+        </div>
+      </div>
+      <div class="baseline-axis"><span class="en">0 — scaled to 20 invoices (larger group)</span><span class="zh">0 — 以20笔发票（较大组）为基准</span><span class="id">0 — diskalakan ke 20 faktur (kelompok lebih besar)</span></div>
+
+      <div class="page-head" style="margin-top:16px"><span class="en">Table 1313: Repeat Customers (Detail)</span><span class="zh">表1313：重复购买客户明细</span><span class="id">Tabel 1313: Pelanggan Berulang (Detail)</span></div>
+      <button class="toggle-btn" id="toggleRetTable" onclick="toggleRetTable()"><span class="en">Show as table</span><span class="zh">以表格显示</span><span class="id">Tampilkan sebagai tabel</span></button>
+      <table id="retDataTable">
+        <thead>
+          <tr>
+            <th><span class="en">Customer</span><span class="zh">客户</span><span class="id">Pelanggan</span></th>
+            <th><span class="en">Invoices (sample)</span><span class="zh">发票数（样本内）</span><span class="id">Faktur (sampel)</span></th>
+            <th><span class="en">Status</span><span class="zh">状态</span><span class="id">Status</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="name">Cubic Indonesia</td><td class="num">3</td><td class="num">—</td></tr>
+          <tr><td class="name">Fumira</td><td class="num">3</td><td class="num">—</td></tr>
+          <tr><td class="name">Tripper Nature</td><td class="num">3</td><td class="num">—</td></tr>
+          <tr><td class="name">Unilever Indonesia</td><td class="num">3</td><td class="flag-overdue"><span class="en">Has Overdue</span><span class="zh">含逾期</span><span class="id">Ada Jatuh Tempo</span></td></tr>
+          <tr><td class="name">Nissin Foods</td><td class="num">2</td><td class="num">—</td></tr>
+          <tr><td class="name">PLN Nusantara Power (Indramayu)</td><td class="num">2</td><td class="flag-ok"><span class="en">Paid</span><span class="zh">已付款</span><span class="id">Lunas</span></td></tr>
+          <tr><td class="name">Tsuchiya</td><td class="num">2</td><td class="num">—</td></tr>
+          <tr><td class="name">Valmet Technology Center</td><td class="num">2</td><td class="flag-overdue"><span class="en">Has Overdue</span><span class="zh">含逾期</span><span class="id">Ada Jatuh Tempo</span></td></tr>
+        </tbody>
+      </table>
+
+      <p class="foot-note">
+        <span class="en">Source: recentInvoices sample (40 most recent submitted invoices), same dataset as the Key Accounts tab, aggregated client-side by customer. Status shown only where the customer also appears in the Key Accounts top-10 table; "—" means not confirmed in this sample, not that no invoice exists.</span>
+        <span class="zh">数据来源：40笔最新已提交发票样本，与"重点客户"标签使用同一数据集，按客户在前端汇总。仅当客户同时出现在"重点客户"标签的前10名表格中才显示状态；"—"表示本样本中未确认，并非没有发票。</span>
+        <span class="id">Sumber: sampel recentInvoices (40 faktur yang sudah disubmit paling baru), dataset yang sama dengan tab Akun Utama, diagregasi di sisi klien berdasarkan pelanggan. Status hanya ditampilkan jika pelanggan juga muncul di tabel 10 teratas pada tab Akun Utama; "—" berarti belum dikonfirmasi dalam sampel ini, bukan berarti tidak ada faktur.</span>
+      </p>
+    </div>
+
+    <div class="insight-card">
+      <h3><span class="en">How to Improve Retention</span><span class="zh">如何提升客户留存</span><span class="id">Cara Meningkatkan Retensi</span></h3>
+      <ul class="insight-list">
+        <li><span class="insight-num">1</span><span>
+          <span class="en"><strong>Turn the single-invoice whales into repeat accounts.</strong> PLN Indonesia Power (UBP Bali, Rp 826.4M) and Harlyn Energi Indonesia (Rp 471.8M) are the two largest customers in this sample, yet each has placed only 1 invoice — no repeat signal yet. Don't assume they'll reorder on their own; set up scheduled maintenance/reorder outreach now, before the relationship goes cold.</strong></span>
+          <span class="zh"><strong>把单次下单的大客户转化为回购客户。</strong>PLN Indonesia Power（UBP Bali，Rp 826.4M）和Harlyn Energi Indonesia（Rp 471.8M）是本样本中最大的两个客户，但都只下过1次单——尚无回购信号。不要假设他们会自己回购；应立即安排定期的维护/补货联系，避免关系冷却。</span>
+          <span class="id"><strong>Ubah pelanggan besar sekali-beli menjadi akun berulang.</strong> PLN Indonesia Power (UBP Bali, Rp 826,4 Jt) dan Harlyn Energi Indonesia (Rp 471,8 Jt) adalah dua pelanggan terbesar dalam sampel ini, namun masing-masing baru memesan 1 kali — belum ada sinyal pembelian berulang. Jangan berasumsi mereka akan memesan ulang dengan sendirinya; segera atur komunikasi perawatan/pemesanan ulang secara terjadwal, sebelum hubungan menjadi dingin.</span>
+        </span></li>
+        <li><span class="insight-num">2</span><span>
+          <span class="en"><strong>Clear overdue invoices before asking for a repeat order.</strong> Harlyn Energi Indonesia (Overdue) and Oil Terminal Karimun (Overdue) are both single-invoice customers with unresolved payments — an unpaid invoice sitting in front of a customer makes them far less likely to reorder. Resolve the payment relationship first, then reintroduce them to the sales pipeline.</span>
+          <span class="zh"><strong>在要求回购之前先清收逾期发票。</strong>Harlyn Energi Indonesia（已逾期）和Oil Terminal Karimun（已逾期）都是只下过1次单、付款未结清的客户——摆在客户面前的一笔未付发票会大大降低他们回购的意愿。应先解决付款关系，再重新把他们带回销售渠道。</span>
+          <span class="id"><strong>Selesaikan faktur jatuh tempo sebelum meminta pesanan ulang.</strong> Harlyn Energi Indonesia (Jatuh Tempo) dan Oil Terminal Karimun (Jatuh Tempo) sama-sama pelanggan sekali-beli dengan pembayaran yang belum selesai — faktur yang belum dibayar di depan pelanggan membuat mereka jauh lebih kecil kemungkinannya untuk memesan ulang. Selesaikan dulu hubungan pembayarannya, baru perkenalkan kembali mereka ke jalur penjualan.</span>
+        </span></li>
+        <li><span class="insight-num">3</span><span>
+          <span class="en"><strong>The repeat base already proves demand — lock it in.</strong> Just 8 customers (28.6% of this sample) generate half of its invoice volume. That confirms the Key Accounts tab's recommendation: move these 8 onto annual spare-parts/maintenance contracts before spending effort chasing brand-new logos.</span>
+          <span class="zh"><strong>已有的回购客户已证明需求存在——应把握住。</strong>本样本中仅8个客户（占28.6%）就贡献了一半的发票量。这印证了"重点客户"标签的建议：应把这8个客户转为年度备件/维护合同，而不是把精力花在开发全新客户上。</span>
+          <span class="id"><strong>Basis pelanggan berulang sudah membuktikan adanya permintaan — kunci itu.</strong> Hanya 8 pelanggan (28,6% dari sampel ini) yang menghasilkan setengah volume faktur. Ini menegaskan rekomendasi di tab Akun Utama: pindahkan 8 pelanggan ini ke kontrak suku cadang/perawatan tahunan sebelum menghabiskan usaha mengejar pelanggan baru.</span>
+        </span></li>
+        <li><span class="insight-num">4</span><span>
+          <span class="en"><strong>Get the ERPNext connector reauthorized to see the real picture.</strong> This tab is a same-window snapshot from 40 invoices, not a true retention/cohort report. A real answer to "are we actually keeping customers quarter over quarter" needs the blocked customer-level query restored — treat that as a priority IT task, not just a dashboard limitation.</span>
+          <span class="zh"><strong>推动ERPNext连接器重新获得授权，才能看到真实情况。</strong>本标签只是基于40笔发票的同一时间窗口快照，并非真正的留存/群组分析。要真正回答&#8220;我们是否真的逐季度留住了客户&#8221;，需要恢复目前受阻的客户级查询——应将其视为优先的IT任务，而不仅仅是仪表板的局限。</span>
+          <span class="id"><strong>Dapatkan reotorisasi konektor ERPNext untuk melihat gambaran yang sebenarnya.</strong> Tab ini hanyalah cuplikan dalam satu jendela waktu dari 40 faktur, bukan laporan retensi/kohort yang sebenarnya. Jawaban nyata atas "apakah kita benar-benar mempertahankan pelanggan dari kuartal ke kuartal" membutuhkan query tingkat-pelanggan yang saat ini terhambat untuk dipulihkan — perlakukan ini sebagai tugas IT prioritas, bukan sekadar keterbatasan dasbor.</span>
+        </span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ============ TAB 5 : Segmentation ============ -->
+  <div class="page-panel" id="page-5">
+    <div class="page-head">
+      <span class="en">Customer Segmentation</span><span class="zh">客户细分</span><span class="id">Segmentasi Pelanggan</span>
+    </div>
+
+    <p>
+      <span class="en">All 71 customers with a submitted invoice, segmented by revenue contribution (ABC / Pareto analysis) and by how recently they last ordered. Built from the complete invoice history — the ERPNext customer-level query that blocked the Key Accounts and Retention tabs is now working again.</span>
+      <span class="zh">全部71个有已提交发票的客户，按收入贡献（ABC/帕累托分析）以及最近下单时间进行细分。基于完整发票历史构建——此前导致"重点客户"和"客户留存"标签数据受限的ERPNext客户级查询现已恢复正常。</span>
+      <span class="id">Seluruh 71 pelanggan dengan faktur yang sudah disubmit, disegmentasi berdasarkan kontribusi pendapatan (analisis ABC/Pareto) dan seberapa baru mereka terakhir memesan. Dibangun dari riwayat faktur lengkap — query tingkat-pelanggan ERPNext yang sebelumnya menghambat tab Akun Utama dan Retensi Pelanggan kini berfungsi kembali.</span>
+    </p>
+
+    <div class="chart-card">
+      <div class="caveat">
+        <span aria-hidden="true">⚠️</span>
+        <span>
+          <span class="en"><strong>Data quality notes:</strong> (1) Revenue below is Sales Invoice grand_total per customer (includes ~11% PPN/VAT), so it won't tie exactly to the net-of-tax totals on the Brand tab (Rp 6,171,563,874) or GP % tab (Rp 6,139,939,624) — the ~11% gap is the expected tax difference, not an error. (2) At least 3 customers are split across duplicate master records with slightly different name spelling/casing: "PT. Radiant Utama Interinsco Tbk" / "PT RADIANT UTAMA INTERINSCO TBK" (Rp 285.1M combined), "PT. Supernova Flexible Packaging" / "PT Supernova Flexible Packaging" (Rp 5.9M combined), and "PT EAGLE INDUSTRY INDONESIA - 1" / "PT Eagle Industry Indonesia" (Rp 8.3M combined) — shown as separate rows below since ERPNext treats them as separate Customer records. Merging these in ERPNext would sharpen every segment boundary on this page.</span>
+          <span class="zh"><strong>数据质量提示：</strong>（1）以下收入为每个客户的销售发票总额（grand_total，含约11%的增值税/PPN），因此与"品牌"标签（Rp 6,171,563,874）或"毛利率"标签（Rp 6,139,939,624）的未税总额不会完全一致——约11%的差异是预期的税额差异，并非错误。（2）至少3个客户因名称拼写/大小写略有不同而被拆分为重复的主数据记录："PT. Radiant Utama Interinsco Tbk" / "PT RADIANT UTAMA INTERINSCO TBK"（合计Rp 285.1M）、"PT. Supernova Flexible Packaging" / "PT Supernova Flexible Packaging"（合计Rp 5.9M），以及"PT EAGLE INDUSTRY INDONESIA - 1" / "PT Eagle Industry Indonesia"（合计Rp 8.3M）——由于ERPNext将它们视为不同的客户记录，下方仍按独立行显示。在ERPNext中合并这些记录，将使本页的每个细分界限更加精确。</span>
+          <span class="id"><strong>Catatan kualitas data:</strong> (1) Pendapatan di bawah ini adalah grand_total Sales Invoice per pelanggan (termasuk ~11% PPN), sehingga tidak akan sama persis dengan total bersih-pajak pada tab Brand (Rp 6.171.563.874) atau tab GP % (Rp 6.139.939.624) — selisih ~11% adalah perbedaan pajak yang wajar, bukan kesalahan. (2) Setidaknya 3 pelanggan terpecah menjadi data master duplikat dengan ejaan/huruf besar-kecil nama yang sedikit berbeda: "PT. Radiant Utama Interinsco Tbk" / "PT RADIANT UTAMA INTERINSCO TBK" (gabungan Rp 285,1 Jt), "PT. Supernova Flexible Packaging" / "PT Supernova Flexible Packaging" (gabungan Rp 5,9 Jt), dan "PT EAGLE INDUSTRY INDONESIA - 1" / "PT Eagle Industry Indonesia" (gabungan Rp 8,3 Jt) — ditampilkan sebagai baris terpisah di bawah karena ERPNext memperlakukannya sebagai catatan Customer yang berbeda. Menggabungkan data ini di ERPNext akan mempertajam setiap batas segmen di halaman ini.</span>
+        </span>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-mini">
+          <div class="sv">Rp 6,807,852,983</div>
+          <div class="sl"><span class="en">Total Revenue (C)</span><span class="zh">总收入 (C)</span><span class="id">Total Pendapatan (C)</span></div>
+          <div class="sb"><span class="en">71 customers · 164 invoices</span><span class="zh">71个客户 · 164笔发票</span><span class="id">71 pelanggan · 164 faktur</span></div>
+        </div>
+        <div class="stat-mini">
+          <div class="sv">Rp 5,503,392,440</div>
+          <div class="sl"><span class="en">Segment A — Key (16 cust.)</span><span class="zh">A组——重点客户（16个）</span><span class="id">Segmen A — Utama (16 pel.)</span></div>
+          <div class="sb"><span class="en">80.8% of Revenue (C)</span><span class="zh">占总收入(C)的80.8%</span><span class="id">80,8% dari Pendapatan (C)</span></div>
+        </div>
+        <div class="stat-mini">
+          <div class="sv">Rp 971,333,694</div>
+          <div class="sl"><span class="en">Segment B — Core (17 cust.)</span><span class="zh">B组——核心客户（17个）</span><span class="id">Segmen B — Inti (17 pel.)</span></div>
+          <div class="sb"><span class="en">14.3% of Revenue (C)</span><span class="zh">占总收入(C)的14.3%</span><span class="id">14,3% dari Pendapatan (C)</span></div>
+        </div>
+        <div class="stat-mini">
+          <div class="sv">Rp 333,126,849</div>
+          <div class="sl"><span class="en">Segment C — Long Tail (38 cust.)</span><span class="zh">C组——长尾客户（38个）</span><span class="id">Segmen C — Ekor Panjang (38 pel.)</span></div>
+          <div class="sb"><span class="en">4.9% of Revenue (C)</span><span class="zh">占总收入(C)的4.9%</span><span class="id">4,9% dari Pendapatan (C)</span></div>
+        </div>
+      </div>
+
+      <div class="page-head" style="margin-top:4px"><span class="en">Chart 5: Revenue by Segment</span><span class="zh">图表5：按客户分组划分的收入</span><span class="id">Grafik 5: Pendapatan berdasarkan Segmen</span></div>
+      <div class="legend">
+        <span class="legend-item"><span class="swatch" style="background:var(--series-1)"></span><span class="en">Segment A</span><span class="zh">A组</span><span class="id">Segmen A</span></span>
+        <span class="legend-item"><span class="swatch" style="background:#64748b"></span><span class="en">Segment B</span><span class="zh">B组</span><span class="id">Segmen B</span></span>
+        <span class="legend-item"><span class="swatch" style="background:var(--red)"></span><span class="en">Segment C</span><span class="zh">C组</span><span class="id">Segmen C</span></span>
+      </div>
+      <div class="chart">
+        <div class="bar-row">
+          <div class="bar-label-row"><span class="bar-name"><span class="en">Segment A</span><span class="zh">A组</span><span class="id">Segmen A</span></span><span class="bar-value">Rp 5,503,392,440 · 16 <span class="en">cust.</span><span class="zh">客户</span><span class="id">pel.</span> · 39 <span class="en">inv.</span><span class="zh">笔</span><span class="id">faktur</span> · 80.8%</span></div>
+          <div class="track"><div class="fill s1" style="width:100%">Rp 5.50B</div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label-row"><span class="bar-name"><span class="en">Segment B</span><span class="zh">B组</span><span class="id">Segmen B</span></span><span class="bar-value">Rp 971,333,694 · 17 <span class="en">cust.</span><span class="zh">客户</span><span class="id">pel.</span> · 53 <span class="en">inv.</span><span class="zh">笔</span><span class="id">faktur</span> · 14.3%</span></div>
+          <div class="track"><div class="fill s3" style="width:17.6%">Rp 971.3M</div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label-row"><span class="bar-name"><span class="en">Segment C</span><span class="zh">C组</span><span class="id">Segmen C</span></span><span class="bar-value">Rp 333,126,849 · 38 <span class="en">cust.</span><span class="zh">客户</span><span class="id">pel.</span> · 72 <span class="en">inv.</span><span class="zh">笔</span><span class="id">faktur</span> · 4.9%</span></div>
+          <div class="track"><div class="fill s4" style="width:6.1%">Rp 333.1M</div></div>
+        </div>
+      </div>
+      <div class="baseline-axis"><span class="en">0 — scaled to Rp 5,503,392,440 (Segment A)</span><span class="zh">0 — 以Rp 5,503,392,440（A组）为基准</span><span class="id">0 — diskalakan ke Rp 5.503.392.440 (Segmen A)</span></div>
+
+      <div class="page-head" style="margin-top:16px"><span class="en">Table 1314: Segment A — Key Accounts (Full Population, 16 customers, 80.8% of Revenue)</span><span class="zh">表1314：A组——重点客户（完整数据，16个客户，占总收入80.8%）</span><span class="id">Tabel 1314: Segmen A — Akun Utama (Populasi Lengkap, 16 pelanggan, 80,8% dari Pendapatan)</span></div>
+      <button class="toggle-btn" id="toggleSegATable" onclick="toggleSegATable()"><span class="en">Show as table</span><span class="zh">以表格显示</span><span class="id">Tampilkan sebagai tabel</span></button>
+      <table id="segADataTable">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th><span class="en">Customer</span><span class="zh">客户</span><span class="id">Pelanggan</span></th>
+            <th><span class="en">Revenue (A)</span><span class="zh">收入 (A)</span><span class="id">Pendapatan (A)</span></th>
+            <th><span class="en">Invoices</span><span class="zh">发票数</span><span class="id">Faktur</span></th>
+            <th><span class="en">Cumulative Revenue (B)</span><span class="zh">累计收入 (B)</span><span class="id">Pendapatan Kumulatif (B)</span></th>
+            <th><span class="en">Cumulative Share (B/C)</span><span class="zh">累计占比 (B/C)</span><span class="id">Pangsa Kumulatif (B/C)</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td class="name">PT. PLN Indonesia Power (UBP Bali)</td><td class="num">Rp 1,060,062,816</td><td class="num">2</td><td class="num">Rp 1,060,062,816</td><td class="num">15.6%</td></tr>
+          <tr><td>2</td><td class="name">PT. PLN Nusantara Power (PLTU Indramayu)</td><td class="num">Rp 680,616,480</td><td class="num">3</td><td class="num">Rp 1,740,679,296</td><td class="num">25.6%</td></tr>
+          <tr><td>3</td><td class="name">PT PLN Indonesia Power (UBP Priok)</td><td class="num">Rp 587,761,650</td><td class="num">2</td><td class="num">Rp 2,328,440,946</td><td class="num">34.2%</td></tr>
+          <tr><td>4</td><td class="name">PT. Tanggamus Electric Power</td><td class="num">Rp 474,636,000</td><td class="num">2</td><td class="num">Rp 2,803,076,946</td><td class="num">41.2%</td></tr>
+          <tr><td>5</td><td class="name">PT Harlyn Energi Indonesia</td><td class="num">Rp 471,783,300</td><td class="num">1</td><td class="num">Rp 3,274,860,246</td><td class="num">48.1%</td></tr>
+          <tr><td>6</td><td class="name">PT Dua Satu Energi Nusantara</td><td class="num">Rp 323,942,400</td><td class="num">1</td><td class="num">Rp 3,598,802,646</td><td class="num">52.9%</td></tr>
+          <tr><td>7</td><td class="name">PT. Pelangi Lintas Sejahtera</td><td class="num">Rp 275,651,850</td><td class="num">4</td><td class="num">Rp 3,874,454,496</td><td class="num">56.9%</td></tr>
+          <tr><td>8</td><td class="name">PT Unilever Indonesia</td><td class="num">Rp 260,393,124</td><td class="num">9</td><td class="num">Rp 4,134,847,620</td><td class="num">60.7%</td></tr>
+          <tr><td>9</td><td class="name">PLTGU Muara Tawar</td><td class="num">Rp 238,650,000</td><td class="num">1</td><td class="num">Rp 4,373,497,620</td><td class="num">64.2%</td></tr>
+          <tr><td>10</td><td class="name">PT. Oil Terminal Karimun</td><td class="num">Rp 203,609,520</td><td class="num">1</td><td class="num">Rp 4,577,107,140</td><td class="num">67.2%</td></tr>
+          <tr><td>11</td><td class="name">PT Tribuana Globalindo Energi</td><td class="num">Rp 185,370,000</td><td class="num">2</td><td class="num">Rp 4,762,477,140</td><td class="num">70.0%</td></tr>
+          <tr><td>12</td><td class="name">BP Berau Ltd</td><td class="num">Rp 159,840,000</td><td class="num">1</td><td class="num">Rp 4,922,317,140</td><td class="num">72.3%</td></tr>
+          <tr><td>13</td><td class="name">PT. Pelayaran Samasagung Tunggal Perkasa</td><td class="num">Rp 157,910,000</td><td class="num">2</td><td class="num">Rp 5,080,227,140</td><td class="num">74.6%</td></tr>
+          <tr><td>14</td><td class="name">PT. Radiant Utama Interinsco Tbk <span style="color:var(--muted);font-weight:400;font-size:0.68rem;">(<span class="en">dup? see note</span><span class="zh">疑似重复，见提示</span><span class="id">dup? lihat catatan</span>)</span></td><td class="num">Rp 142,568,400</td><td class="num">1</td><td class="num">Rp 5,222,795,540</td><td class="num">76.7%</td></tr>
+          <tr><td>15</td><td class="name">PT RADIANT UTAMA INTERINSCO TBK <span style="color:var(--muted);font-weight:400;font-size:0.68rem;">(<span class="en">dup? see note</span><span class="zh">疑似重复，见提示</span><span class="id">dup? lihat catatan</span>)</span></td><td class="num">Rp 142,568,400</td><td class="num">1</td><td class="num">Rp 5,365,363,940</td><td class="num">78.8%</td></tr>
+          <tr><td>16</td><td class="name">PT Valmet Technology Center</td><td class="num">Rp 138,028,500</td><td class="num">6</td><td class="num">Rp 5,503,392,440</td><td class="num">80.8%</td></tr>
+        </tbody>
+      </table>
+      <p class="foot-note">
+        <span class="en">Source: Sales Invoice grouped by customer (SUM(base_grand_total), COUNT(name)), submitted invoices only (docstatus = 1), all customers with at least one invoice (71 of 2,057 Customer records). Segment A = customers needed to reach ~80% of cumulative revenue (Pareto rule).</span>
+        <span class="zh">数据来源：销售发票按客户汇总（SUM(base_grand_total)，COUNT(name)），仅统计已提交发票（docstatus = 1），涵盖所有至少有1笔发票的客户（2,057个客户记录中的71个）。A组 = 达到约80%累计收入所需的客户（帕累托法则）。</span>
+        <span class="id">Sumber: Sales Invoice dikelompokkan berdasarkan pelanggan (SUM(base_grand_total), COUNT(name)), hanya faktur yang sudah disubmit (docstatus = 1), mencakup semua pelanggan dengan setidaknya 1 faktur (71 dari 2.057 data Customer). Segmen A = pelanggan yang dibutuhkan untuk mencapai ~80% pendapatan kumulatif (aturan Pareto).</span>
+      </p>
+    </div>
+
+    <div class="chart-card">
+      <div class="stat-row">
+        <div class="stat-mini">
+          <div class="sv">34</div>
+          <div class="sl"><span class="en">Active (≤90 days)</span><span class="zh">活跃（≤90天）</span><span class="id">Aktif (≤90 hari)</span></div>
+          <div class="sb">Rp 4,543,115,654 · 66.7%</div>
+        </div>
+        <div class="stat-mini">
+          <div class="sv">15</div>
+          <div class="sl"><span class="en">Cooling (91–180 days)</span><span class="zh">转冷（91–180天）</span><span class="id">Mendingin (91–180 hari)</span></div>
+          <div class="sb">Rp 1,475,026,830 · 21.7%</div>
+        </div>
+        <div class="stat-mini">
+          <div class="sv">22</div>
+          <div class="sl"><span class="en">Dormant (&gt;180 days)</span><span class="zh">沉寂（&gt;180天）</span><span class="id">Tidak Aktif (&gt;180 hari)</span></div>
+          <div class="sb">Rp 789,710,499 · 11.6%</div>
+        </div>
+        <div class="stat-mini">
+          <div class="sv">Rp 733,810,344</div>
+          <div class="sl"><span class="en">Win-Back Opportunity</span><span class="zh">唤回机会</span><span class="id">Peluang Win-Back</span></div>
+          <div class="sb"><span class="en">8 dormant customers, each previously ≥ Rp 20M</span><span class="zh">8个沉寂客户，此前均消费≥Rp 20M</span><span class="id">8 pelanggan tidak aktif, masing-masing sebelumnya ≥ Rp 20 Jt</span></div>
+        </div>
+      </div>
+
+      <div class="page-head" style="margin-top:4px"><span class="en">Chart 6: Customers by Recency</span><span class="zh">图表6：按最近下单时间划分的客户</span><span class="id">Grafik 6: Pelanggan berdasarkan Keterkinian</span></div>
+      <div class="legend">
+        <span class="legend-item"><span class="swatch" style="background:var(--series-1)"></span><span class="en">Active (≤90d)</span><span class="zh">活跃（≤90天）</span><span class="id">Aktif (≤90 hari)</span></span>
+        <span class="legend-item"><span class="swatch" style="background:#64748b"></span><span class="en">Cooling (91–180d)</span><span class="zh">转冷（91–180天）</span><span class="id">Mendingin (91–180 hari)</span></span>
+        <span class="legend-item"><span class="swatch" style="background:var(--red)"></span><span class="en">Dormant (&gt;180d)</span><span class="zh">沉寂（&gt;180天）</span><span class="id">Tidak Aktif (&gt;180 hari)</span></span>
+      </div>
+      <div class="chart">
+        <div class="bar-row">
+          <div class="bar-label-row"><span class="bar-name"><span class="en">Active</span><span class="zh">活跃</span><span class="id">Aktif</span></span><span class="bar-value">34 <span class="en">cust.</span><span class="zh">客户</span><span class="id">pel.</span> · Rp 4,543,115,654 · 66.7%</span></div>
+          <div class="track"><div class="fill s1" style="width:100%">34</div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label-row"><span class="bar-name"><span class="en">Cooling</span><span class="zh">转冷</span><span class="id">Mendingin</span></span><span class="bar-value">15 <span class="en">cust.</span><span class="zh">客户</span><span class="id">pel.</span> · Rp 1,475,026,830 · 21.7%</span></div>
+          <div class="track"><div class="fill s3" style="width:44.1%">15</div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label-row"><span class="bar-name"><span class="en">Dormant</span><span class="zh">沉寂</span><span class="id">Tidak Aktif</span></span><span class="bar-value">22 <span class="en">cust.</span><span class="zh">客户</span><span class="id">pel.</span> · Rp 789,710,499 · 11.6%</span></div>
+          <div class="track"><div class="fill s4" style="width:64.7%">22</div></div>
+        </div>
+      </div>
+      <div class="baseline-axis"><span class="en">0 — scaled to 34 customers (Active)</span><span class="zh">0 — 以34个客户（活跃组）为基准</span><span class="id">0 — diskalakan ke 34 pelanggan (Aktif)</span></div>
+
+      <div class="page-head" style="margin-top:16px"><span class="en">Table 1315: Revenue by Recency Segment</span><span class="zh">表1315：按最近下单时间分组的收入</span><span class="id">Tabel 1315: Pendapatan berdasarkan Segmen Keterkinian</span></div>
+      <table class="show">
+        <thead>
+          <tr>
+            <th><span class="en">Segment</span><span class="zh">分组</span><span class="id">Segmen</span></th>
+            <th><span class="en">Customers</span><span class="zh">客户数</span><span class="id">Pelanggan</span></th>
+            <th><span class="en">Revenue</span><span class="zh">收入</span><span class="id">Pendapatan</span></th>
+            <th><span class="en">Share of Revenue (C)</span><span class="zh">占总收入(C)的占比</span><span class="id">Pangsa Pendapatan (C)</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="name"><span class="en">Active (≤90 days)</span><span class="zh">活跃（≤90天）</span><span class="id">Aktif (≤90 hari)</span></td><td class="num">34</td><td class="num">Rp 4,543,115,654</td><td class="num">66.7%</td></tr>
+          <tr><td class="name"><span class="en">Cooling (91–180 days)</span><span class="zh">转冷（91–180天）</span><span class="id">Mendingin (91–180 hari)</span></td><td class="num">15</td><td class="num">Rp 1,475,026,830</td><td class="num">21.7%</td></tr>
+          <tr><td class="name"><span class="en">Dormant (&gt;180 days)</span><span class="zh">沉寂（&gt;180天）</span><span class="id">Tidak Aktif (&gt;180 hari)</span></td><td class="num">22</td><td class="num">Rp 789,710,499</td><td class="num">11.6%</td></tr>
+          <tr><td class="name"><span class="en">Total</span><span class="zh">合计</span><span class="id">Total</span></td><td class="num">71</td><td class="num">Rp 6,807,852,983</td><td class="num">100.0%</td></tr>
+        </tbody>
+      </table>
+      <p class="foot-note">
+        <span class="en">Reference date: 29 Jul 2026 (today). Days since last order computed from each customer's most recent submitted invoice.</span>
+        <span class="zh">基准日期：2026年7月29日（今天）。距最近下单天数根据每个客户最近一笔已提交发票计算。</span>
+        <span class="id">Tanggal referensi: 29 Jul 2026 (hari ini). Hari sejak pesanan terakhir dihitung dari faktur yang sudah disubmit paling baru dari setiap pelanggan.</span>
+      </p>
+
+      <div class="page-head" style="margin-top:16px"><span class="en">Table 1316: Win-Back Candidates (Dormant, Previously ≥ Rp 20M)</span><span class="zh">表1316：唤回名单（沉寂客户，此前消费≥Rp 20M）</span><span class="id">Tabel 1316: Kandidat Win-Back (Tidak Aktif, Sebelumnya ≥ Rp 20 Jt)</span></div>
+      <table class="show">
+        <thead>
+          <tr>
+            <th><span class="en">Customer</span><span class="zh">客户</span><span class="id">Pelanggan</span></th>
+            <th><span class="en">Past Revenue</span><span class="zh">历史收入</span><span class="id">Pendapatan Sebelumnya</span></th>
+            <th><span class="en">Invoices</span><span class="zh">发票数</span><span class="id">Faktur</span></th>
+            <th><span class="en">Days Since Last Order</span><span class="zh">距最近下单天数</span><span class="id">Hari Sejak Pesanan Terakhir</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="name">PT Tribuana Globalindo Energi</td><td class="num">Rp 185,370,000</td><td class="num">2</td><td class="num">336</td></tr>
+          <tr><td class="name">BP Berau Ltd</td><td class="num">Rp 159,840,000</td><td class="num">1</td><td class="num">205</td></tr>
+          <tr><td class="name">PT. Radiant Utama Interinsco Tbk</td><td class="num">Rp 142,568,400</td><td class="num">1</td><td class="num">295</td></tr>
+          <tr><td class="name">PT. Semangat Maritim Indonesia</td><td class="num">Rp 77,700,000</td><td class="num">1</td><td class="num">223</td></tr>
+          <tr><td class="name">PT Karya Energi Indonesia</td><td class="num">Rp 54,001,944</td><td class="num">2</td><td class="num">273</td></tr>
+          <tr><td class="name">PT. Logindo Samudramakmur Tbk</td><td class="num">Rp 49,950,000</td><td class="num">1</td><td class="num">253</td></tr>
+          <tr><td class="name">CV Devina Teknik</td><td class="num">Rp 42,180,000</td><td class="num">1</td><td class="num">307</td></tr>
+          <tr><td class="name">PT. Multi Rotatek Indonesia</td><td class="num">Rp 22,200,000</td><td class="num">1</td><td class="num">251</td></tr>
+          <tr><td class="name"><span class="en">Total (8 customers)</span><span class="zh">合计（8个客户）</span><span class="id">Total (8 pelanggan)</span></td><td class="num">Rp 733,810,344</td><td class="num">10</td><td class="num">—</td></tr>
+        </tbody>
+      </table>
+      <p class="foot-note">
+        <span class="en">8 of the 22 Dormant customers previously placed at least Rp 20,000,000 in orders — the rest of the Dormant segment is smaller one-off buyers, lower priority for win-back outreach.</span>
+        <span class="zh">22个沉寂客户中有8个此前至少下单过Rp 20,000,000——沉寂组中其余客户属于金额较小的一次性买家，唤回优先级较低。</span>
+        <span class="id">8 dari 22 pelanggan Tidak Aktif sebelumnya memesan setidaknya Rp 20.000.000 — sisa segmen Tidak Aktif adalah pembeli sekali-beli bernilai lebih kecil, prioritas lebih rendah untuk win-back.</span>
+      </p>
+    </div>
+
+    <div class="insight-card">
+      <h3><span class="en">How to Act on These Segments</span><span class="zh">如何针对这些细分采取行动</span><span class="id">Cara Menindaklanjuti Segmen-Segmen Ini</span></h3>
+      <ul class="insight-list">
+        <li><span class="insight-num">1</span><span>
+          <span class="en"><strong>Protect Segment A with dedicated account management.</strong> The full population confirms it: 16 customers make up 80.8% of revenue — not just the 6-customer sample the Key Accounts tab flagged earlier. These 16 are the actual boundary of "can't afford to lose."</span>
+          <span class="zh"><strong>为A组提供专属客户管理。</strong>全量数据确认了这一点：16个客户贡献了80.8%的收入——而不仅仅是"重点客户"标签此前基于的6个客户样本。这16个客户才是真正"输不起"的边界。</span>
+          <span class="id"><strong>Lindungi Segmen A dengan manajemen akun khusus.</strong> Populasi lengkap mengonfirmasi hal ini: 16 pelanggan menyumbang 80,8% pendapatan — bukan hanya sampel 6 pelanggan yang ditandai tab Akun Utama sebelumnya. 16 pelanggan ini adalah batas sebenarnya dari "tidak boleh sampai hilang".</span>
+        </span></li>
+        <li><span class="insight-num">2</span><span>
+          <span class="en"><strong>Convert Segment B's frequent small-ticket buyers into standing contracts.</strong> Unilever Indonesia (9 invoices, Rp 260.4M), Nissin Foods (8 invoices, Rp 53.2M) and Kobe Boga Utama (9 invoices, Rp 25.3M) order more often than most of Segment A relative to their revenue — meaning small ticket sizes. Growing the ticket size on relationships that already reorder is easier than finding new logos.</span>
+          <span class="zh"><strong>把B组中频繁小额下单的客户转为常态合同。</strong>Unilever Indonesia（9笔发票，Rp 260.4M）、Nissin Foods（8笔发票，Rp 53.2M）和Kobe Boga Utama（9笔发票，Rp 25.3M）相对其收入而言，下单频率高于A组中大部分客户——说明单均金额偏小。在已经会重复下单的客户身上提高客单价，比开发全新客户更容易。</span>
+          <span class="id"><strong>Ubah pembeli Segmen B yang sering memesan dalam jumlah kecil menjadi kontrak tetap.</strong> Unilever Indonesia (9 faktur, Rp 260,4 Jt), Nissin Foods (8 faktur, Rp 53,2 Jt) dan Kobe Boga Utama (9 faktur, Rp 25,3 Jt) memesan lebih sering dibanding sebagian besar Segmen A relatif terhadap pendapatannya — artinya nilai per transaksi kecil. Menaikkan nilai transaksi pada hubungan yang sudah memesan ulang lebih mudah daripada mencari pelanggan baru.</span>
+        </span></li>
+        <li><span class="insight-num">3</span><span>
+          <span class="en"><strong>Call the Rp 733.8M win-back list first.</strong> 8 named dormant customers (Table 1316) used to spend meaningfully and haven't ordered in 180+ days — start with PT Tribuana Globalindo Energi (Rp 185.4M, 336 days), BP Berau Ltd (Rp 159.8M, 205 days), and PT. Radiant Utama Interinsco Tbk (Rp 142.6M, 295 days). This is proven demand going cold, not a cold-call list.</span>
+          <span class="zh"><strong>优先致电Rp 733.8M的唤回名单。</strong>表1316中列出的8个曾经消费可观的沉寂客户已超过180天未下单——从PT Tribuana Globalindo Energi（Rp 185.4M，336天）、BP Berau Ltd（Rp 159.8M，205天）和PT. Radiant Utama Interinsco Tbk（Rp 142.6M，295天）开始联系。这是已被验证过的需求正在冷却，而非陌生开发名单。</span>
+          <span class="id"><strong>Hubungi dulu daftar win-back senilai Rp 733,8 Jt.</strong> 8 pelanggan tidak aktif yang disebutkan (Tabel 1316) dulunya berbelanja dalam jumlah berarti dan belum memesan selama 180+ hari — mulai dari PT Tribuana Globalindo Energi (Rp 185,4 Jt, 336 hari), BP Berau Ltd (Rp 159,8 Jt, 205 hari), dan PT. Radiant Utama Interinsco Tbk (Rp 142,6 Jt, 295 hari). Ini adalah permintaan yang sudah terbukti dan sedang mendingin, bukan daftar cold-call.</span>
+        </span></li>
+        <li><span class="insight-num">4</span><span>
+          <span class="en"><strong>Merge the duplicate Customer records in ERPNext.</strong> Radiant Utama Interinsco, Supernova Flexible Packaging, and Eagle Industry Indonesia each sit split across two Customer records (see caveat above). A 10-minute merge in ERPNext sharpens every segment boundary on this page — worth doing now that the customer-level query is confirmed working again.</span>
+          <span class="zh"><strong>在ERPNext中合并重复的客户记录。</strong>Radiant Utama Interinsco、Supernova Flexible Packaging和Eagle Industry Indonesia各自都被拆分在两条客户记录中（见上方提示）。在ERPNext中花10分钟合并，就能让本页的每一个细分界限更加精确——如今客户级查询已确认恢复正常，正是合并的好时机。</span>
+          <span class="id"><strong>Gabungkan data Customer duplikat di ERPNext.</strong> Radiant Utama Interinsco, Supernova Flexible Packaging, dan Eagle Industry Indonesia masing-masing terpecah menjadi dua catatan Customer (lihat catatan di atas). Penggabungan 10 menit di ERPNext mempertajam setiap batas segmen di halaman ini — layak dilakukan sekarang setelah query tingkat-pelanggan dikonfirmasi berfungsi kembali.</span>
+        </span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ============ TAB 6 : Expenses ============ -->
+  <div class="page-panel" id="page-6">
+    <div class="page-head">
+      <span class="en">Expense Report</span><span class="zh">支出报告</span><span class="id">Laporan Pengeluaran</span>
+    </div>
+
+    <p>
+      <span class="en">Operating expenses posted to the general ledger across both Filtec companies — payroll, rent, sales costs, admin, taxes and bank charges — covering 31 Jul 2025 to 27 Jul 2026 (878 GL entries).</span>
+      <span class="zh">两家Filtec公司在总账中记录的运营支出——工资、租金、销售成本、行政管理、税费及银行手续费——涵盖2025年7月31日至2026年7月27日（共878笔总账分录）。</span>
+      <span class="id">Beban operasional yang diposting ke buku besar di kedua perusahaan Filtec — gaji, sewa, biaya penjualan, administrasi, pajak dan biaya bank — mencakup 31 Jul 2025 hingga 27 Jul 2026 (878 entri buku besar).</span>
+    </p>
+
+    <div class="chart-card">
+      <div class="caveat">
+        <span aria-hidden="true">⚠️</span>
+        <span>
+          <span class="en"><strong>Data quality notes:</strong> (1) Excludes the "Penyesuaian Stock" (Stock Adjustment) account — a net -Rp 3,154,174,440 credit across both companies (Indotama Teknindo -Rp 2,070,616,440 / Indo Teknologi -Rp 1,083,558,000) from 32 large stock-revaluation entries. That's a COGS/inventory-valuation adjustment, not a day-to-day operating cost, and including it would make "Total Expenses" negative and meaningless — see the GP % tab for the cost-of-goods-sold picture instead. (2) Jul 2025 (1 voucher, -Rp 13.9M) and Jul 2026 (20 vouchers through the 27th) are partial months, not full-month totals — don't read them as unusually low expense months. (3) "Beban Pajak PPN" (VAT, Rp 351.4M) and "Beban Pajak Penghasilan" (income tax, Rp 100.6M) are posted as P&amp;L expense accounts rather than through a Duties &amp; Taxes payable/receivable account — worth confirming with the accountant whether creditable input VAT is being expensed by mistake.</span>
+          <span class="zh"><strong>数据质量提示：</strong>（1）已排除"Penyesuaian Stock"（库存调整）科目——两家公司合计净贷方Rp 3,154,174,440（Indotama Teknindo -Rp 2,070,616,440 / Indo Teknologi -Rp 1,083,558,000），来自32笔大额库存重估分录。这是销货成本/库存计价调整，并非日常运营成本，若计入将使"总支出"变为负数、失去意义——销货成本情况请参见"毛利率"标签。（2）2025年7月（1笔分录，-Rp 13.9M）和2026年7月（截至27日，20笔分录）均为不完整月份，并非全月数据——不要将其误读为异常偏低的支出月份。（3）"Beban Pajak PPN"（增值税，Rp 351.4M）和"Beban Pajak Penghasilan"（所得税，Rp 100.6M）被记入损益表的费用科目，而非通过应交税费科目核算——建议与会计确认是否有可抵扣的进项增值税被误记为费用。</span>
+          <span class="id"><strong>Catatan kualitas data:</strong> (1) Tidak termasuk akun "Penyesuaian Stock" — kredit bersih Rp 3.154.174.440 di kedua perusahaan (Indotama Teknindo -Rp 2.070.616.440 / Indo Teknologi -Rp 1.083.558.000) dari 32 entri revaluasi stok besar. Itu adalah penyesuaian HPP/valuasi stok, bukan biaya operasional harian, dan jika disertakan akan membuat "Total Pengeluaran" menjadi negatif dan tidak bermakna — lihat tab GP % untuk gambaran harga pokok penjualan. (2) Jul 2025 (1 voucher, -Rp 13,9 Jt) dan Jul 2026 (20 voucher hingga tanggal 27) adalah bulan parsial, bukan total satu bulan penuh — jangan dibaca sebagai bulan dengan pengeluaran rendah yang tidak biasa. (3) "Beban Pajak PPN" (Rp 351,4 Jt) dan "Beban Pajak Penghasilan" (Rp 100,6 Jt) diposting sebagai akun beban laba rugi, bukan melalui akun Utang/Piutang Pajak — perlu dikonfirmasi ke akuntan apakah PPN masukan yang dapat dikreditkan justru salah dibebankan.</span>
+        </span>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-mini">
+          <div class="sv">Rp 2,037,804,618</div>
+          <div class="sl"><span class="en">Total Expenses (B)</span><span class="zh">总支出 (B)</span><span class="id">Total Pengeluaran (B)</span></div>
+          <div class="sb"><span class="en">878 entries · 31 Jul 2025 – 27 Jul 2026</span><span class="zh">878笔分录 · 2025年7月31日至2026年7月27日</span><span class="id">878 entri · 31 Jul 2025 – 27 Jul 2026</span></div>
+        </div>
+        <div class="stat-mini">
+          <div class="sv">Rp 1,534,008,477</div>
+          <div class="sl"><span class="en">Core Operating</span><span class="zh">核心运营支出</span><span class="id">Operasional Inti</span></div>
+          <div class="sb"><span class="en">75.3% of Total Expenses (B)</span><span class="zh">占总支出(B)的75.3%</span><span class="id">75,3% dari Total Pengeluaran (B)</span></div>
+        </div>
+        <div class="stat-mini">
+          <div class="sv">Rp 503,796,140</div>
+          <div class="sl"><span class="en">Taxes, Bank &amp; FX</span><span class="zh">税费、银行及汇兑</span><span class="id">Pajak, Bank &amp; Kurs</span></div>
+          <div class="sb"><span class="en">24.7% of Total Expenses (B)</span><span class="zh">占总支出(B)的24.7%</span><span class="id">24,7% dari Total Pengeluaran (B)</span></div>
+        </div>
+        <div class="stat-mini">
+          <div class="sv">-Rp 3,154,174,440</div>
+          <div class="sl"><span class="en">Stock Adjustment (excluded)</span><span class="zh">库存调整（已排除）</span><span class="id">Penyesuaian Stock (dikecualikan)</span></div>
+          <div class="sb"><span class="en">32 entries, not included above — see caveat</span><span class="zh">32笔分录，未计入上方数字——见提示</span><span class="id">32 entri, tidak termasuk di atas — lihat catatan</span></div>
+        </div>
+      </div>
+
+      <div class="page-head" style="margin-top:4px"><span class="en">Chart 7: Expenses by Month</span><span class="zh">图表7：按月支出</span><span class="id">Grafik 7: Pengeluaran per Bulan</span></div>
+      <div class="heat-strip">
+        <div class="heat-cell" style="background:rgba(139,143,168,0.18)"><div class="hm">Jul '25</div><div class="hp">-Rp 13.9M</div><div class="hi">1 <span class="en">v.</span><span class="zh">笔</span><span class="id">v.</span> · <span class="en">partial</span><span class="zh">不完整</span><span class="id">parsial</span></div></div>
+        <div class="heat-cell" style="background:rgba(248,81,73,0.2)"><div class="hm">Aug '25</div><div class="hp">Rp 142.6M</div><div class="hi">34 <span class="en">v.</span><span class="zh">笔</span><span class="id">v.</span></div></div>
+        <div class="heat-cell" style="background:rgba(248,81,73,0.32)"><div class="hm">Sep '25</div><div class="hp">Rp 165.7M</div><div class="hi">69 <span class="en">v.</span><span class="zh">笔</span><span class="id">v.</span></div></div>
+        <div class="heat-cell" style="background:rgba(248,81,73,0.55)"><div class="hm">Oct '25</div><div class="hp">Rp 411.3M</div><div class="hi">81 <span class="en">v.</span><span class="zh">笔</span><span class="id">v.</span></div></div>
+        <div class="heat-cell" style="background:rgba(248,81,73,0.32)"><div class="hm">Nov '25</div><div class="hp">Rp 181.5M</div><div class="hi">86 <span class="en">v.</span><span class="zh">笔</span><span class="id">v.</span></div></div>
+        <div class="heat-cell" style="background:rgba(248,81,73,0.4)"><div class="hm">Dec '25</div><div class="hp">Rp 222.2M</div><div class="hi">80 <span class="en">v.</span><span class="zh">笔</span><span class="id">v.</span></div></div>
+        <div class="heat-cell" style="background:rgba(248,81,73,0.2)"><div class="hm">Jan '26</div><div class="hp">Rp 110.4M</div><div class="hi">61 <span class="en">v.</span><span class="zh">笔</span><span class="id">v.</span></div></div>
+        <div class="heat-cell" style="background:rgba(248,81,73,0.2)"><div class="hm">Feb '26</div><div class="hp">Rp 115.1M</div><div class="hi">61 <span class="en">v.</span><span class="zh">笔</span><span class="id">v.</span></div></div>
+        <div class="heat-cell" style="background:rgba(248,81,73,0.4)"><div class="hm">Mar '26</div><div class="hp">Rp 224.1M</div><div class="hi">63 <span class="en">v.</span><span class="zh">笔</span><span class="id">v.</span></div></div>
+        <div class="heat-cell" style="background:rgba(248,81,73,0.2)"><div class="hm">Apr '26</div><div class="hp">Rp 109.3M</div><div class="hi">57 <span class="en">v.</span><span class="zh">笔</span><span class="id">v.</span></div></div>
+        <div class="heat-cell" style="background:rgba(248,81,73,0.2)"><div class="hm">May '26</div><div class="hp">Rp 115.6M</div><div class="hi">60 <span class="en">v.</span><span class="zh">笔</span><span class="id">v.</span></div></div>
+        <div class="heat-cell" style="background:rgba(248,81,73,0.32)"><div class="hm">Jun '26</div><div class="hp">Rp 182.0M</div><div class="hi">62 <span class="en">v.</span><span class="zh">笔</span><span class="id">v.</span></div></div>
+        <div class="heat-cell" style="background:rgba(139,143,168,0.18)"><div class="hm">Jul '26</div><div class="hp">Rp 72.0M</div><div class="hi">20 <span class="en">v.</span><span class="zh">笔</span><span class="id">v.</span> · <span class="en">partial</span><span class="zh">不完整</span><span class="id">parsial</span></div></div>
+      </div>
+      <div class="heat-legend">
+        <span><i style="background:rgba(248,81,73,0.6)"></i><span class="en">Higher spend</span><span class="zh">支出较高</span><span class="id">Pengeluaran lebih tinggi</span></span>
+        <span><i style="background:rgba(248,81,73,0.2)"></i><span class="en">Lower spend</span><span class="zh">支出较低</span><span class="id">Pengeluaran lebih rendah</span></span>
+        <span><i style="background:rgba(139,143,168,0.5)"></i><span class="en">Partial month</span><span class="zh">不完整月份</span><span class="id">Bulan parsial</span></span>
+      </div>
+
+      <div class="page-head" style="margin-top:16px"><span class="en">Table 1317: Expenses by Month (Detail)</span><span class="zh">表1317：按月支出（明细）</span><span class="id">Tabel 1317: Pengeluaran per Bulan (Detail)</span></div>
+      <button class="toggle-btn" id="toggleExpMonthTable" onclick="toggleExpMonthTable()"><span class="en">Show as table</span><span class="zh">以表格显示</span><span class="id">Tampilkan sebagai tabel</span></button>
+      <table id="expMonthTable">
+        <thead>
+          <tr>
+            <th><span class="en">Month</span><span class="zh">月份</span><span class="id">Bulan</span></th>
+            <th><span class="en">Expense</span><span class="zh">支出</span><span class="id">Pengeluaran</span></th>
+            <th><span class="en">Vouchers</span><span class="zh">凭证数</span><span class="id">Voucher</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="name">Jul '25 <span style="color:var(--muted);font-weight:400;font-size:0.7rem;">(<span class="en">partial</span><span class="zh">不完整</span><span class="id">parsial</span>)</span></td><td class="num neg">-Rp 13,915,329</td><td class="num">1</td></tr>
+          <tr><td class="name">Aug '25</td><td class="num">Rp 142,580,745</td><td class="num">34</td></tr>
+          <tr><td class="name">Sep '25</td><td class="num">Rp 165,740,772</td><td class="num">69</td></tr>
+          <tr><td class="name">Oct '25</td><td class="num">Rp 411,303,320</td><td class="num">81</td></tr>
+          <tr><td class="name">Nov '25</td><td class="num">Rp 181,494,685</td><td class="num">86</td></tr>
+          <tr><td class="name">Dec '25</td><td class="num">Rp 222,166,779</td><td class="num">80</td></tr>
+          <tr><td class="name">Jan '26</td><td class="num">Rp 110,380,162</td><td class="num">61</td></tr>
+          <tr><td class="name">Feb '26</td><td class="num">Rp 115,109,403</td><td class="num">61</td></tr>
+          <tr><td class="name">Mar '26</td><td class="num">Rp 224,080,540</td><td class="num">63</td></tr>
+          <tr><td class="name">Apr '26</td><td class="num">Rp 109,347,923</td><td class="num">57</td></tr>
+          <tr><td class="name">May '26</td><td class="num">Rp 115,552,820</td><td class="num">60</td></tr>
+          <tr><td class="name">Jun '26</td><td class="num">Rp 181,989,772</td><td class="num">62</td></tr>
+          <tr><td class="name">Jul '26 <span style="color:var(--muted);font-weight:400;font-size:0.7rem;">(<span class="en">partial</span><span class="zh">不完整</span><span class="id">parsial</span>)</span></td><td class="num">Rp 71,973,025</td><td class="num">20</td></tr>
+        </tbody>
+      </table>
+      <p class="foot-note">
+        <span class="en">Source: GL Entry grouped by posting month (SUM(debit − credit)), root_type = Expense, is_cancelled = 0, both Filtec companies combined, excludes account 5110.020 (Stock Adjustment).</span>
+        <span class="zh">数据来源：总账分录按记账月份汇总（SUM(debit − credit)），root_type = Expense，仅统计未作废分录（is_cancelled = 0），合并两家Filtec公司，已排除科目5110.020（库存调整）。</span>
+        <span class="id">Sumber: GL Entry dikelompokkan berdasarkan bulan posting (SUM(debit − credit)), root_type = Expense, is_cancelled = 0, gabungan kedua perusahaan Filtec, tidak termasuk akun 5110.020 (Penyesuaian Stock).</span>
+      </p>
+    </div>
+
+    <div class="chart-card">
+      <div class="stat-row">
+        <div class="stat-mini">
+          <div class="sv">Rp 1,775,308,992</div>
+          <div class="sl">PT Filtec Indotama Teknindo</div>
+          <div class="sb"><span class="en">87.1% of Total Expenses (B)</span><span class="zh">占总支出(B)的87.1%</span><span class="id">87,1% dari Total Pengeluaran (B)</span></div>
+        </div>
+        <div class="stat-mini">
+          <div class="sv">Rp 262,495,626</div>
+          <div class="sl">PT Filtec Indo Teknologi</div>
+          <div class="sb"><span class="en">12.9% of Total Expenses (B)</span><span class="zh">占总支出(B)的12.9%</span><span class="id">12,9% dari Total Pengeluaran (B)</span></div>
+        </div>
+        <div class="stat-mini">
+          <div class="sv">Rp 1,826,517,388</div>
+          <div class="sl"><span class="en">Top 15 Accounts</span><span class="zh">前15大科目</span><span class="id">15 Akun Teratas</span></div>
+          <div class="sb"><span class="en">89.6% of Total Expenses (B) — rest is 60+ smaller accounts</span><span class="zh">占总支出(B)的89.6%——其余为60多个较小科目</span><span class="id">89,6% dari Total Pengeluaran (B) — sisanya 60+ akun lebih kecil</span></div>
+        </div>
+      </div>
+
+      <div class="page-head" style="margin-top:4px"><span class="en">Table 1318: Top 15 Expense Accounts</span><span class="zh">表1318：前15大支出科目</span><span class="id">Tabel 1318: 15 Akun Pengeluaran Teratas</span></div>
+      <table class="show">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th><span class="en">Account</span><span class="zh">科目</span><span class="id">Akun</span></th>
+            <th><span class="en">Company</span><span class="zh">公司</span><span class="id">Perusahaan</span></th>
+            <th><span class="en">Entries</span><span class="zh">笔数</span><span class="id">Entri</span></th>
+            <th><span class="en">Expense (A)</span><span class="zh">支出 (A)</span><span class="id">Pengeluaran (A)</span></th>
+            <th><span class="en">Share of Total (A/B)</span><span class="zh">占总支出比例 (A/B)</span><span class="id">Pangsa Total (A/B)</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td class="name">Biaya Gaji Staff &amp; Karyawan Tetap</td><td class="num">Indotama Teknindo</td><td class="num">14</td><td class="num">Rp 401,795,000</td><td class="num">19.7%</td></tr>
+          <tr><td>2</td><td class="name">Biaya Sewa Kantor</td><td class="num">Indotama Teknindo</td><td class="num">1</td><td class="num">Rp 333,333,333</td><td class="num">16.4%</td></tr>
+          <tr><td>3</td><td class="name">Beban Pajak PPN</td><td class="num">Indotama Teknindo</td><td class="num">14</td><td class="num">Rp 294,232,661</td><td class="num">14.4%</td></tr>
+          <tr><td>4</td><td class="name">Biaya Rebate Penjualan Lain Lain</td><td class="num">Indotama Teknindo</td><td class="num">29</td><td class="num">Rp 251,252,720</td><td class="num">12.3%</td></tr>
+          <tr><td>5</td><td class="name">Beban Pajak Penghasilan</td><td class="num">Indotama Teknindo</td><td class="num">86</td><td class="num">Rp 99,848,462</td><td class="num">4.9%</td></tr>
+          <tr><td>6</td><td class="name">Biaya Sewa Kendaraan Operasional</td><td class="num">Indotama Teknindo</td><td class="num">13</td><td class="num">Rp 74,300,000</td><td class="num">3.6%</td></tr>
+          <tr><td>7</td><td class="name">Biaya Gaji Staff &amp; Karyawan Tetap</td><td class="num">Indo Teknologi</td><td class="num">11</td><td class="num">Rp 74,000,000</td><td class="num">3.6%</td></tr>
+          <tr><td>8</td><td class="name">Beban Pajak PPN</td><td class="num">Indo Teknologi</td><td class="num">13</td><td class="num">Rp 57,174,118</td><td class="num">2.8%</td></tr>
+          <tr><td>9</td><td class="name">Biaya THR, Bonus, dan Komisi</td><td class="num">Indotama Teknindo</td><td class="num">2</td><td class="num">Rp 53,557,365</td><td class="num">2.6%</td></tr>
+          <tr><td>10</td><td class="name">Biaya Penjualan Lain Lain</td><td class="num">Indo Teknologi</td><td class="num">33</td><td class="num">Rp 51,051,684</td><td class="num">2.5%</td></tr>
+          <tr><td>11</td><td class="name">Biaya Rebate / Beban Penjualan Lain</td><td class="num">Indo Teknologi</td><td class="num">4</td><td class="num">Rp 29,700,000</td><td class="num">1.5%</td></tr>
+          <tr><td>12</td><td class="name">Selisih Kurs</td><td class="num">Indotama Teknindo</td><td class="num">20</td><td class="num">Rp 28,207,542</td><td class="num">1.4%</td></tr>
+          <tr><td>13</td><td class="name">Biaya Gaji &amp; Kesejahteraan Lainnya</td><td class="num">Indotama Teknindo</td><td class="num">3</td><td class="num">Rp 27,858,333</td><td class="num">1.4%</td></tr>
+          <tr><td>14</td><td class="name">Biaya PLN Gudang &amp; Kantor</td><td class="num">Indotama Teknindo</td><td class="num">11</td><td class="num">Rp 26,138,267</td><td class="num">1.3%</td></tr>
+          <tr><td>15</td><td class="name">Biaya Perjalanan Dinas</td><td class="num">Indotama Teknindo</td><td class="num">19</td><td class="num">Rp 24,067,903</td><td class="num">1.2%</td></tr>
+        </tbody>
+      </table>
+      <p class="foot-note">
+        <span class="en">Source: GL Entry grouped by account and company (SUM(debit − credit)), root_type = Expense, is_cancelled = 0, excludes account 5110.020 (Stock Adjustment). Same account name appearing twice means it's booked separately in each Filtec company's own chart of accounts.</span>
+        <span class="zh">数据来源：总账分录按科目与公司汇总（SUM(debit − credit)），root_type = Expense，仅统计未作废分录（is_cancelled = 0），已排除科目5110.020（库存调整）。同一科目名称出现两次，表示该科目在两家Filtec公司各自的会计科目表中分别入账。</span>
+        <span class="id">Sumber: GL Entry dikelompokkan berdasarkan akun dan perusahaan (SUM(debit − credit)), root_type = Expense, is_cancelled = 0, tidak termasuk akun 5110.020 (Penyesuaian Stock). Nama akun yang sama muncul dua kali berarti dibukukan terpisah di bagan akun masing-masing perusahaan Filtec.</span>
+      </p>
+    </div>
+
+    <div class="insight-card">
+      <h3><span class="en">How to Manage These Expenses</span><span class="zh">如何管理这些支出</span><span class="id">Cara Mengelola Pengeluaran Ini</span></h3>
+      <ul class="insight-list">
+        <li><span class="insight-num">1</span><span>
+          <span class="en"><strong>Payroll is the single largest cost.</strong> Biaya Gaji Staff &amp; Karyawan Tetap (Rp 475.8M combined across both companies, 25 entries) is bigger than any other account. Standard for a distribution business, but worth tracking against revenue growth (Rp 6.14B on the GP % tab) to see whether headcount cost is scaling faster than sales.</span>
+          <span class="zh"><strong>工资是单项最大的成本。</strong>"Biaya Gaji Staff &amp; Karyawan Tetap"（两家公司合计Rp 475.8M，25笔分录）是所有科目中金额最大的。对分销企业而言属正常水平，但值得对照收入增长（"毛利率"标签的Rp 6.14B）跟踪，看人力成本是否比销售增长更快。</span>
+          <span class="id"><strong>Gaji adalah biaya tunggal terbesar.</strong> Biaya Gaji Staff &amp; Karyawan Tetap (Rp 475,8 Jt gabungan di kedua perusahaan, 25 entri) lebih besar dari akun lainnya. Wajar untuk bisnis distribusi, tapi perlu dipantau terhadap pertumbuhan pendapatan (Rp 6,14 M pada tab GP %) untuk melihat apakah biaya karyawan tumbuh lebih cepat dari penjualan.</span>
+        </span></li>
+        <li><span class="insight-num">2</span><span>
+          <span class="en"><strong>Confirm the office rent entry is a full-year lump sum, not a duplicate.</strong> Biaya Sewa Kantor is Rp 333.3M in a single GL entry — if that's one annual lease booked at once, fine, but it means Chart 7's monthly view doesn't reflect a smoothed rent cost. October 2025's spike (Rp 411.3M, the highest month) is partly this one entry landing all at once.</span>
+          <span class="zh"><strong>确认办公室租金分录是否为整年一次性入账，而非重复记录。</strong>"Biaya Sewa Kantor"为单笔Rp 333.3M的总账分录——如果这是整年租约一次性入账，属正常，但意味着图表7的月度视图并未按月摊销租金。2025年10月的支出高峰（Rp 411.3M，全期最高月份）部分正是由这一笔分录集中入账所致。</span>
+          <span class="id"><strong>Konfirmasi apakah entri sewa kantor adalah pembayaran sekaligus setahun penuh, bukan duplikat.</strong> Biaya Sewa Kantor tercatat Rp 333,3 Jt dalam satu entri buku besar — jika ini satu sewa tahunan yang dibukukan sekaligus, tidak masalah, tapi artinya tampilan bulanan Grafik 7 tidak mencerminkan biaya sewa yang diratakan. Lonjakan Oktober 2025 (Rp 411,3 Jt, bulan tertinggi) sebagian besar disebabkan oleh satu entri ini yang masuk sekaligus.</span>
+        </span></li>
+        <li><span class="insight-num">3</span><span>
+          <span class="en"><strong>The sales rebate/discount lines are almost as big as payroll.</strong> Biaya Rebate Penjualan Lain Lain + Biaya Penjualan Lain Lain + Biaya Rebate/Beban Penjualan Lain add up to Rp 332.0M across 66 entries — worth checking whether this is eating into the margin the GP % tab already flagged as thin or negative on several items.</span>
+          <span class="zh"><strong>销售返利/折扣类科目金额几乎与工资相当。</strong>"Biaya Rebate Penjualan Lain Lain"+"Biaya Penjualan Lain Lain"+"Biaya Rebate/Beban Penjualan Lain"三项合计Rp 332.0M，共66笔分录——值得核查这是否正在侵蚀"毛利率"标签中已标记为薄利或负毛利的部分商品利润。</span>
+          <span class="id"><strong>Akun rebate/diskon penjualan hampir sebesar gaji.</strong> Biaya Rebate Penjualan Lain Lain + Biaya Penjualan Lain Lain + Biaya Rebate/Beban Penjualan Lain totalnya Rp 332,0 Jt dari 66 entri — perlu diperiksa apakah ini yang menggerus margin yang sudah ditandai tipis/negatif pada beberapa barang di tab GP %.</span>
+        </span></li>
+        <li><span class="insight-num">4</span><span>
+          <span class="en"><strong>Ask the accountant whether VAT should be an expense at all.</strong> Rp 351.4M of Beban Pajak PPN and Rp 100.6M of Beban Pajak Penghasilan sit inside Total Expenses — if any of that VAT is creditable input tax, it's inflating the expense total and should net through a Duties &amp; Taxes account instead.</span>
+          <span class="zh"><strong>向会计确认增值税是否应作为费用入账。</strong>"总支出"中包含Rp 351.4M的"Beban Pajak PPN"和Rp 100.6M的"Beban Pajak Penghasilan"——如果其中任何一部分属于可抵扣的进项增值税，就会虚增支出总额，理应改为通过应交税费科目核算。</span>
+          <span class="id"><strong>Tanyakan ke akuntan apakah PPN seharusnya menjadi beban.</strong> Rp 351,4 Jt Beban Pajak PPN dan Rp 100,6 Jt Beban Pajak Penghasilan berada di dalam Total Pengeluaran — jika sebagian PPN tersebut adalah pajak masukan yang dapat dikreditkan, itu menggelembungkan total pengeluaran dan seharusnya dicatat melalui akun Utang/Piutang Pajak.</span>
+        </span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ============ TAB 7 : Net Profit ============ -->
+  <div class="page-panel" id="page-7">
+    <div class="page-head">
+      <span class="en">Net Profit Report</span><span class="zh">净利润报告</span><span class="id">Laporan Laba Bersih</span>
+    </div>
+
+    <p>
+      <span class="en">Official ERPNext Profit and Loss Statement for both Filtec companies, 1 Jan – 29 Jul 2026 (calendar year to date). This covers a different period from the Expenses tab (which uses a trailing 31 Jul 2025 – 27 Jul 2026 window), so totals won't match between tabs.</span>
+      <span class="zh">两家Filtec公司来自ERPNext的正式损益表，涵盖2026年1月1日至7月29日（本日历年至今）。此区间与"支出"标签（采用2025年7月31日至2026年7月27日的滚动区间）不同，两个标签的数字不会一致。</span>
+      <span class="id">Laporan Laba Rugi resmi dari ERPNext untuk kedua perusahaan Filtec, 1 Jan – 29 Jul 2026 (tahun kalender berjalan). Periode ini berbeda dari tab Pengeluaran (yang menggunakan rentang bergulir 31 Jul 2025 – 27 Jul 2026), sehingga totalnya tidak akan sama antar tab.</span>
+    </p>
+
+    <div class="chart-card">
+      <div class="caveat">
+        <span aria-hidden="true">⚠️</span>
+        <span>
+          <span class="en"><strong>PFIT's reported profit is distorted by a one-off inventory revaluation credit.</strong> PT Filtec Indo Teknologi's expense accounts for this period include a -Rp 654,094,000 "Penyesuaian Stock" (Stock Adjustment) credit, so the headline Rp 409,022,298 "profit" is mostly that one-off credit, not real trading performance. Backing that single account out, its underlying operating result for Jan–Jul 2026 is closer to a <strong>Rp 245,071,702 loss</strong>. This is the same account the Expenses tab already flags and excludes for the same reason. PT Filtec Indotama Teknindo's Rp 1,765,203,654 profit has no such adjustment this period and looks like a genuine operating result.</span>
+          <span class="zh"><strong>PFIT的账面利润受一次性库存重估贷方冲减扭曲。</strong>PT Filtec Indo Teknologi本期费用科目中包含一笔-Rp 654,094,000的"Penyesuaian Stock"（库存调整）贷方冲减，意味着账面Rp 409,022,298的"利润"大部分来自这一笔一次性贷方冲减，并非真实经营表现。剔除这一科目后，其在2026年1-7月的实际经营结果更接近<strong>亏损Rp 245,071,702</strong>。这与"支出"标签中已标记并排除的科目相同。PT Filtec Indotama Teknindo本期Rp 1,765,203,654的利润没有类似调整，看起来是真实的经营成果。</span>
+          <span class="id"><strong>Laba yang dilaporkan PFIT terdistorsi oleh kredit revaluasi stok satu kali.</strong> Akun beban PT Filtec Indo Teknologi untuk periode ini mencakup kredit "Penyesuaian Stock" -Rp 654.094.000, sehingga "laba" headline Rp 409.022.298 sebagian besar berasal dari kredit satu kali tersebut, bukan kinerja usaha yang sesungguhnya. Setelah akun ini dikeluarkan, hasil operasional untuk Jan–Jul 2026 lebih mendekati <strong>kerugian Rp 245.071.702</strong>. Ini adalah akun yang sama yang sudah ditandai dan dikecualikan di tab Pengeluaran. Laba PT Filtec Indotama Teknindo sebesar Rp 1.765.203.654 tidak memiliki penyesuaian serupa pada periode ini dan tampak sebagai hasil operasional yang genuine.</span>
+        </span>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-mini">
+          <div class="sv">Rp 4,803,399,464</div>
+          <div class="sl"><span class="en">Combined Sales Revenue</span><span class="zh">合并销售收入</span><span class="id">Total Pendapatan Penjualan</span></div>
+          <div class="sb"><span class="en">Both companies · 1 Jan – 29 Jul 2026</span><span class="zh">两家公司合计 · 2026年1月1日至7月29日</span><span class="id">Kedua perusahaan · 1 Jan – 29 Jul 2026</span></div>
+        </div>
+        <div class="stat-mini">
+          <div class="sv pos">Rp 2,174,225,952</div>
+          <div class="sl"><span class="en">Reported Net Profit</span><span class="zh">账面净利润</span><span class="id">Laba Bersih Dilaporkan</span></div>
+          <div class="sb"><span class="en">45.3% net margin — as posted in ERPNext</span><span class="zh">净利率45.3%——ERPNext系统记录值</span><span class="id">Margin bersih 45,3% — sesuai catatan ERPNext</span></div>
+        </div>
+        <div class="stat-mini">
+          <div class="sv pos">Rp 1,520,131,952</div>
+          <div class="sl"><span class="en">Adjusted Net Profit</span><span class="zh">调整后净利润</span><span class="id">Laba Bersih Disesuaikan</span></div>
+          <div class="sb"><span class="en">31.7% net margin — excl. PFIT's one-off stock adjustment credit</span><span class="zh">净利率31.7%——已剔除PFIT的一次性库存调整贷方</span><span class="id">Margin bersih 31,7% — tidak termasuk kredit penyesuaian stok satu kali PFIT</span></div>
+        </div>
+      </div>
+
+      <div class="page-head" style="margin-top:4px"><span class="en">Chart 8: Reported Net Profit by Company</span><span class="zh">图表8：各公司账面净利润</span><span class="id">Grafik 8: Laba Bersih Dilaporkan per Perusahaan</span></div>
+      <div class="chart">
+        <div class="bar-row">
+          <div class="bar-label-row">
+            <span class="bar-name">PT Filtec Indotama Teknindo</span>
+            <span class="bar-value">Rp 1,765,203,654 · <span class="en">47.4% margin</span><span class="zh">利润率47.4%</span><span class="id">margin 47,4%</span></span>
+          </div>
+          <div class="track">
+            <div class="fill s2" style="width:100%" title="PT Filtec Indotama Teknindo: Rp 1,765,203,654">Rp 1.77B</div>
+          </div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label-row">
+            <span class="bar-name">PT Filtec Indo Teknologi</span>
+            <span class="bar-value">Rp 409,022,298 · <span class="en">37.8% margin (reported)</span><span class="zh">利润率37.8%（账面）</span><span class="id">margin 37,8% (dilaporkan)</span></span>
+          </div>
+          <div class="track">
+            <div class="fill s1" style="width:23.2%" title="PT Filtec Indo Teknologi: Rp 409,022,298">Rp 0.41B</div>
+          </div>
+        </div>
+      </div>
+      <div class="baseline-axis"><span class="en">0 — scaled to Rp 1,765,203,654</span><span class="zh">0 — 以Rp 1,765,203,654为基准</span><span class="id">0 — diskalakan ke Rp 1.765.203.654</span></div>
+
+      <div class="page-head" style="margin-top:16px"><span class="en">Table 1319: Net Profit by Company (1 Jan – 29 Jul 2026)</span><span class="zh">表1319：各公司净利润（2026年1月1日至7月29日）</span><span class="id">Tabel 1319: Laba Bersih per Perusahaan (1 Jan – 29 Jul 2026)</span></div>
+      <table class="show">
+        <thead>
+          <tr>
+            <th><span class="en">Company</span><span class="zh">公司</span><span class="id">Perusahaan</span></th>
+            <th><span class="en">Sales Revenue (A)</span><span class="zh">销售收入 (A)</span><span class="id">Pendapatan Penjualan (A)</span></th>
+            <th><span class="en">COGS (B)</span><span class="zh">销货成本 (B)</span><span class="id">HPP (B)</span></th>
+            <th><span class="en">Other Income (C)</span><span class="zh">其他收入 (C)</span><span class="id">Pendapatan Lain (C)</span></th>
+            <th><span class="en">Operating Expenses (D)</span><span class="zh">营业费用 (D)</span><span class="id">Beban Operasional (D)</span></th>
+            <th><span class="en">Net Profit (A−B+C−D)</span><span class="zh">净利润 (A−B+C−D)</span><span class="id">Laba Bersih (A−B+C−D)</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="name">PT Filtec Indo Teknologi</td><td class="num">Rp 1,081,845,278</td><td class="num">Rp 1,173,450,344</td><td class="num">Rp 766,170</td><td class="num">-Rp 499,861,195*</td><td class="num pos">Rp 409,022,298</td></tr>
+          <tr><td class="name">PT Filtec Indotama Teknindo</td><td class="num">Rp 3,721,554,186</td><td class="num">Rp 1,203,939,272</td><td class="num">Rp 2,781,690</td><td class="num">Rp 755,192,950</td><td class="num pos">Rp 1,765,203,654</td></tr>
+          <tr><td class="name"><strong><span class="en">Combined</span><span class="zh">合计</span><span class="id">Gabungan</span></strong></td><td class="num">Rp 4,803,399,464</td><td class="num">Rp 2,377,389,616</td><td class="num">Rp 3,547,860</td><td class="num">Rp 255,331,755</td><td class="num pos">Rp 2,174,225,952</td></tr>
+        </tbody>
+      </table>
+      <p class="foot-note">
+        <span class="en">*PFIT's Operating Expenses (D) is negative because it includes a -Rp 654,094,000 "Penyesuaian Stock" (Stock Adjustment) credit — see caveat above. Source: ERPNext "Profit and Loss Statement" report, filter_based_on Date Range, period_start_date 2026-01-01, period_end_date 2026-07-29, both Filtec companies.</span>
+        <span class="zh">*PFIT的营业费用(D)为负值，因为其中包含一笔-Rp 654,094,000的"Penyesuaian Stock"（库存调整）贷方冲减——见上方提示。数据来源：ERPNext"损益表"报告，filter_based_on为Date Range，period_start_date为2026-01-01，period_end_date为2026-07-29，涵盖两家Filtec公司。</span>
+        <span class="id">*Beban Operasional (D) PFIT bernilai negatif karena mencakup kredit "Penyesuaian Stock" -Rp 654.094.000 — lihat catatan di atas. Sumber: laporan "Profit and Loss Statement" ERPNext, filter_based_on Date Range, period_start_date 2026-01-01, period_end_date 2026-07-29, kedua perusahaan Filtec.</span>
+      </p>
+    </div>
+
+    <div class="insight-card">
+      <h3><span class="en">What This Means</span><span class="zh">这意味着什么</span><span class="id">Apa Artinya Ini</span></h3>
+      <ul class="insight-list">
+        <li><span class="insight-num">1</span><span>
+          <span class="en"><strong>Both companies show a net profit on the books, but only one is clean.</strong> Indotama Teknindo's Rp 1.77B profit (47.4% margin) has no unusual entries this period — that's a real, healthy result. Indo Teknologi's Rp 409M "profit" is mostly a Rp 654M one-off inventory revaluation credit; strip that out and it's actually running a ~Rp 245M loss for the year so far.</span>
+          <span class="zh"><strong>两家公司账面均显示净利润，但只有一家是"干净"的。</strong>Indotama Teknindo的Rp 17.7亿利润（利润率47.4%）本期没有异常分录——是真实、健康的经营成果。Indo Teknologi的Rp 4.09亿"利润"大部分来自一笔Rp 6.54亿的一次性库存重估贷方冲减；剔除后，其今年至今实际上亏损约Rp 2.45亿。</span>
+          <span class="id"><strong>Kedua perusahaan menunjukkan laba bersih di pembukuan, tapi hanya satu yang bersih.</strong> Laba Indotama Teknindo Rp 1,77 M (margin 47,4%) tidak memiliki entri tidak biasa pada periode ini — itu hasil yang nyata dan sehat. "Laba" Indo Teknologi Rp 409 Jt sebagian besar berasal dari kredit revaluasi stok satu kali Rp 654 Jt; setelah dikeluarkan, sebenarnya merugi sekitar Rp 245 Jt sejauh tahun ini.</span>
+        </span></li>
+        <li><span class="insight-num">2</span><span>
+          <span class="en"><strong>Ask the accountant to confirm the Penyesuaian Stock entry.</strong> A -Rp 654,094,000 credit booked as a "sales expense" reversal is large enough to flip Indo Teknologi from a loss to a headline profit — confirm whether this is a legitimate inventory revaluation or a misposted entry, same question already raised on the Expenses tab.</span>
+          <span class="zh"><strong>请会计确认"Penyesuaian Stock"分录。</strong>一笔-Rp 654,094,000、以"销售费用"冲减方式入账的贷方，金额大到足以让Indo Teknologi从亏损变为账面盈利——请确认这是合理的库存重估，还是入账有误，与"支出"标签中已提出的疑问相同。</span>
+          <span class="id"><strong>Minta akuntan mengonfirmasi entri Penyesuaian Stock.</strong> Kredit -Rp 654.094.000 yang dibukukan sebagai pembalikan "beban penjualan" cukup besar untuk mengubah Indo Teknologi dari rugi menjadi laba headline — konfirmasi apakah ini revaluasi stok yang sah atau entri yang salah posting, pertanyaan yang sama yang sudah diajukan di tab Pengeluaran.</span>
+        </span></li>
+        <li><span class="insight-num">3</span><span>
+          <span class="en"><strong>Combined, the group is genuinely profitable.</strong> Even using the more conservative adjusted figure (excluding the one-off credit), the two companies together made ~Rp 1.52B (31.7% net margin) in the first 7 months of 2026 — Indotama Teknindo is carrying the group.</span>
+          <span class="zh"><strong>合并来看，集团确实是盈利的。</strong>即使采用更保守的调整后数字（剔除一次性贷方），两家公司在2026年前7个月合计仍实现约Rp 15.2亿的利润（净利率31.7%）——由Indotama Teknindo撑起整体业绩。</span>
+          <span class="id"><strong>Secara gabungan, grup ini benar-benar menguntungkan.</strong> Bahkan dengan angka yang lebih konservatif (tidak termasuk kredit satu kali), kedua perusahaan bersama-sama menghasilkan sekitar Rp 1,52 M (margin bersih 31,7%) dalam 7 bulan pertama 2026 — Indotama Teknindo menopang kinerja grup.</span>
+        </span></li>
+      </ul>
+    </div>
+  </div>
+
+  <script src="/view-counter.js"></script>
+
+</div>
+
+<footer>
+  <p>
+    <span class="en">Filtec Sales Dashboard &nbsp;·&nbsp; Paul's World &nbsp;·&nbsp; <a href="https://paulsworld.vercel.app/">paulsworld.vercel.app</a></span>
+    <span class="zh">Filtec销售仪表板 &nbsp;·&nbsp; Paul的世界 &nbsp;·&nbsp; <a href="https://paulsworld.vercel.app/">paulsworld.vercel.app</a></span>
+    <span class="id">Dasbor Penjualan Filtec &nbsp;·&nbsp; Paul's World &nbsp;·&nbsp; <a href="https://paulsworld.vercel.app/">paulsworld.vercel.app</a></span>
+  </p>
+</footer>
+
+<script>
+function setLang(lang) {
+  document.body.className = lang === 'zh' ? 'lang-zh' : (lang === 'id' ? 'lang-id' : '');
+  document.querySelectorAll('.lang-btn').forEach(function(b) {
+    var match = lang === 'zh' ? '中文' : (lang === 'id' ? 'Bahasa' : 'English');
+    b.classList.toggle('active', b.textContent.includes(match));
+  });
+}
+function setPage(n) {
+  [1, 2, 3, 4, 5, 6, 7].forEach(function(i) {
+    document.getElementById('page-' + i).classList.toggle('active', i === n);
+    document.getElementById('tab-' + i).classList.toggle('active', i === n);
+  });
+  window.scrollTo({ top: document.querySelector('.tabs-bar').offsetTop, behavior: 'smooth' });
+}
+function toggleTable(){
+  var t = document.getElementById('dataTable');
+  var b = document.getElementById('toggleTable');
+  var showing = t.classList.toggle('show');
+  b.innerHTML = showing
+    ? '<span class="en">Hide table</span><span class="zh">隐藏表格</span><span class="id">Sembunyikan tabel</span>'
+    : '<span class="en">Show as table</span><span class="zh">以表格显示</span><span class="id">Tampilkan sebagai tabel</span>';
+}
+function toggleKaTable(){
+  var t = document.getElementById('kaDataTable');
+  var b = document.getElementById('toggleKaTable');
+  var showing = t.classList.toggle('show');
+  b.innerHTML = showing
+    ? '<span class="en">Hide table</span><span class="zh">隐藏表格</span><span class="id">Sembunyikan tabel</span>'
+    : '<span class="en">Show as table</span><span class="zh">以表格显示</span><span class="id">Tampilkan sebagai tabel</span>';
+}
+function toggleGpMonthTable(){
+  var t = document.getElementById('gpMonthTable');
+  var b = document.getElementById('toggleGpMonthTable');
+  var showing = t.classList.toggle('show');
+  b.innerHTML = showing
+    ? '<span class="en">Hide table</span><span class="zh">隐藏表格</span><span class="id">Sembunyikan tabel</span>'
+    : '<span class="en">Show as table</span><span class="zh">以表格显示</span><span class="id">Tampilkan sebagai tabel</span>';
+}
+function toggleRetTable(){
+  var t = document.getElementById('retDataTable');
+  var b = document.getElementById('toggleRetTable');
+  var showing = t.classList.toggle('show');
+  b.innerHTML = showing
+    ? '<span class="en">Hide table</span><span class="zh">隐藏表格</span><span class="id">Sembunyikan tabel</span>'
+    : '<span class="en">Show as table</span><span class="zh">以表格显示</span><span class="id">Tampilkan sebagai tabel</span>';
+}
+function toggleSegATable(){
+  var t = document.getElementById('segADataTable');
+  var b = document.getElementById('toggleSegATable');
+  var showing = t.classList.toggle('show');
+  b.innerHTML = showing
+    ? '<span class="en">Hide table</span><span class="zh">隐藏表格</span><span class="id">Sembunyikan tabel</span>'
+    : '<span class="en">Show as table</span><span class="zh">以表格显示</span><span class="id">Tampilkan sebagai tabel</span>';
+}
+function toggleExpMonthTable(){
+  var t = document.getElementById('expMonthTable');
+  var b = document.getElementById('toggleExpMonthTable');
+  var showing = t.classList.toggle('show');
+  b.innerHTML = showing
+    ? '<span class="en">Hide table</span><span class="zh">隐藏表格</span><span class="id">Sembunyikan tabel</span>'
+    : '<span class="en">Show as table</span><span class="zh">以表格显示</span><span class="id">Tampilkan sebagai tabel</span>';
+}
+function shareThisPage(){
+  var url = window.location.href;
+  var title = document.title;
+  if(navigator.share){
+    navigator.share({title:title, url:url}).catch(function(){});
+  } else {
+    navigator.clipboard.writeText(url).then(function(){
+      var t = document.getElementById('shareToast');
+      t.style.display = 'block';
+      setTimeout(function(){ t.style.display = 'none'; }, 2200);
+    });
+  }
+}
+function togglePageMenu(){
+  document.getElementById('pageMenuDropdown').classList.toggle('open');
+}
+function closePageMenu(){
+  document.getElementById('pageMenuDropdown').classList.remove('open');
+}
+document.addEventListener('click', function(e){
+  if(!document.querySelector('.page-menu-wrap').contains(e.target)) closePageMenu();
+});
+</script>
+<script src="/sw-register.js" defer></script>
+</body>
+</html>

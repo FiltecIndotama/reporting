@@ -218,6 +218,7 @@ td.name { font-weight: 700; color: #fff; }
 .qa-a { display:none; padding:0 16px 16px; font-size:0.88rem; color:var(--text); line-height:1.65; }
 .qa-item.open .qa-a { display:block; }
 .qa-a p + p { margin-top:10px; }
+.qa-a code { overflow-wrap:anywhere; }
 .qa-tag { display:inline-block; font-size:0.66rem; font-weight:700; padding:2px 8px; border-radius:10px; margin-bottom:10px; background:rgba(74,108,247,0.18); color:var(--blue); }
 
 footer { text-align: center; padding: 40px 20px; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.85rem; margin-top: 60px; }
@@ -2434,6 +2435,27 @@ footer a { color: var(--blue); text-decoration: none; }
               <span class="en">Yes. Most charts have a "Show as table" button beneath them that reveals the same figures as a numbered table. Charts and tables are numbered globally across the whole dashboard — Chart 11 and Table 1322 mean one thing only — so a number can be cited without naming the tab. The page also reads in English, 中文 and Bahasa Indonesia: use the language buttons at the top.</span>
               <span class="zh">可以。多数图表下方设有"以表格显示"按钮，可展开与图表相同数字的编号表格。图表与表格在整个仪表板内统一编号——图表11和表格1322各自唯一——因此引用编号时无需指明标签页。本页面还支持英文、中文与印尼文三种语言：请使用顶部的语言按钮。</span>
               <span class="id">Bisa. Sebagian besar grafik punya tombol "Tampilkan sebagai tabel" di bawahnya yang menampilkan angka yang sama sebagai tabel bernomor. Grafik dan tabel dinomori global di seluruh dasbor — Chart 11 dan Tabel 1322 masing-masing hanya merujuk satu hal — jadi nomornya bisa dikutip tanpa menyebut tab. Halaman ini juga tersedia dalam bahasa Inggris, 中文, dan Bahasa Indonesia: gunakan tombol bahasa di bagian atas.</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="qa-item">
+          <button class="qa-q" onclick="toggleQa(this)">
+            <span class="en">What does "my website" mean, and how do I ask for a new tab?</span>
+            <span class="zh">"我的网站"指什么？如何请求新增标签页？</span>
+            <span class="id">Apa arti "situs saya", dan bagaimana meminta tab baru?</span>
+          </button>
+          <div class="qa-a">
+            <span class="qa-tag"><span class="en">Workflow</span><span class="zh">工作流程</span><span class="id">Alur Kerja</span></span>
+            <p>
+              <span class="en">"My website" means this dashboard: <code>https://reporting-rouge-six.vercel.app/filtec-sales-dashboard.html</code>. So a request like "create a new tab Q&amp;A on my website" is already unambiguous — it means adding a tab to <code>filtec-sales-dashboard.html</code> in the <code>filtecgroup/reporting</code> repository. No further explanation is needed.</span>
+              <span class="zh">"我的网站"即指本仪表板：<code>https://reporting-rouge-six.vercel.app/filtec-sales-dashboard.html</code>。因此诸如"在我的网站上新建一个问答标签页"这样的请求已无歧义——即在<code>filtecgroup/reporting</code>代码库的<code>filtec-sales-dashboard.html</code>中新增一个标签页，无需额外说明。</span>
+              <span class="id">"Situs saya" berarti dasbor ini: <code>https://reporting-rouge-six.vercel.app/filtec-sales-dashboard.html</code>. Jadi permintaan seperti "buat tab baru Q&amp;A di situs saya" sudah jelas — artinya menambah tab pada <code>filtec-sales-dashboard.html</code> di repositori <code>filtecgroup/reporting</code>. Tidak perlu penjelasan tambahan.</span>
+            </p>
+            <p>
+              <span class="en">The procedure is written down in <code>docs/adding-a-new-tab.md</code>: add the tab button, add the page panel, register the tab number in <code>setPage()</code>, and add any new component CSS. The work is done on a branch and checked on a Vercel preview build first, then merged to <code>main</code> — merging is what publishes it to the link above.</span>
+              <span class="zh">具体步骤记录于<code>docs/adding-a-new-tab.md</code>：新增标签按钮、新增页面面板、在<code>setPage()</code>中注册标签编号，并按需添加新组件的CSS。改动先在分支上完成并通过Vercel预览版本检查，再合并至<code>main</code>分支——合并即发布至上述链接。</span>
+              <span class="id">Prosedurnya tercatat di <code>docs/adding-a-new-tab.md</code>: tambahkan tombol tab, tambahkan panel halaman, daftarkan nomor tab di <code>setPage()</code>, lalu tambahkan CSS komponen baru bila perlu. Pengerjaannya dilakukan di branch dan diperiksa dulu lewat build preview Vercel, kemudian di-merge ke <code>main</code> — merge itulah yang menerbitkannya ke tautan di atas.</span>
             </p>
           </div>
         </div>

@@ -209,6 +209,17 @@ td.name { font-weight: 700; color: #fff; }
 .so-scroll th { position:sticky; top:0; background:var(--card); z-index:1; }
 .so-scroll td, .so-scroll th { white-space:nowrap; }
 
+.qa-list { display:flex; flex-direction:column; gap:10px; }
+.qa-item { background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:10px; overflow:hidden; }
+.qa-q { display:flex; align-items:flex-start; gap:10px; width:100%; background:none; border:none; color:#fff; text-align:left; padding:14px 16px; font-size:0.9rem; font-weight:700; line-height:1.45; cursor:pointer; font-family:'Source Serif 4',serif; }
+.qa-q::after { content:'+'; margin-left:auto; color:var(--blue); font-size:1.15rem; font-weight:800; flex:none; line-height:1; }
+.qa-item.open .qa-q::after { content:'−'; }
+.qa-q:hover { background:rgba(255,255,255,0.04); }
+.qa-a { display:none; padding:0 16px 16px; font-size:0.88rem; color:var(--text); line-height:1.65; }
+.qa-item.open .qa-a { display:block; }
+.qa-a p + p { margin-top:10px; }
+.qa-tag { display:inline-block; font-size:0.66rem; font-weight:700; padding:2px 8px; border-radius:10px; margin-bottom:10px; background:rgba(74,108,247,0.18); color:var(--blue); }
+
 footer { text-align: center; padding: 40px 20px; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.85rem; margin-top: 60px; }
 footer a { color: var(--blue); text-decoration: none; }
 </style>
@@ -266,6 +277,7 @@ footer a { color: var(--blue); text-decoration: none; }
   <button class="tab-btn" id="tab-6" onclick="setPage(6)"><span class="en">Expenses</span><span class="zh">支出</span><span class="id">Biaya</span></button>
   <button class="tab-btn" id="tab-7" onclick="setPage(7)"><span class="en">Net Profit</span><span class="zh">净利润</span><span class="id">Laba Bersih</span></button>
   <button class="tab-btn" id="tab-8" onclick="setPage(8)"><span class="en">Staff</span><span class="zh">销售人员</span><span class="id">Staf</span></button>
+  <button class="tab-btn" id="tab-9" onclick="setPage(9)"><span class="en">Q&amp;A</span><span class="zh">问答</span><span class="id">Tanya Jawab</span></button>
 </div>
 
 <div class="content">
@@ -2299,6 +2311,137 @@ footer a { color: var(--blue); text-decoration: none; }
     </div>
   </div>
 
+  <!-- ============ TAB 9 : Q&A ============ -->
+  <div class="page-panel" id="page-9">
+    <div class="page-head">
+      <span class="en">Questions &amp; Answers</span><span class="zh">问答</span><span class="id">Tanya Jawab</span>
+    </div>
+
+    <p>
+      <span class="en">Common questions about how the numbers on this dashboard are built, where they come from, and what they do and do not prove.</span>
+      <span class="zh">关于本仪表板数据如何生成、来源为何、以及能证明与不能证明什么的常见问题。</span>
+      <span class="id">Pertanyaan umum tentang bagaimana angka di dasbor ini dibangun, dari mana asalnya, dan apa yang dibuktikan maupun tidak.</span>
+    </p>
+
+    <div class="chart-card">
+      <div class="qa-list">
+
+        <div class="qa-item">
+          <button class="qa-q" onclick="toggleQa(this)">
+            <span class="en">Where does this data come from?</span>
+            <span class="zh">这些数据来自哪里？</span>
+            <span class="id">Dari mana data ini berasal?</span>
+          </button>
+          <div class="qa-a">
+            <span class="qa-tag"><span class="en">Source</span><span class="zh">来源</span><span class="id">Sumber</span></span>
+            <p>
+              <span class="en">ERPNext (Filtec), from submitted Sales Invoices, Sales Orders and Quotations across both companies — PT Filtec Indotama Teknindo and PT Filtec Indo Teknologi. Each tab states its own date window and record count in the note under its charts.</span>
+              <span class="zh">来自ERPNext（Filtec）系统中两家公司——PT Filtec Indotama Teknindo 与 PT Filtec Indo Teknologi——已提交的销售发票、销售订单与报价单。每个标签页的图表下方均注明其数据时间范围与记录数量。</span>
+              <span class="id">Dari ERPNext (Filtec), berdasarkan Faktur Penjualan, Sales Order, dan Quotation yang sudah disubmit di kedua perusahaan — PT Filtec Indotama Teknindo dan PT Filtec Indo Teknologi. Tiap tab mencantumkan rentang tanggal dan jumlah record-nya di catatan bawah grafik.</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="qa-item">
+          <button class="qa-q" onclick="toggleQa(this)">
+            <span class="en">Why don't the revenue totals match between tabs?</span>
+            <span class="zh">为什么各标签页的收入总额对不上？</span>
+            <span class="id">Mengapa total pendapatan berbeda antar tab?</span>
+          </button>
+          <div class="qa-a">
+            <span class="qa-tag"><span class="en">Data</span><span class="zh">数据</span><span class="id">Data</span></span>
+            <p>
+              <span class="en">Because the tabs deliberately measure different things. The Segmentation tab uses Sales Invoice <code>grand_total</code>, which includes ~11% PPN/VAT. The Brand tab (Rp 6,171,563,874) and GP % tab (Rp 6,139,939,624) are net of tax. The ~11% gap is the expected tax difference, not an error.</span>
+              <span class="zh">因为各标签页衡量的口径不同。客户细分标签使用销售发票的<code>grand_total</code>，其中包含约11%的PPN增值税；品牌标签（Rp 6,171,563,874）和毛利率标签（Rp 6,139,939,624）为不含税金额。约11%的差额是正常的税项差异，并非错误。</span>
+              <span class="id">Karena tiap tab sengaja mengukur hal yang berbeda. Tab Segmentasi memakai <code>grand_total</code> Sales Invoice yang termasuk PPN ~11%. Tab Merek (Rp 6.171.563.874) dan tab GP % bersih dari pajak. Selisih ~11% adalah perbedaan pajak yang wajar, bukan kesalahan.</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="qa-item">
+          <button class="qa-q" onclick="toggleQa(this)">
+            <span class="en">How often is the dashboard updated?</span>
+            <span class="zh">仪表板多久更新一次？</span>
+            <span class="id">Seberapa sering dasbor diperbarui?</span>
+          </button>
+          <div class="qa-a">
+            <span class="qa-tag"><span class="en">Process</span><span class="zh">流程</span><span class="id">Proses</span></span>
+            <p>
+              <span class="en">The figures are a snapshot, not a live feed. They are refreshed by pulling from ERPNext and updating this page, so the date range printed on each tab is the authoritative "as of" — always read it before quoting a number.</span>
+              <span class="zh">页面数据为快照，并非实时数据流。更新方式是从ERPNext提取数据后更新本页面，因此每个标签页上标注的日期范围即为准确的"截至"时点——引用数字前请务必先查看。</span>
+              <span class="id">Angka di sini adalah snapshot, bukan data langsung. Diperbarui dengan menarik data dari ERPNext lalu memperbarui halaman ini, jadi rentang tanggal di tiap tab adalah acuan "per tanggal" — selalu baca dulu sebelum mengutip angka.</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="qa-item">
+          <button class="qa-q" onclick="toggleQa(this)">
+            <span class="en">Can I use the Staff tab to judge individual performance?</span>
+            <span class="zh">可以用销售人员标签页来评价个人业绩吗？</span>
+            <span class="id">Bisakah tab Staf dipakai menilai kinerja individu?</span>
+          </button>
+          <div class="qa-a">
+            <span class="qa-tag"><span class="en">Caution</span><span class="zh">注意</span><span class="id">Perhatian</span></span>
+            <p>
+              <span class="en">Not on its own. Only quotation ownership is a recorded fact; order-level attribution is <em>derived</em>, because the ERPNext Sales Team table is not filled in. That is why Chart 11 splits the order value into High, Medium, Low and None confidence bands. Read the band before drawing a conclusion, and treat anything below High as indicative only.</span>
+              <span class="zh">不能单独据此判断。只有报价单归属是已记录的事实；订单层面的归属是<em>推断</em>得出的，因为ERPNext的销售团队（Sales Team）表未填写。这也是图表11将订单金额按高、中、低、无四个置信度分组的原因。下结论前请先看置信度分组，低于"高"的部分仅供参考。</span>
+              <span class="id">Tidak jika berdiri sendiri. Hanya kepemilikan quotation yang merupakan fakta tercatat; atribusi per order bersifat <em>turunan</em>, karena tabel Sales Team di ERPNext tidak diisi. Karena itu Chart 11 membagi nilai order ke dalam band keyakinan High, Medium, Low, dan None. Baca band-nya dulu sebelum menyimpulkan, dan anggap apa pun di bawah High sebagai indikatif saja.</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="qa-item">
+          <button class="qa-q" onclick="toggleQa(this)">
+            <span class="en">Why is the GP % described as "blended"?</span>
+            <span class="zh">为什么毛利率被称为"综合"毛利率？</span>
+            <span class="id">Mengapa GP % disebut "blended"?</span>
+          </button>
+          <div class="qa-a">
+            <span class="qa-tag"><span class="en">Method</span><span class="zh">方法</span><span class="id">Metode</span></span>
+            <p>
+              <span class="en">Because cost is not recorded on every invoice line. 183 lines carry a cost and 89 do not, so a single company-wide GP % mixes lines that have a real COGS with lines that show none. Chart 2 on the GP % tab shows exactly how much revenue sits on each side of that split — the margin is only as reliable as the cost-recorded portion.</span>
+              <span class="zh">因为并非每条发票行都记录了成本。183条行项目有成本，89条没有，因此单一的全公司毛利率混合了有真实销货成本的行与无成本的行。毛利率标签页的图表2显示了两侧各自的收入金额——毛利率的可靠程度取决于已记录成本的部分。</span>
+              <span class="id">Karena biaya tidak tercatat di setiap baris faktur. 183 baris memiliki biaya dan 89 tidak, sehingga satu angka GP % perusahaan mencampur baris ber-COGS nyata dengan baris tanpa biaya. Chart 2 di tab GP % menunjukkan berapa pendapatan di masing-masing sisi — margin hanya seandal porsi yang biayanya tercatat.</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="qa-item">
+          <button class="qa-q" onclick="toggleQa(this)">
+            <span class="en">How do I read the bar charts?</span>
+            <span class="zh">如何看懂这些条形图？</span>
+            <span class="id">Bagaimana cara membaca grafik batangnya?</span>
+          </button>
+          <div class="qa-a">
+            <span class="qa-tag"><span class="en">Reading</span><span class="zh">阅读</span><span class="id">Membaca</span></span>
+            <p>
+              <span class="en">Every bar is scaled to the largest value in its own chart, not to a shared axis. The grey line under each chart states the baseline — for example "0 — scaled to Rp 4,869,082,874". So bar lengths are comparable within one chart and never between two charts; compare the printed figures instead.</span>
+              <span class="zh">每张图中的条形均以该图自身的最大值为基准缩放，而非共用坐标轴。图表下方的灰色说明行注明了基准值，例如"0 — 以Rp 4,869,082,874为基准"。因此条形长度只可在同一张图内比较，切勿跨图比较；跨图请比较标注的数字。</span>
+              <span class="id">Setiap batang diskalakan ke nilai terbesar di grafiknya sendiri, bukan ke sumbu bersama. Baris abu-abu di bawah tiap grafik menyebut baseline-nya — misalnya "0 — diskalakan ke Rp 4.869.082.874". Jadi panjang batang hanya sebanding di dalam satu grafik, tidak antar grafik; bandingkan angka tertulisnya.</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="qa-item">
+          <button class="qa-q" onclick="toggleQa(this)">
+            <span class="en">Can I see the underlying numbers, not just the charts?</span>
+            <span class="zh">除了图表，能看到底层数字吗？</span>
+            <span class="id">Bisakah saya melihat angka mentahnya, bukan hanya grafik?</span>
+          </button>
+          <div class="qa-a">
+            <span class="qa-tag"><span class="en">Usage</span><span class="zh">使用</span><span class="id">Penggunaan</span></span>
+            <p>
+              <span class="en">Yes. Most charts have a "Show as table" button beneath them that reveals the same figures as a numbered table. Charts and tables are numbered globally across the whole dashboard — Chart 11 and Table 1322 mean one thing only — so a number can be cited without naming the tab. The page also reads in English, 中文 and Bahasa Indonesia: use the language buttons at the top.</span>
+              <span class="zh">可以。多数图表下方设有"以表格显示"按钮，可展开与图表相同数字的编号表格。图表与表格在整个仪表板内统一编号——图表11和表格1322各自唯一——因此引用编号时无需指明标签页。本页面还支持英文、中文与印尼文三种语言：请使用顶部的语言按钮。</span>
+              <span class="id">Bisa. Sebagian besar grafik punya tombol "Tampilkan sebagai tabel" di bawahnya yang menampilkan angka yang sama sebagai tabel bernomor. Grafik dan tabel dinomori global di seluruh dasbor — Chart 11 dan Tabel 1322 masing-masing hanya merujuk satu hal — jadi nomornya bisa dikutip tanpa menyebut tab. Halaman ini juga tersedia dalam bahasa Inggris, 中文, dan Bahasa Indonesia: gunakan tombol bahasa di bagian atas.</span>
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
   <script src="/view-counter.js"></script>
 
 </div>
@@ -2320,12 +2463,13 @@ function setLang(lang) {
   });
 }
 function setPage(n) {
-  [1, 2, 3, 4, 5, 6, 7, 8].forEach(function(i) {
+  [1, 2, 3, 4, 5, 6, 7, 8, 9].forEach(function(i) {
     document.getElementById('page-' + i).classList.toggle('active', i === n);
     document.getElementById('tab-' + i).classList.toggle('active', i === n);
   });
   window.scrollTo({ top: document.querySelector('.tabs-bar').offsetTop, behavior: 'smooth' });
 }
+function toggleQa(btn){ btn.parentElement.classList.toggle('open'); }
 function toggleTable(){
   var t = document.getElementById('dataTable');
   var b = document.getElementById('toggleTable');

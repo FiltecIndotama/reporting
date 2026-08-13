@@ -10,6 +10,10 @@ https://reporting-rouge-six.vercel.app/filtec-sales-dashboard.html
 
 Built by the Vercel project `filtec1/reporting`, which deploys from `main`.
 
+**"My website", "the website", "the site", "the dashboard" — spoken by the repo
+owner — all mean that URL.** Take it as given; there is no need to ask which site
+is meant, and no need to hedge about it.
+
 **Every change must end up at that URL.** A change sitting on a branch, or in an
 open pull request, is not finished — merging to `main` is what publishes it.
 Standing instruction from the repo owner: always land work on `main` so the live

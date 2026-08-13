@@ -1,0 +1,2045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sales Staff Contribution</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue:#4a6cf7; --accent:#f4813f;
+  --bg:#0d0f1a; --card:#151826; --text:#e8eaf0; --muted:#8b8fa8;
+  --border:rgba(255,255,255,0.08);
+  --s1:#3987e5; --s2:#d95926;
+  --ord1:#86b6ef; --ord2:#3987e5; --ord3:#256abf; --ord4:#184f95;
+  --good:#0ca30c; --warning:#fab219; --serious:#ec835a; --critical:#d03b3b;
+  --grid:#2c2c2a; --axis:#383835;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Source Serif 4',Georgia,serif;background:var(--bg);color:var(--text);line-height:1.75;font-size:1.02rem}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+.hero{background:linear-gradient(135deg,#060310 0%,#0a1a2e 40%,#0a2419 75%,#0d0f1a 100%);
+ border-bottom:1px solid var(--border);padding:64px 20px 48px;text-align:center}
+.label{display:inline-block;background:rgba(74,108,247,0.12);border:1px solid rgba(74,108,247,0.35);
+ color:var(--blue);font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+ padding:5px 14px;border-radius:20px;margin-bottom:18px}
+h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.7rem,4.6vw,2.6rem);font-weight:700;
+ color:#fff;line-height:1.25;max-width:760px;margin:0 auto 14px}
+h1 span{color:var(--accent);font-style:italic}
+.hero-sub{color:var(--muted);font-size:1rem;max-width:620px;margin:0 auto}
+.meta{color:var(--muted);font-size:.82rem;letter-spacing:.04em;margin-top:12px}
+h2{font-family:'Playfair Display',Georgia,serif;font-size:1.55rem;color:#fff;margin:0 0 6px}
+h3{font-family:'Playfair Display',Georgia,serif;font-size:1.1rem;color:#fff;margin:22px 0 10px}
+section{padding:44px 0;border-bottom:1px solid var(--border)}
+.sec-lead{color:var(--muted);margin-bottom:22px;max-width:780px}
+.verdict{background:var(--card);border:1px solid rgba(208,59,59,0.4);border-left:4px solid var(--critical);
+ border-radius:10px;padding:22px 24px;margin:28px 0}
+.verdict .vh{display:flex;align-items:center;gap:9px;font-weight:600;color:#fff;font-size:1.05rem;margin-bottom:8px}
+.verdict .ic{color:var(--critical);font-size:1.15rem}
+.note{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--warning);
+ border-radius:10px;padding:18px 22px;margin:22px 0;color:var(--muted);font-size:.95rem}
+.note b{color:var(--text)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:26px 0}
+.tile{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px 20px}
+.tile .v{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;font-size:1.85rem;font-weight:600;
+ color:#fff;line-height:1.15}
+.tile .k{color:var(--muted);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;margin-top:6px}
+.tile .d{color:var(--muted);font-size:.86rem;margin-top:6px}
+.tile.bad .v{color:var(--critical)}
+.chart{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:22px 24px;margin:18px 0}
+.chart .ct{font-weight:600;color:#fff;margin-bottom:4px}
+.chart .cs{color:var(--muted);font-size:.85rem;margin-bottom:18px}
+.brow{display:grid;grid-template-columns:190px 1fr 190px;gap:14px;align-items:center;padding:5px 0;outline:none}
+.brow:hover .bfill,.brow:focus .bfill{filter:brightness(1.15)}
+.blab{color:var(--text);font-size:.9rem;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.btrack{background:rgba(255,255,255,0.05);border-radius:4px;height:20px;overflow:hidden}
+.bfill{height:100%;border-radius:0 4px 4px 0;transition:filter .15s}
+.bfill.s1{background:var(--s1)} .bfill.s2{background:var(--s2)}
+.bfill.ord1{background:var(--ord1)} .bfill.ord2{background:var(--ord2)}
+.bfill.ord3{background:var(--ord3)} .bfill.ord4{background:var(--ord4)}
+.bval{font-family:system-ui,sans-serif;font-variant-numeric:tabular-nums;font-size:.85rem;color:var(--muted)}
+.tw{overflow-x:auto;border:1px solid var(--border);border-radius:10px;background:var(--card);margin:18px 0}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th{text-align:left;padding:11px 13px;color:var(--muted);font-size:.72rem;letter-spacing:.07em;
+ text-transform:uppercase;font-weight:600;border-bottom:1px solid var(--border);white-space:nowrap;
+ position:sticky;top:0;background:var(--card);z-index:1}
+td{padding:9px 11px;border-bottom:1px solid rgba(255,255,255,0.04);vertical-align:top}
+tbody tr:hover{background:rgba(255,255,255,0.03)}
+td.n,th.n{text-align:right;font-family:system-ui,sans-serif;font-variant-numeric:tabular-nums;white-space:nowrap}
+td.mono{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.8rem;white-space:nowrap}
+td.mono.sm{color:var(--muted);font-size:.75rem}
+td.dt{color:var(--muted);white-space:nowrap;font-family:system-ui,sans-serif;font-size:.82rem}
+td.nm{white-space:nowrap}
+#ot td:nth-child(3){max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap} td.co,td.st{color:var(--muted);font-size:.82rem;white-space:nowrap}
+.pill{display:inline-block;padding:2px 9px;border-radius:11px;font-size:.72rem;font-weight:600;
+ font-family:system-ui,sans-serif;white-space:nowrap}
+.c-high{background:rgba(12,163,12,0.15);color:#5ed35e;border:1px solid rgba(12,163,12,0.4)}
+.c-med{background:rgba(250,178,25,0.13);color:#fac54f;border:1px solid rgba(250,178,25,0.35)}
+.c-low{background:rgba(236,131,90,0.13);color:#f0a184;border:1px solid rgba(236,131,90,0.35)}
+.c-none{background:rgba(139,143,168,0.13);color:var(--muted);border:1px solid var(--border)}
+.filters{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:18px 0 6px}
+.filters select,.filters input{background:var(--card);border:1px solid var(--border);color:var(--text);
+ padding:8px 12px;border-radius:8px;font-family:inherit;font-size:.86rem;min-width:150px}
+.filters input{min-width:220px}
+.cnt{color:var(--muted);font-size:.84rem;margin-left:auto;font-family:system-ui,sans-serif}
+ol,ul{margin:10px 0 10px 22px} li{margin:7px 0;color:var(--muted)} li b{color:var(--text)}
+code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85em;background:rgba(255,255,255,0.06);
+ padding:1px 6px;border-radius:4px;color:#c9d4e8}
+footer{padding:34px 0 60px;color:var(--muted);font-size:.84rem;text-align:center}
+.legend{display:flex;flex-wrap:wrap;gap:16px;margin:14px 0 0;font-size:.82rem;color:var(--muted);
+ font-family:system-ui,sans-serif}
+.legend span{display:flex;align-items:center;gap:6px}
+.sw{width:11px;height:11px;border-radius:3px;display:inline-block}
+@media(max-width:720px){.brow{grid-template-columns:120px 1fr;row-gap:2px}.bval{grid-column:2}.blab{text-align:left}}
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="label">Filtec Group · Sales Reporting</div>
+  <h1>All Sales Orders — <span>which sales staff contributed?</span></h1>
+  <p class="hero-sub">An audit of sales-staff attribution across all 230 Sales Orders in ERPNext,
+  and the best attribution that the available data actually supports.</p>
+  <div class="meta">Generated 2026-08-13 · Source: ERPNext (live) · PT Filtec Indo Teknologi &amp; PT Filtec Indotama Teknindo</div>
+</div>
+
+<div class="wrap">
+
+<section>
+  <h2>The short answer</h2>
+  <div class="verdict">
+    <div class="vh"><span class="ic">&#9888;</span> ERPNext cannot answer this question today — sales-staff attribution is not recorded on Sales Orders.</div>
+    <p style="color:var(--muted)">Every field ERPNext provides for crediting a salesperson on a Sales Order is empty or
+    generic. Of 230 orders, <b style="color:var(--text)">3</b> carry any Sales Person at all — and those
+    name the group <code>Sales Team</code>, not a person. So no report built on the standard
+    ERPNext fields can attribute orders to individuals.</p>
+  </div>
+
+  <div class="tiles">
+    <div class="tile"><div class="v">230</div><div class="k">Sales Orders</div>
+      <div class="d">185 submitted · 43 cancelled · 2 draft</div></div>
+    <div class="tile"><div class="v">Rp 9.22 M</div><div class="k">Submitted order value</div>
+      <div class="d">Miliar Rupiah, 185 orders</div></div>
+    <div class="tile bad"><div class="v">0</div><div class="k">Orders credited to a person</div>
+      <div class="d">3 credited to the group “Sales Team”</div></div>
+    <div class="tile"><div class="v">8</div><div class="k">Staff active in quotations</div>
+      <div class="d">The only reliable per-staff signal</div></div>
+  </div>
+
+  <h3>Evidence — every attribution field on Sales Order</h3>
+  <div class="tw"><table>
+    <thead><tr><th>Field on Sales Order</th><th>What it is for</th><th class="n">Populated</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">sales_team</td><td>The standard salesperson-credit table (Sales Person + %)</td>
+        <td class="n">3 / 230</td><td>Only the group “Sales Team” — no individuals</td></tr>
+      <tr><td class="mono">sales_partner</td><td>External partner / agent credit</td>
+        <td class="n">0 / 230</td><td>Never used</td></tr>
+      <tr><td class="mono">territory</td><td>Territory-based attribution</td>
+        <td class="n">0 / 230</td><td>Never used</td></tr>
+      <tr><td class="mono">owner</td><td>Who created the record (not a credit field)</td>
+        <td class="n">230 / 230</td>
+        <td>225 of 230 are one back-office account — no signal</td></tr>
+      <tr><td class="mono">tc_name</td><td>Terms template (incidentally named after a rep)</td>
+        <td class="n">26 / 230</td>
+        <td>Sparse, and names the terms text, not the seller</td></tr>
+    </tbody>
+  </table></div>
+  <p class="sec-lead" style="margin-top:14px">There are also only <b>3 Sales Person records</b> in the system —
+  <code>Sales Team</code> (group), <code>TIM FITT</code> and <code>Tim FIT</code>. These are teams, not people, so even
+  a correctly filled <code>sales_team</code> table could not resolve to an individual today.</p>
+</section>
+
+<section>
+  <h2>What <em>can</em> be measured accurately: quotation ownership</h2>
+  <p class="sec-lead">Quotations are created by the reps themselves — 8 distinct staff accounts across
+  447 quotations. This is the one place in the system where individual sales activity is recorded reliably,
+  so it is the defensible basis for “who contributed what”.</p>
+
+  <div class="chart">
+    <div class="ct">Won quotation value by sales staff</div>
+    <div class="cs">Quotations with status Ordered or Partially Ordered · all companies · Jul 2025 – Aug 2026</div>
+    <div class="brow" tabindex="0">
+  <div class="blab">Dedeng Suryaman</div>
+  <div class="btrack"><div class="bfill s1" style="width:100.00%"></div></div>
+  <div class="bval">Rp 3.584.174.562</div>
+</div>
+<div class="brow" tabindex="0">
+  <div class="blab">Ayu Yudhi</div>
+  <div class="btrack"><div class="bfill s1" style="width:50.23%"></div></div>
+  <div class="bval">Rp 1.800.304.671</div>
+</div>
+<div class="brow" tabindex="0">
+  <div class="blab">sales@ (shared mailbox)</div>
+  <div class="btrack"><div class="bfill s1" style="width:30.05%"></div></div>
+  <div class="bval">Rp 1.077.146.220</div>
+</div>
+<div class="brow" tabindex="0">
+  <div class="blab">Haerul (back office)</div>
+  <div class="btrack"><div class="bfill s1" style="width:28.52%"></div></div>
+  <div class="bval">Rp 1.022.033.921</div>
+</div>
+<div class="brow" tabindex="0">
+  <div class="blab">Sudaryanto</div>
+  <div class="btrack"><div class="bfill s1" style="width:9.93%"></div></div>
+  <div class="bval">Rp 355.789.688</div>
+</div>
+<div class="brow" tabindex="0">
+  <div class="blab">Heka</div>
+  <div class="btrack"><div class="bfill s1" style="width:3.27%"></div></div>
+  <div class="bval">Rp 117.155.712</div>
+</div>
+<div class="brow" tabindex="0">
+  <div class="blab">Iwan Subiantoro</div>
+  <div class="btrack"><div class="bfill s1" style="width:0.60%"></div></div>
+  <div class="bval">Rp 0</div>
+</div>
+<div class="brow" tabindex="0">
+  <div class="blab">Marshel</div>
+  <div class="btrack"><div class="bfill s1" style="width:0.60%"></div></div>
+  <div class="bval">Rp 0</div>
+</div>
+  </div>
+
+  <div class="tw"><table>
+    <thead><tr><th>Sales staff</th><th class="n">Quotations</th><th class="n">Won</th><th class="n">Win rate</th>
+    <th class="n">Quoted value</th><th class="n">Won value</th><th class="n">Customers</th><th>Active period</th></tr></thead>
+    <tbody><tr><td class="nm">Dedeng Suryaman</td><td class="n">80</td>
+<td class="n">14</td><td class="n">17.5%</td><td class="n">Rp 24.217.296.934</td>
+<td class="n">Rp 3.584.174.562</td><td class="n">43</td>
+<td class="dt">2025-08-04 → 2026-08-13</td></tr>
+<tr><td class="nm">Ayu Yudhi</td><td class="n">141</td>
+<td class="n">18</td><td class="n">12.8%</td><td class="n">Rp 22.449.361.276</td>
+<td class="n">Rp 1.800.304.671</td><td class="n">100</td>
+<td class="dt">2025-08-12 → 2026-08-11</td></tr>
+<tr><td class="nm">sales@ (shared mailbox)</td><td class="n">147</td>
+<td class="n">36</td><td class="n">24.5%</td><td class="n">Rp 8.362.910.150</td>
+<td class="n">Rp 1.077.146.220</td><td class="n">90</td>
+<td class="dt">2025-09-09 → 2026-05-25</td></tr>
+<tr><td class="nm">Haerul (back office)</td><td class="n">15</td>
+<td class="n">10</td><td class="n">66.7%</td><td class="n">Rp 2.521.081.871</td>
+<td class="n">Rp 1.022.033.921</td><td class="n">14</td>
+<td class="dt">2025-08-04 → 2026-06-24</td></tr>
+<tr><td class="nm">Sudaryanto</td><td class="n">21</td>
+<td class="n">2</td><td class="n">9.5%</td><td class="n">Rp 3.412.464.784</td>
+<td class="n">Rp 355.789.688</td><td class="n">16</td>
+<td class="dt">2026-01-08 → 2026-07-22</td></tr>
+<tr><td class="nm">Heka</td><td class="n">34</td>
+<td class="n">17</td><td class="n">50.0%</td><td class="n">Rp 257.674.295</td>
+<td class="n">Rp 117.155.712</td><td class="n">25</td>
+<td class="dt">2026-04-07 → 2026-08-07</td></tr>
+<tr><td class="nm">Iwan Subiantoro</td><td class="n">2</td>
+<td class="n">0</td><td class="n">0.0%</td><td class="n">Rp 38.184.000</td>
+<td class="n">Rp 0</td><td class="n">1</td>
+<td class="dt">2026-06-12 → 2026-07-22</td></tr>
+<tr><td class="nm">Marshel</td><td class="n">7</td>
+<td class="n">0</td><td class="n">0.0%</td><td class="n">Rp 131.345.224</td>
+<td class="n">Rp 0</td><td class="n">5</td>
+<td class="dt">2025-07-28 → 2025-11-28</td></tr></tbody>
+  </table></div>
+
+  <div class="note"><b>Read this with care.</b> <code>sales@filtec.co.id</code> is a shared mailbox, not a person —
+  its 147 quotations are the combined output of whoever was working that inbox.
+  <code>haerul@filtec.co.id</code> is the back-office account that also enters almost every Sales Order, so its
+  quotations are likely data entry on someone else’s behalf. Both need to be split into real users before these
+  numbers can be used for individual performance review.</div>
+</section>
+
+<section>
+  <h2>Derived order attribution — indicative only</h2>
+  <p class="sec-lead">Since orders carry no seller, each order below is matched to the sales staff who owned the
+  most recent quotation for the same customer on or before the order date. This reconstructs a plausible credit
+  for 174 of 185 submitted orders — but it is an inference, not a record.</p>
+
+  <div class="chart">
+    <div class="ct">Submitted order value by derived sales staff</div>
+    <div class="cs">Inferred via quotation trail · 185 submitted orders · Rp 9.220.609.312 total</div>
+    <div class="brow" tabindex="0">
+  <div class="blab">Dedeng Suryaman</div>
+  <div class="btrack"><div class="bfill s1" style="width:100.00%"></div></div>
+  <div class="bval">Rp 4.079.278.962</div>
+</div>
+<div class="brow" tabindex="0">
+  <div class="blab">Ayu Yudhi</div>
+  <div class="btrack"><div class="bfill s1" style="width:62.29%"></div></div>
+  <div class="bval">Rp 2.541.054.346</div>
+</div>
+<div class="brow" tabindex="0">
+  <div class="blab">sales@ (shared mailbox)</div>
+  <div class="btrack"><div class="bfill s1" style="width:33.60%"></div></div>
+  <div class="bval">Rp 1.370.631.050</div>
+</div>
+<div class="brow" tabindex="0">
+  <div class="blab">Haerul (back office)</div>
+  <div class="btrack"><div class="bfill s1" style="width:17.51%"></div></div>
+  <div class="bval">Rp 714.126.967</div>
+</div>
+<div class="brow" tabindex="0">
+  <div class="blab">Marshel</div>
+  <div class="btrack"><div class="bfill s1" style="width:4.54%"></div></div>
+  <div class="bval">Rp 185.370.000</div>
+</div>
+<div class="brow" tabindex="0">
+  <div class="blab">Unattributable</div>
+  <div class="btrack"><div class="bfill s1" style="width:4.32%"></div></div>
+  <div class="bval">Rp 176.120.400</div>
+</div>
+<div class="brow" tabindex="0">
+  <div class="blab">Heka</div>
+  <div class="btrack"><div class="bfill s1" style="width:3.42%"></div></div>
+  <div class="bval">Rp 139.375.586</div>
+</div>
+<div class="brow" tabindex="0">
+  <div class="blab">Sudaryanto</div>
+  <div class="btrack"><div class="bfill s1" style="width:0.60%"></div></div>
+  <div class="bval">Rp 14.652.000</div>
+</div>
+  </div>
+
+  <div class="tw"><table>
+    <thead><tr><th>Derived sales staff</th><th class="n">Orders</th><th class="n">Order value</th>
+    <th class="n">Customers</th><th class="n">Confidence H / M / L</th></tr></thead>
+    <tbody><tr><td class="nm">Dedeng Suryaman</td><td class="n">18</td>
+<td class="n">Rp 4.079.278.962</td><td class="n">14</td>
+<td class="n"><span class="pill c-high">2</span> <span class="pill c-med">9</span> <span class="pill c-low">7</span></td></tr>
+<tr><td class="nm">Ayu Yudhi</td><td class="n">24</td>
+<td class="n">Rp 2.541.054.346</td><td class="n">17</td>
+<td class="n"><span class="pill c-high">9</span> <span class="pill c-med">13</span> <span class="pill c-low">2</span></td></tr>
+<tr><td class="nm">sales@ (shared mailbox)</td><td class="n">91</td>
+<td class="n">Rp 1.370.631.050</td><td class="n">34</td>
+<td class="n"><span class="pill c-high">40</span> <span class="pill c-med">29</span> <span class="pill c-low">22</span></td></tr>
+<tr><td class="nm">Haerul (back office)</td><td class="n">10</td>
+<td class="n">Rp 714.126.967</td><td class="n">9</td>
+<td class="n"><span class="pill c-high">0</span> <span class="pill c-med">5</span> <span class="pill c-low">5</span></td></tr>
+<tr><td class="nm">Marshel</td><td class="n">2</td>
+<td class="n">Rp 185.370.000</td><td class="n">1</td>
+<td class="n"><span class="pill c-high">0</span> <span class="pill c-med">0</span> <span class="pill c-low">2</span></td></tr>
+<tr><td class="nm">Unattributable</td><td class="n">11</td>
+<td class="n">Rp 176.120.400</td><td class="n">9</td>
+<td class="n"><span class="pill c-high">0</span> <span class="pill c-med">0</span> <span class="pill c-low">0</span></td></tr>
+<tr><td class="nm">Heka</td><td class="n">28</td>
+<td class="n">Rp 139.375.586</td><td class="n">14</td>
+<td class="n"><span class="pill c-high">2</span> <span class="pill c-med">19</span> <span class="pill c-low">7</span></td></tr>
+<tr><td class="nm">Sudaryanto</td><td class="n">1</td>
+<td class="n">Rp 14.652.000</td><td class="n">1</td>
+<td class="n"><span class="pill c-high">0</span> <span class="pill c-med">1</span> <span class="pill c-low">0</span></td></tr></tbody>
+  </table></div>
+
+  <div class="chart">
+    <div class="ct">How much of this is actually trustworthy</div>
+    <div class="cs">Confidence by share of submitted order value</div>
+    <div class="brow"><div class="blab">High</div>
+<div class="btrack"><div class="bfill ord1" style="width:20.99%"></div></div>
+<div class="bval">53 orders · Rp 1.935.731.579</div></div>
+<div class="brow"><div class="blab">Medium</div>
+<div class="btrack"><div class="bfill ord2" style="width:58.87%"></div></div>
+<div class="bval">76 orders · Rp 5.427.771.113</div></div>
+<div class="brow"><div class="blab">Low</div>
+<div class="btrack"><div class="bfill ord3" style="width:18.23%"></div></div>
+<div class="bval">45 orders · Rp 1.680.986.220</div></div>
+<div class="brow"><div class="blab">None</div>
+<div class="btrack"><div class="bfill ord4" style="width:1.91%"></div></div>
+<div class="bval">11 orders · Rp 176.120.400</div></div>
+    <div class="legend">
+      <span><i class="sw" style="background:var(--ord1)"></i> High — customer quoted by exactly one rep</span>
+      <span><i class="sw" style="background:var(--ord2)"></i> Medium — two reps quote this customer</span>
+      <span><i class="sw" style="background:var(--ord3)"></i> Low — shared customer or stale quotation</span>
+      <span><i class="sw" style="background:var(--ord4)"></i> None — no quotation found</span>
+    </div>
+  </div>
+
+  <div class="note"><b>Accuracy check — and why this is labelled indicative.</b> 11 orders carry an independent hint
+  (a rep-named terms template). The derived attribution agrees with that hint on
+  <b>5 of 11 (45%)</b>. Every disagreement is on a customer quoted by more than one rep.
+  Only <b>21% of order value</b> falls in the High band. Treat the split above as a
+  starting point for a conversation with the sales team, <b>not</b> as a basis for commission or performance scoring.</div>
+</section>
+
+<section>
+  <h2>All 230 orders with derived staff</h2>
+  <p class="sec-lead">Every Sales Order in the system, newest first, with the inferred rep, the quotation the
+  inference came from, and its confidence.</p>
+  <div class="filters">
+    <input id="q" type="search" placeholder="Search order, customer, staff…" aria-label="Search orders">
+    <select id="fstaff" aria-label="Filter by staff"><option value="">All staff</option><option value="ayu@filtec.co.id">Ayu Yudhi</option>
+<option value="dedeng.suryaman@filtec.co.id">Dedeng Suryaman</option>
+<option value="haerul@filtec.co.id">Haerul (back office)</option>
+<option value="heka@filtec.co.id">Heka</option>
+<option value="marshel@filtec.co.id">Marshel</option>
+<option value="sudaryanto@filtec.co.id">Sudaryanto</option>
+<option value="(unattributable)">Unattributable</option>
+<option value="sales@filtec.co.id">sales@ (shared mailbox)</option></select>
+    <select id="fconf" aria-label="Filter by confidence"><option value="">All confidence</option>
+      <option value="high">High</option><option value="medium">Medium</option>
+      <option value="low">Low</option><option value="none">None</option></select>
+    <select id="fco" aria-label="Filter by company"><option value="">All companies</option>
+      <option value="PT Filtec Indo Teknologi">Indo Teknologi</option>
+      <option value="PT Filtec Indotama Teknindo">Indotama Teknindo</option></select>
+    <select id="fds" aria-label="Filter by document status"><option value="">All statuses</option>
+      <option value="Submitted">Submitted</option><option value="Cancelled">Cancelled</option>
+      <option value="Draft">Draft</option></select>
+    <span class="cnt" id="cnt"></span>
+  </div>
+  <div class="tw" style="max-height:640px;overflow-y:auto">
+  <table id="ot">
+    <thead><tr><th>Sales Order</th><th>Date</th><th>Customer</th><th>Company</th><th>Status</th>
+    <th class="n">Grand total</th><th>Derived staff</th><th>Confidence</th><th>From quotation</th></tr></thead>
+    <tbody><tr data-staff="dedeng.suryaman@filtec.co.id" data-conf="medium" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2026-00026 pt. pln enjiniring dedeng suryaman">
+<td class="mono">SO-FITT-2026-00026</td><td class="dt">2026-08-07</td>
+<td>PT. PLN ENJINIRING</td><td class="co">Indotama Teknindo</td>
+<td class="st">To Deliver and Bill</td><td class="n">Rp 700.818.480</td>
+<td class="nm">Dedeng Suryaman</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-FITT-2026-00117</td></tr>
+<tr data-staff="dedeng.suryaman@filtec.co.id" data-conf="medium" data-co="PT Filtec Indotama Teknindo" data-ds="Cancelled" data-s="so-fitt-2026-00027 pt. pln indonesia power ubp bali dedeng suryaman">
+<td class="mono">SO-FITT-2026-00027</td><td class="dt">2026-08-07</td>
+<td>PT. PLN INDONESIA POWER UBP BALI</td><td class="co">Indotama Teknindo</td>
+<td class="st">Cancelled</td><td class="n">Rp 383.116.500</td>
+<td class="nm">Dedeng Suryaman</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-FITT-2026-00121</td></tr>
+<tr data-staff="heka@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00104 pt sentra kreasi kencana heka">
+<td class="mono">SO-PFIT-2026-00104</td><td class="dt">2026-08-07</td>
+<td>PT Sentra Kreasi Kencana</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 4.162.500</td>
+<td class="nm">Heka</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00142</td></tr>
+<tr data-staff="dedeng.suryaman@filtec.co.id" data-conf="medium" data-co="PT Filtec Indotama Teknindo" data-ds="Draft" data-s="so-fitt-2026-00027-1 pt. pln indonesia power ubp bali dedeng suryaman">
+<td class="mono">SO-FITT-2026-00027-1</td><td class="dt">2026-08-07</td>
+<td>PT. PLN INDONESIA POWER UBP BALI</td><td class="co">Indotama Teknindo</td>
+<td class="st">Draft</td><td class="n">Rp 383.116.500</td>
+<td class="nm">Dedeng Suryaman</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-FITT-2026-00121</td></tr>
+<tr data-staff="heka@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00102 pt oro plastindo heka">
+<td class="mono">SO-PFIT-2026-00102</td><td class="dt">2026-08-03</td>
+<td>PT Oro Plastindo</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 17.982.000</td>
+<td class="nm">Heka</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00128</td></tr>
+<tr data-staff="heka@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00105 pt kobe boga utama heka">
+<td class="mono">SO-PFIT-2026-00105</td><td class="dt">2026-08-03</td>
+<td>PT KOBE BOGA UTAMA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 3.330.000</td>
+<td class="nm">Heka</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-PFIT-2026-00134</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00103 pt nikawa textile indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00103</td><td class="dt">2026-07-31</td>
+<td>PT NIKAWA TEXTILE INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 10.176.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00035</td></tr>
+<tr data-staff="heka@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00101 pt bumi menara internusa heka">
+<td class="mono">SO-PFIT-2026-00101</td><td class="dt">2026-07-27</td>
+<td>PT Bumi Menara Internusa</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 1.082.250</td>
+<td class="nm">Heka</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00123</td></tr>
+<tr data-staff="heka@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00098 pt fumira heka">
+<td class="mono">SO-PFIT-2026-00098</td><td class="dt">2026-07-23</td>
+<td>PT Fumira</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 2.775.000</td>
+<td class="nm">Heka</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00131</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00099 pt eagle industry indonesia - 1 sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00099</td><td class="dt">2026-07-23</td>
+<td>PT EAGLE INDUSTRY INDONESIA - 1</td><td class="co">Indo Teknologi</td>
+<td class="st">To Bill</td><td class="n">Rp 1.910.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00046</td></tr>
+<tr data-staff="sudaryanto@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00100 pt suri tani pemuka sudaryanto">
+<td class="mono">SO-PFIT-2026-00100</td><td class="dt">2026-07-23</td>
+<td>PT SURI TANI PEMUKA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 14.652.000</td>
+<td class="nm">Sudaryanto</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00137</td></tr>
+<tr data-staff="dedeng.suryaman@filtec.co.id" data-conf="medium" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2026-00025 pt. sari dumai oleo (apical group) dedeng suryaman">
+<td class="mono">SO-FITT-2026-00025</td><td class="dt">2026-07-21</td>
+<td>PT. SARI DUMAI OLEO (APICAL GROUP)</td><td class="co">Indotama Teknindo</td>
+<td class="st">To Bill</td><td class="n">Rp 61.549.500</td>
+<td class="nm">Dedeng Suryaman</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-FITT-2026-00111</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00097 pt ouji sekken manufacturing sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00097</td><td class="dt">2026-07-20</td>
+<td>PT Ouji Sekken Manufacturing</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 1.962.480</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00039</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00095 pt unilever indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00095</td><td class="dt">2026-07-15</td>
+<td>PT UNILEVER INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 59.940.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00066</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00096 pt unilever indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00096</td><td class="dt">2026-07-15</td>
+<td>PT UNILEVER INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 59.940.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00066</td></tr>
+<tr data-staff="heka@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Cancelled" data-s="so-pfit-2026-00094 pt kobe boga utama heka">
+<td class="mono">SO-PFIT-2026-00094</td><td class="dt">2026-07-14</td>
+<td>PT KOBE BOGA UTAMA</td><td class="co">Indo Teknologi</td>
+<td class="st">Cancelled</td><td class="n">Rp 2.497.500</td>
+<td class="nm">Heka</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-PFIT-2026-00134</td></tr>
+<tr data-staff="heka@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00094-1 pt kobe boga utama heka">
+<td class="mono">SO-PFIT-2026-00094-1</td><td class="dt">2026-07-14</td>
+<td>PT KOBE BOGA UTAMA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 2.497.500</td>
+<td class="nm">Heka</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-PFIT-2026-00134</td></tr>
+<tr data-staff="heka@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Cancelled" data-s="so-pfit-2026-00091 pt tsuchiya manufacturing indonesia heka">
+<td class="mono">SO-PFIT-2026-00091</td><td class="dt">2026-07-10</td>
+<td>PT Tsuchiya Manufacturing Indonesia</td><td class="co">Indo Teknologi</td>
+<td class="st">Cancelled</td><td class="n">Rp 9.102.000</td>
+<td class="nm">Heka</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-PFIT-2026-00091</td></tr>
+<tr data-staff="heka@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Cancelled" data-s="so-pfit-2026-00092 pt tsuchiya manufacturing indonesia heka">
+<td class="mono">SO-PFIT-2026-00092</td><td class="dt">2026-07-10</td>
+<td>PT Tsuchiya Manufacturing Indonesia</td><td class="co">Indo Teknologi</td>
+<td class="st">Cancelled</td><td class="n">Rp 9.102.000</td>
+<td class="nm">Heka</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-PFIT-2026-00091</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00093 pt valmet technology center sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00093</td><td class="dt">2026-07-10</td>
+<td>PT Valmet Technology Center</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 29.137.500</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00073</td></tr>
+<tr data-staff="heka@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00092-1 pt tsuchiya manufacturing indonesia heka">
+<td class="mono">SO-PFIT-2026-00092-1</td><td class="dt">2026-07-10</td>
+<td>PT Tsuchiya Manufacturing Indonesia</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 9.102.000</td>
+<td class="nm">Heka</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-PFIT-2026-00091</td></tr>
+<tr data-staff="heka@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Cancelled" data-s="so-pfit-2026-00090 pt tsuchiya manufacturing indonesia heka">
+<td class="mono">SO-PFIT-2026-00090</td><td class="dt">2026-07-09</td>
+<td>PT Tsuchiya Manufacturing Indonesia</td><td class="co">Indo Teknologi</td>
+<td class="st">Cancelled</td><td class="n">Rp 9.102.000</td>
+<td class="nm">Heka</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-PFIT-2026-00091</td></tr>
+<tr data-staff="dedeng.suryaman@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00089 pt cubic indonesia dedeng suryaman">
+<td class="mono">SO-PFIT-2026-00089</td><td class="dt">2026-07-06</td>
+<td>PT Cubic Indonesia</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 1.387.500</td>
+<td class="nm">Dedeng Suryaman</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00125</td></tr>
+<tr data-staff="dedeng.suryaman@filtec.co.id" data-conf="medium" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2026-00024 pt harlyn energi indonesia dedeng suryaman">
+<td class="mono">SO-FITT-2026-00024</td><td class="dt">2026-07-01</td>
+<td>PT Harlyn Energi Indonesia</td><td class="co">Indotama Teknindo</td>
+<td class="st">To Deliver</td><td class="n">Rp 471.783.300</td>
+<td class="nm">Dedeng Suryaman</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-FITT-2026-00092</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00087 pt. nissin foods indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00087</td><td class="dt">2026-06-26</td>
+<td>PT. NISSIN FOODS INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 15.817.500</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00082</td></tr>
+<tr data-staff="heka@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00088 pt tripper nature heka">
+<td class="mono">SO-PFIT-2026-00088</td><td class="dt">2026-06-26</td>
+<td>PT Tripper Nature</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 1.665.000</td>
+<td class="nm">Heka</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00124</td></tr>
+<tr data-staff="heka@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00086 pt tripper nature heka">
+<td class="mono">SO-PFIT-2026-00086</td><td class="dt">2026-06-23</td>
+<td>PT Tripper Nature</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 3.108.000</td>
+<td class="nm">Heka</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00119</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00085 pt unilever indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00085</td><td class="dt">2026-06-22</td>
+<td>PT UNILEVER INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 59.940.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00066</td></tr>
+<tr data-staff="heka@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00083 pt dunia kimia jaya heka">
+<td class="mono">SO-PFIT-2026-00083</td><td class="dt">2026-06-19</td>
+<td>PT DUNIA KIMIA JAYA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 5.466.750</td>
+<td class="nm">Heka</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00099</td></tr>
+<tr data-staff="heka@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00084 pt lion wings heka">
+<td class="mono">SO-PFIT-2026-00084</td><td class="dt">2026-06-19</td>
+<td>PT Lion Wings</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 3.774.000</td>
+<td class="nm">Heka</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00111</td></tr>
+<tr data-staff="dedeng.suryaman@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00081 pt shindengen indonesia dedeng suryaman">
+<td class="mono">SO-PFIT-2026-00081</td><td class="dt">2026-06-15</td>
+<td>PT SHINDENGEN INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 29.970.000</td>
+<td class="nm">Dedeng Suryaman</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-PFIT-2026-00108</td></tr>
+<tr data-staff="heka@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00082 pt yoshino indonesia heka">
+<td class="mono">SO-PFIT-2026-00082</td><td class="dt">2026-06-15</td>
+<td>PT Yoshino Indonesia</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 4.440.000</td>
+<td class="nm">Heka</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00116</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00080 pt cubic indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00080</td><td class="dt">2026-06-11</td>
+<td>PT Cubic Indonesia</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 24.242.400</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00085</td></tr>
+<tr data-staff="dedeng.suryaman@filtec.co.id" data-conf="low" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2026-00022 pt euroasiatic heat &amp; power systems dedeng suryaman">
+<td class="mono">SO-FITT-2026-00022</td><td class="dt">2026-06-09</td>
+<td>PT Euroasiatic Heat &amp; Power Systems</td><td class="co">Indotama Teknindo</td>
+<td class="st">To Deliver and Bill</td><td class="n">Rp 106.171.500</td>
+<td class="nm">Dedeng Suryaman</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-FITT-2026-00091</td></tr>
+<tr data-staff="heka@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00079 pt bumi menara internusa heka">
+<td class="mono">SO-PFIT-2026-00079</td><td class="dt">2026-06-09</td>
+<td>PT Bumi Menara Internusa</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 14.652.000</td>
+<td class="nm">Heka</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00105</td></tr>
+<tr data-staff="ayu@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00075 pt pne indonesia ayu yudhi">
+<td class="mono">SO-PFIT-2026-00075</td><td class="dt">2026-06-08</td>
+<td>PT PNE INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 4.495.500</td>
+<td class="nm">Ayu Yudhi</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00103</td></tr>
+<tr data-staff="heka@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Draft" data-s="so-pfit-2026-00076 pt tripper nature heka">
+<td class="mono">SO-PFIT-2026-00076</td><td class="dt">2026-06-08</td>
+<td>PT Tripper Nature</td><td class="co">Indo Teknologi</td>
+<td class="st">Draft</td><td class="n">Rp 1.554.000</td>
+<td class="nm">Heka</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00096</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00077 pt schlemmer automotive indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00077</td><td class="dt">2026-06-08</td>
+<td>PT SCHLEMMER AUTOMOTIVE INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 2.997.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-PFIT-2026-00012</td></tr>
+<tr data-staff="haerul@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00078 pt fumira haerul (back office)">
+<td class="mono">SO-PFIT-2026-00078</td><td class="dt">2026-06-08</td>
+<td>PT Fumira</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 1.744.285</td>
+<td class="nm">Haerul (back office)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00100-1</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00070 pt valmet technology center sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00070</td><td class="dt">2026-06-05</td>
+<td>PT Valmet Technology Center</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 29.137.500</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00073</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00071 pt nikawa textile indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00071</td><td class="dt">2026-06-05</td>
+<td>PT NIKAWA TEXTILE INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 10.123.200</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00035</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Cancelled" data-s="so-pfit-2026-00072 pt. nissin foods indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00072</td><td class="dt">2026-06-05</td>
+<td>PT. NISSIN FOODS INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Cancelled</td><td class="n">Rp 7.770.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00082</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00073 pt. niaga makmur globalindo sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00073</td><td class="dt">2026-06-05</td>
+<td>PT. NIAGA MAKMUR GLOBALINDO</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 1.998.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00095</td></tr>
+<tr data-staff="haerul@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Cancelled" data-s="so-pfit-2026-00074 pt fumira haerul (back office)">
+<td class="mono">SO-PFIT-2026-00074</td><td class="dt">2026-06-05</td>
+<td>PT Fumira</td><td class="co">Indo Teknologi</td>
+<td class="st">Cancelled</td><td class="n">Rp 11.286.258</td>
+<td class="nm">Haerul (back office)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00100-1</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00072-1 pt. nissin foods indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00072-1</td><td class="dt">2026-06-05</td>
+<td>PT. NISSIN FOODS INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 7.770.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00082</td></tr>
+<tr data-staff="haerul@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Cancelled" data-s="so-pfit-2026-00074-1 pt fumira haerul (back office)">
+<td class="mono">SO-PFIT-2026-00074-1</td><td class="dt">2026-06-05</td>
+<td>PT Fumira</td><td class="co">Indo Teknologi</td>
+<td class="st">Cancelled</td><td class="n">Rp 16.332.851</td>
+<td class="nm">Haerul (back office)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00100-1</td></tr>
+<tr data-staff="haerul@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Cancelled" data-s="so-pfit-2026-00074-2 pt fumira haerul (back office)">
+<td class="mono">SO-PFIT-2026-00074-2</td><td class="dt">2026-06-05</td>
+<td>PT Fumira</td><td class="co">Indo Teknologi</td>
+<td class="st">Cancelled</td><td class="n">Rp 14.588.566</td>
+<td class="nm">Haerul (back office)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00100-1</td></tr>
+<tr data-staff="haerul@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00074-3 pt fumira haerul (back office)">
+<td class="mono">SO-PFIT-2026-00074-3</td><td class="dt">2026-06-05</td>
+<td>PT Fumira</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 14.223.762</td>
+<td class="nm">Haerul (back office)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00100-1</td></tr>
+<tr data-staff="haerul@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Cancelled" data-s="so-pfit-2026-00068 pt fumira haerul (back office)">
+<td class="mono">SO-PFIT-2026-00068</td><td class="dt">2026-06-04</td>
+<td>PT Fumira</td><td class="co">Indo Teknologi</td>
+<td class="st">Cancelled</td><td class="n">Rp 1.744.285</td>
+<td class="nm">Haerul (back office)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00100-1</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00069 pt ouji sekken manufacturing sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00069</td><td class="dt">2026-06-04</td>
+<td>PT Ouji Sekken Manufacturing</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 1.500.720</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00039</td></tr>
+<tr data-staff="heka@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00067 pt tripper nature heka">
+<td class="mono">SO-PFIT-2026-00067</td><td class="dt">2026-06-03</td>
+<td>PT Tripper Nature</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 1.554.000</td>
+<td class="nm">Heka</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00096</td></tr>
+<tr data-staff="heka@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00066 pt. mega bintang santoso heka">
+<td class="mono">SO-PFIT-2026-00066</td><td class="dt">2026-05-29</td>
+<td>PT. MEGA BINTANG SANTOSO</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 10.031.514</td>
+<td class="nm">Heka</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00090</td></tr>
+<tr data-staff="heka@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00064 pt tsuchiya manufacturing indonesia heka">
+<td class="mono">SO-PFIT-2026-00064</td><td class="dt">2026-05-25</td>
+<td>PT Tsuchiya Manufacturing Indonesia</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 10.844.700</td>
+<td class="nm">Heka</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-PFIT-2026-00093</td></tr>
+<tr data-staff="heka@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00065 pt oasis waters international heka">
+<td class="mono">SO-PFIT-2026-00065</td><td class="dt">2026-05-25</td>
+<td>PT OASIS WATERS INTERNATIONAL</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 3.996.000</td>
+<td class="nm">Heka</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00087</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2026-00021 pltgu muara tawar sales@ (shared mailbox)">
+<td class="mono">SO-FITT-2026-00021</td><td class="dt">2026-05-22</td>
+<td>PLTGU Muara Tawar</td><td class="co">Indotama Teknindo</td>
+<td class="st">Completed</td><td class="n">Rp 238.650.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-FITT-2026-00047</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00063 pt. b.s indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00063</td><td class="dt">2026-05-15</td>
+<td>PT. B.S INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 47.286.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00088</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00061 pt. nissin foods indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00061</td><td class="dt">2026-05-12</td>
+<td>PT. NISSIN FOODS INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 4.200.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00082</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00062 pt nikawa textile indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00062</td><td class="dt">2026-05-12</td>
+<td>PT NIKAWA TEXTILE INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 10.176.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00035</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Cancelled" data-s="so-pfit-2026-00058 pt cubic indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00058</td><td class="dt">2026-05-11</td>
+<td>PT Cubic Indonesia</td><td class="co">Indo Teknologi</td>
+<td class="st">Cancelled</td><td class="n">Rp 3.870.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00085</td></tr>
+<tr data-staff="heka@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00059 pt. mega bintang santoso heka">
+<td class="mono">SO-PFIT-2026-00059</td><td class="dt">2026-05-11</td>
+<td>PT. MEGA BINTANG SANTOSO</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 3.042.232</td>
+<td class="nm">Heka</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00090</td></tr>
+<tr data-staff="haerul@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Cancelled" data-s="so-pfit-2026-00060 pt. saranagriya lestari keramik haerul (back office)">
+<td class="mono">SO-PFIT-2026-00060</td><td class="dt">2026-05-11</td>
+<td>PT. Saranagriya Lestari Keramik</td><td class="co">Indo Teknologi</td>
+<td class="st">Cancelled</td><td class="n">Rp 3.885.000</td>
+<td class="nm">Haerul (back office)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00083-1</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00058-1 pt cubic indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00058-1</td><td class="dt">2026-05-11</td>
+<td>PT Cubic Indonesia</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 5.160.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00085</td></tr>
+<tr data-staff="haerul@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00060-1 pt. saranagriya lestari keramik haerul (back office)">
+<td class="mono">SO-PFIT-2026-00060-1</td><td class="dt">2026-05-11</td>
+<td>PT. Saranagriya Lestari Keramik</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 3.885.000</td>
+<td class="nm">Haerul (back office)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00083-1</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00057 pt cubic indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00057</td><td class="dt">2026-05-07</td>
+<td>PT Cubic Indonesia</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 1.365.300</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00085</td></tr>
+<tr data-staff="dedeng.suryaman@filtec.co.id" data-conf="high" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2026-00020 pt pln indonesia power service dedeng suryaman">
+<td class="mono">SO-FITT-2026-00020</td><td class="dt">2026-05-05</td>
+<td>PT PLN INDONESIA POWER SERVICE</td><td class="co">Indotama Teknindo</td>
+<td class="st">Completed</td><td class="n">Rp 34.981.650</td>
+<td class="nm">Dedeng Suryaman</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-FITT-2026-00075</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00056 pt nikawa textile indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00056</td><td class="dt">2026-04-29</td>
+<td>PT NIKAWA TEXTILE INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 10.176.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00035</td></tr>
+<tr data-staff="heka@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00053 pt. b.s indonesia heka">
+<td class="mono">SO-PFIT-2026-00053</td><td class="dt">2026-04-28</td>
+<td>PT. B.S INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 6.654.450</td>
+<td class="nm">Heka</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00075</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Cancelled" data-s="so-pfit-2026-00054 pt bumi menara internusa sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00054</td><td class="dt">2026-04-28</td>
+<td>PT Bumi Menara Internusa</td><td class="co">Indo Teknologi</td>
+<td class="st">Cancelled</td><td class="n">Rp 11.544.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00060</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Cancelled" data-s="so-pfit-2026-00055 pt bumi menara internusa sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00055</td><td class="dt">2026-04-28</td>
+<td>PT Bumi Menara Internusa</td><td class="co">Indo Teknologi</td>
+<td class="st">Cancelled</td><td class="n">Rp 721.500</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00060</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00054-1 pt bumi menara internusa sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00054-1</td><td class="dt">2026-04-28</td>
+<td>PT Bumi Menara Internusa</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 11.544.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00060</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00055-1 pt bumi menara internusa sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00055-1</td><td class="dt">2026-04-28</td>
+<td>PT Bumi Menara Internusa</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 721.500</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00060</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Cancelled" data-s="so-pfit-2026-00050 pt valmet technology center sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00050</td><td class="dt">2026-04-27</td>
+<td>PT Valmet Technology Center</td><td class="co">Indo Teknologi</td>
+<td class="st">Cancelled</td><td class="n">Rp 29.137.500</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00073</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00051 pt unilever indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00051</td><td class="dt">2026-04-27</td>
+<td>PT UNILEVER INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 11.800.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00066</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Cancelled" data-s="so-pfit-2026-00052 pt valmet technology center sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00052</td><td class="dt">2026-04-27</td>
+<td>PT Valmet Technology Center</td><td class="co">Indo Teknologi</td>
+<td class="st">Cancelled</td><td class="n">Rp 24.420.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00073</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00050-1 pt valmet technology center sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00050-1</td><td class="dt">2026-04-27</td>
+<td>PT Valmet Technology Center</td><td class="co">Indo Teknologi</td>
+<td class="st">To Deliver and Bill</td><td class="n">Rp 29.137.500</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00073</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00052-1 pt valmet technology center sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00052-1</td><td class="dt">2026-04-27</td>
+<td>PT Valmet Technology Center</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 24.420.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00073</td></tr>
+<tr data-staff="(unattributable)" data-conf="none" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00046 pt katsuyama finetech —">
+<td class="mono">SO-PFIT-2026-00046</td><td class="dt">2026-04-24</td>
+<td>PT Katsuyama Finetech</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 4.273.500</td>
+<td class="nm">—</td>
+<td><span class="pill c-none">None</span></td>
+<td class="mono sm">—</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00047 pt dunia kimia jaya sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00047</td><td class="dt">2026-04-24</td>
+<td>PT DUNIA KIMIA JAYA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 2.000.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00014</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Cancelled" data-s="so-pfit-2026-00048 pt bumi menara internusa sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00048</td><td class="dt">2026-04-24</td>
+<td>PT Bumi Menara Internusa</td><td class="co">Indo Teknologi</td>
+<td class="st">Cancelled</td><td class="n">Rp 721.500</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00060</td></tr>
+<tr data-staff="heka@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Cancelled" data-s="so-pfit-2026-00049 pt surya technology industri heka">
+<td class="mono">SO-PFIT-2026-00049</td><td class="dt">2026-04-24</td>
+<td>PT Surya Technology Industri</td><td class="co">Indo Teknologi</td>
+<td class="st">Cancelled</td><td class="n">Rp 926.850</td>
+<td class="nm">Heka</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00062</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Cancelled" data-s="so-pfit-2026-00048-1 pt bumi menara internusa sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00048-1</td><td class="dt">2026-04-24</td>
+<td>PT Bumi Menara Internusa</td><td class="co">Indo Teknologi</td>
+<td class="st">Cancelled</td><td class="n">Rp 1.443.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00060</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00048-2 pt bumi menara internusa sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00048-2</td><td class="dt">2026-04-24</td>
+<td>PT Bumi Menara Internusa</td><td class="co">Indo Teknologi</td>
+<td class="st">To Deliver and Bill</td><td class="n">Rp 721.500</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00060</td></tr>
+<tr data-staff="heka@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00049-1 pt surya technology industri heka">
+<td class="mono">SO-PFIT-2026-00049-1</td><td class="dt">2026-04-24</td>
+<td>PT Surya Technology Industri</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 1.853.700</td>
+<td class="nm">Heka</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00062</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="low" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2026-00019 pt axel jaya cakraniaga sales@ (shared mailbox)">
+<td class="mono">SO-FITT-2026-00019</td><td class="dt">2026-04-21</td>
+<td>PT AXEL JAYA CAKRANIAGA</td><td class="co">Indotama Teknindo</td>
+<td class="st">Completed</td><td class="n">Rp 31.080.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-FITT-2026-00064</td></tr>
+<tr data-staff="dedeng.suryaman@filtec.co.id" data-conf="medium" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2026-00018 pt. pln indonesia power ubp bali dedeng suryaman">
+<td class="mono">SO-FITT-2026-00018</td><td class="dt">2026-04-17</td>
+<td>PT. PLN INDONESIA POWER UBP BALI</td><td class="co">Indotama Teknindo</td>
+<td class="st">To Bill</td><td class="n">Rp 104.340.000</td>
+<td class="nm">Dedeng Suryaman</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-FITT-2026-00059</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00044 pt ihara manufacturing indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00044</td><td class="dt">2026-04-16</td>
+<td>PT IHARA MANUFACTURING INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 6.593.400</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-PFIT-2026-00032</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00045 pt eagle industry indonesia - 1 sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00045</td><td class="dt">2026-04-16</td>
+<td>PT EAGLE INDUSTRY INDONESIA - 1</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 1.887.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00046</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Cancelled" data-s="so-pfit-2026-00043 pt nikawa textile indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00043</td><td class="dt">2026-04-13</td>
+<td>PT NIKAWA TEXTILE INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Cancelled</td><td class="n">Rp 10.176.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00035</td></tr>
+<tr data-staff="dedeng.suryaman@filtec.co.id" data-conf="medium" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2026-00017 pt. pln indonesia power ubp bali dedeng suryaman">
+<td class="mono">SO-FITT-2026-00017</td><td class="dt">2026-04-09</td>
+<td>PT. PLN INDONESIA POWER UBP BALI</td><td class="co">Indotama Teknindo</td>
+<td class="st">To Deliver and Bill</td><td class="n">Rp 1.652.860.032</td>
+<td class="nm">Dedeng Suryaman</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-FITT-2026-00059</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00040 pt yoshino indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00040</td><td class="dt">2026-04-09</td>
+<td>PT Yoshino Indonesia</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 1.776.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00061</td></tr>
+<tr data-staff="(unattributable)" data-conf="none" data-co="PT Filtec Indo Teknologi" data-ds="Cancelled" data-s="so-pfit-2026-00041 pt radiant utama interinsco tbk —">
+<td class="mono">SO-PFIT-2026-00041</td><td class="dt">2026-04-09</td>
+<td>PT RADIANT UTAMA INTERINSCO TBK</td><td class="co">Indo Teknologi</td>
+<td class="st">Cancelled</td><td class="n">Rp 150.072.000</td>
+<td class="nm">—</td>
+<td><span class="pill c-none">None</span></td>
+<td class="mono sm">—</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00042 pt tripper nature sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00042</td><td class="dt">2026-04-09</td>
+<td>PT Tripper Nature</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 1.665.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00052</td></tr>
+<tr data-staff="(unattributable)" data-conf="none" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00041-1 pt radiant utama interinsco tbk —">
+<td class="mono">SO-PFIT-2026-00041-1</td><td class="dt">2026-04-09</td>
+<td>PT RADIANT UTAMA INTERINSCO TBK</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 142.568.400</td>
+<td class="nm">—</td>
+<td><span class="pill c-none">None</span></td>
+<td class="mono sm">—</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00039 pt ihara manufacturing indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00039</td><td class="dt">2026-04-07</td>
+<td>PT IHARA MANUFACTURING INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 3.108.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-PFIT-2026-00032</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00038 pt eagle industry indonesia - 1 sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00038</td><td class="dt">2026-04-01</td>
+<td>PT EAGLE INDUSTRY INDONESIA - 1</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 1.376.400</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00046</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00037 pt sumber aneka engineering sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00037</td><td class="dt">2026-03-17</td>
+<td>PT SUMBER ANEKA ENGINEERING</td><td class="co">Indo Teknologi</td>
+<td class="st">To Deliver</td><td class="n">Rp 15.540.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2025-00023</td></tr>
+<tr data-staff="haerul@filtec.co.id" data-conf="low" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2026-00016 pt. oil terminal karimun haerul (back office)">
+<td class="mono">SO-FITT-2026-00016</td><td class="dt">2026-03-16</td>
+<td>PT. Oil Terminal Karimun</td><td class="co">Indotama Teknindo</td>
+<td class="st">To Deliver</td><td class="n">Rp 203.609.520</td>
+<td class="nm">Haerul (back office)</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-FITT-2026-00044-1</td></tr>
+<tr data-staff="haerul@filtec.co.id" data-conf="low" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2026-00014 pt euroasiatic heat &amp; power systems haerul (back office)">
+<td class="mono">SO-FITT-2026-00014</td><td class="dt">2026-03-12</td>
+<td>PT Euroasiatic Heat &amp; Power Systems</td><td class="co">Indotama Teknindo</td>
+<td class="st">Completed</td><td class="n">Rp 36.630.000</td>
+<td class="nm">Haerul (back office)</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-FITT-2026-00054-1</td></tr>
+<tr data-staff="ayu@filtec.co.id" data-conf="high" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2026-00015 pt. pln nusantara power (pltu indramayu) ayu yudhi">
+<td class="mono">SO-FITT-2026-00015</td><td class="dt">2026-03-12</td>
+<td>PT. PLN NUSANTARA POWER (PLTU INDRAMAYU)</td><td class="co">Indotama Teknindo</td>
+<td class="st">Completed</td><td class="n">Rp 226.440.000</td>
+<td class="nm">Ayu Yudhi</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-FITT-2026-00027</td></tr>
+<tr data-staff="dedeng.suryaman@filtec.co.id" data-conf="low" data-co="PT Filtec Indotama Teknindo" data-ds="Cancelled" data-s="so-fitt-2026-00013 pt pln indonesia power ubp priok dedeng suryaman">
+<td class="mono">SO-FITT-2026-00013</td><td class="dt">2026-03-11</td>
+<td>PT PLN Indonesia Power UBP Priok</td><td class="co">Indotama Teknindo</td>
+<td class="st">Cancelled</td><td class="n">Rp 306.182.400</td>
+<td class="nm">Dedeng Suryaman</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-FITT-2026-00033</td></tr>
+<tr data-staff="haerul@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Cancelled" data-s="so-pfit-2026-00036 pt kobe boga utama haerul (back office)">
+<td class="mono">SO-PFIT-2026-00036</td><td class="dt">2026-03-11</td>
+<td>PT KOBE BOGA UTAMA</td><td class="co">Indo Teknologi</td>
+<td class="st">Cancelled</td><td class="n">Rp 6.993.000</td>
+<td class="nm">Haerul (back office)</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-PFIT-2026-00055-1</td></tr>
+<tr data-staff="dedeng.suryaman@filtec.co.id" data-conf="low" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2026-00013-1 pt pln indonesia power ubp priok dedeng suryaman">
+<td class="mono">SO-FITT-2026-00013-1</td><td class="dt">2026-03-11</td>
+<td>PT PLN Indonesia Power UBP Priok</td><td class="co">Indotama Teknindo</td>
+<td class="st">Completed</td><td class="n">Rp 306.182.400</td>
+<td class="nm">Dedeng Suryaman</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-FITT-2026-00033</td></tr>
+<tr data-staff="haerul@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00036-1 pt kobe boga utama haerul (back office)">
+<td class="mono">SO-PFIT-2026-00036-1</td><td class="dt">2026-03-11</td>
+<td>PT KOBE BOGA UTAMA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 6.993.000</td>
+<td class="nm">Haerul (back office)</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-PFIT-2026-00055-1</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Cancelled" data-s="so-pfit-2026-00032 pt valmet technology center sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00032</td><td class="dt">2026-03-10</td>
+<td>PT Valmet Technology Center</td><td class="co">Indo Teknologi</td>
+<td class="st">Cancelled</td><td class="n">Rp 24.420.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00044</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00033 pt nikawa textile indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00033</td><td class="dt">2026-03-10</td>
+<td>PT NIKAWA TEXTILE INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 10.176.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00035</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00034 pt avesta continental pack sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00034</td><td class="dt">2026-03-10</td>
+<td>PT AVESTA CONTINENTAL PACK</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 10.656.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00049</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00035 pt namicoh indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00035</td><td class="dt">2026-03-10</td>
+<td>PT Namicoh Indonesia</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 8.569.200</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00043</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00032-1 pt valmet technology center sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00032-1</td><td class="dt">2026-03-10</td>
+<td>PT Valmet Technology Center</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 24.420.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00044</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00031 pt cubic indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00031</td><td class="dt">2026-03-06</td>
+<td>PT Cubic Indonesia</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 3.829.500</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00013</td></tr>
+<tr data-staff="dedeng.suryaman@filtec.co.id" data-conf="high" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2026-00011 cv mitra andalan sukses dedeng suryaman">
+<td class="mono">SO-FITT-2026-00011</td><td class="dt">2026-03-04</td>
+<td>CV Mitra Andalan Sukses</td><td class="co">Indotama Teknindo</td>
+<td class="st">Completed</td><td class="n">Rp 49.950.000</td>
+<td class="nm">Dedeng Suryaman</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-FITT-2026-00049</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00029 pt kobe boga utama sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00029</td><td class="dt">2026-03-03</td>
+<td>PT KOBE BOGA UTAMA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 2.331.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-PFIT-2026-00028</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00030 pt kobe boga utama sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00030</td><td class="dt">2026-03-03</td>
+<td>PT KOBE BOGA UTAMA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 2.331.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-PFIT-2026-00028</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00024 pt shindengen indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00024</td><td class="dt">2026-03-02</td>
+<td>PT SHINDENGEN INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 29.970.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-PFIT-2026-00005</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00025 pt kobe boga utama sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00025</td><td class="dt">2026-03-02</td>
+<td>PT KOBE BOGA UTAMA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 2.331.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-PFIT-2026-00028</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00027 pt yoshino indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00027</td><td class="dt">2026-03-02</td>
+<td>PT Yoshino Indonesia</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 4.440.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00048</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Cancelled" data-s="so-pfit-2026-00028 pt dunia kimia jaya sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00028</td><td class="dt">2026-03-02</td>
+<td>PT DUNIA KIMIA JAYA</td><td class="co">Indo Teknologi</td>
+<td class="st">Cancelled</td><td class="n">Rp 2.766.120</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00014</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00028-1 pt dunia kimia jaya sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00028-1</td><td class="dt">2026-03-02</td>
+<td>PT DUNIA KIMIA JAYA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 2.766.120</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00014</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00026 pt kobe boga utama sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00026</td><td class="dt">2026-02-26</td>
+<td>PT KOBE BOGA UTAMA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 2.331.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-PFIT-2026-00028</td></tr>
+<tr data-staff="ayu@filtec.co.id" data-conf="medium" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2026-00023 pt. pindo deli pulp and paper mills ayu yudhi">
+<td class="mono">SO-FITT-2026-00023</td><td class="dt">2026-02-25</td>
+<td>PT. Pindo Deli Pulp and Paper Mills</td><td class="co">Indotama Teknindo</td>
+<td class="st">To Deliver and Bill</td><td class="n">Rp 34.652.812</td>
+<td class="nm">Ayu Yudhi</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-FITT-2026-00023</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00023 pt suri tani pemuka sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00023</td><td class="dt">2026-02-25</td>
+<td>PT SURI TANI PEMUKA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 20.762.550</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00041</td></tr>
+<tr data-staff="ayu@filtec.co.id" data-conf="medium" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2026-00009 pt. pindo deli pulp and paper mills ayu yudhi">
+<td class="mono">SO-FITT-2026-00009</td><td class="dt">2026-02-24</td>
+<td>PT. Pindo Deli Pulp and Paper Mills</td><td class="co">Indotama Teknindo</td>
+<td class="st">To Bill</td><td class="n">Rp 306.484.875</td>
+<td class="nm">Ayu Yudhi</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-FITT-2026-00023</td></tr>
+<tr data-staff="haerul@filtec.co.id" data-conf="medium" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2026-00010 pt dua satu energi nusantara haerul (back office)">
+<td class="mono">SO-FITT-2026-00010</td><td class="dt">2026-02-24</td>
+<td>PT Dua Satu Energi Nusantara</td><td class="co">Indotama Teknindo</td>
+<td class="st">Completed</td><td class="n">Rp 323.942.400</td>
+<td class="nm">Haerul (back office)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00045-1</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00021 pt. nissin foods indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00021</td><td class="dt">2026-02-24</td>
+<td>PT. NISSIN FOODS INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 2.497.500</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00033</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Cancelled" data-s="so-pfit-2026-00022 pt nikawa textile indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00022</td><td class="dt">2026-02-24</td>
+<td>PT NIKAWA TEXTILE INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Cancelled</td><td class="n">Rp 11.988.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00035</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00022-1 pt nikawa textile indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00022-1</td><td class="dt">2026-02-24</td>
+<td>PT NIKAWA TEXTILE INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 10.176.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00035</td></tr>
+<tr data-staff="ayu@filtec.co.id" data-conf="low" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2026-00008 pt unilever oleochemical indonesia ayu yudhi">
+<td class="mono">SO-FITT-2026-00008</td><td class="dt">2026-02-23</td>
+<td>PT UNILEVER OLEOCHEMICAL INDONESIA</td><td class="co">Indotama Teknindo</td>
+<td class="st">Completed</td><td class="n">Rp 27.196.110</td>
+<td class="nm">Ayu Yudhi</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-FITT-2025-00047</td></tr>
+<tr data-staff="ayu@filtec.co.id" data-conf="medium" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2026-00006 pt. tanggamus electric power ayu yudhi">
+<td class="mono">SO-FITT-2026-00006</td><td class="dt">2026-02-21</td>
+<td>PT. TANGGAMUS ELECTRIC POWER</td><td class="co">Indotama Teknindo</td>
+<td class="st">To Deliver</td><td class="n">Rp 41.181.000</td>
+<td class="nm">Ayu Yudhi</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-FITT-2026-00042</td></tr>
+<tr data-staff="ayu@filtec.co.id" data-conf="high" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2026-00007 bp berau ltd ayu yudhi">
+<td class="mono">SO-FITT-2026-00007</td><td class="dt">2026-02-21</td>
+<td>BP Berau Ltd</td><td class="co">Indotama Teknindo</td>
+<td class="st">To Bill</td><td class="n">Rp 81.039.435</td>
+<td class="nm">Ayu Yudhi</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-FITT-2026-00028</td></tr>
+<tr data-staff="ayu@filtec.co.id" data-conf="medium" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2026-00005 pt. pelayaran samasagung tunggal perkasa ayu yudhi">
+<td class="mono">SO-FITT-2026-00005</td><td class="dt">2026-02-19</td>
+<td>PT. PELAYARAN SAMASAGUNG TUNGGAL PERKASA</td><td class="co">Indotama Teknindo</td>
+<td class="st">Completed</td><td class="n">Rp 75.480.000</td>
+<td class="nm">Ayu Yudhi</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-FITT-2026-00031</td></tr>
+<tr data-staff="dedeng.suryaman@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00020 pt. pelayaran samasagung tunggal perkasa dedeng suryaman">
+<td class="mono">SO-PFIT-2026-00020</td><td class="dt">2026-02-19</td>
+<td>PT. PELAYARAN SAMASAGUNG TUNGGAL PERKASA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 89.910.000</td>
+<td class="nm">Dedeng Suryaman</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00031</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00019 pt unilever indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00019</td><td class="dt">2026-02-17</td>
+<td>PT UNILEVER INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 39.960.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2025-00034</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00017 pt sentra kreasi kencana sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00017</td><td class="dt">2026-02-13</td>
+<td>PT Sentra Kreasi Kencana</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 1.332.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00029</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00018 pt. nissin foods indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00018</td><td class="dt">2026-02-13</td>
+<td>PT. NISSIN FOODS INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 1.942.500</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00033</td></tr>
+<tr data-staff="dedeng.suryaman@filtec.co.id" data-conf="medium" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2026-00004 pt. pelangi lintas sejahtera dedeng suryaman">
+<td class="mono">SO-FITT-2026-00004</td><td class="dt">2026-02-10</td>
+<td>PT. PELANGI LINTAS SEJAHTERA</td><td class="co">Indotama Teknindo</td>
+<td class="st">To Deliver</td><td class="n">Rp 71.928.000</td>
+<td class="nm">Dedeng Suryaman</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-FITT-2026-00037</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00016 pt. b.s indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00016</td><td class="dt">2026-02-10</td>
+<td>PT. B.S INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 47.286.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00019</td></tr>
+<tr data-staff="dedeng.suryaman@filtec.co.id" data-conf="medium" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2026-00003 pt. pelangi lintas sejahtera dedeng suryaman">
+<td class="mono">SO-FITT-2026-00003</td><td class="dt">2026-02-09</td>
+<td>PT. PELANGI LINTAS SEJAHTERA</td><td class="co">Indotama Teknindo</td>
+<td class="st">Completed</td><td class="n">Rp 16.927.500</td>
+<td class="nm">Dedeng Suryaman</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-FITT-2026-00037</td></tr>
+<tr data-staff="haerul@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Cancelled" data-s="so-pfit-2026-00013 pt. djabesmen haerul (back office)">
+<td class="mono">SO-PFIT-2026-00013</td><td class="dt">2026-02-03</td>
+<td>PT. DJABESMEN</td><td class="co">Indo Teknologi</td>
+<td class="st">Cancelled</td><td class="n">Rp 41.625.000</td>
+<td class="nm">Haerul (back office)</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-PFIT-2026-00002-1</td></tr>
+<tr data-staff="haerul@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00014 pt. djabesmen haerul (back office)">
+<td class="mono">SO-PFIT-2026-00014</td><td class="dt">2026-02-03</td>
+<td>PT. DJABESMEN</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 41.625.000</td>
+<td class="nm">Haerul (back office)</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-PFIT-2026-00002-1</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00015 pt oro plastindo sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00015</td><td class="dt">2026-02-03</td>
+<td>PT Oro Plastindo</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 1.966.920</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00021</td></tr>
+<tr data-staff="(unattributable)" data-conf="none" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00012 pt katsuyama finetech —">
+<td class="mono">SO-PFIT-2026-00012</td><td class="dt">2026-01-28</td>
+<td>PT Katsuyama Finetech</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 4.273.500</td>
+<td class="nm">—</td>
+<td><span class="pill c-none">None</span></td>
+<td class="mono sm">—</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00010 pt schlemmer automotive indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00010</td><td class="dt">2026-01-27</td>
+<td>PT SCHLEMMER AUTOMOTIVE INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 5.605.500</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-PFIT-2026-00012</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00011 pt kobe boga utama sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00011</td><td class="dt">2026-01-27</td>
+<td>PT KOBE BOGA UTAMA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 848.040</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-PFIT-2026-00018</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00007 pt schlemmer automotive indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00007</td><td class="dt">2026-01-23</td>
+<td>PT SCHLEMMER AUTOMOTIVE INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 2.997.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-PFIT-2026-00012</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Cancelled" data-s="so-pfit-2026-00008 pt cubic indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00008</td><td class="dt">2026-01-23</td>
+<td>PT Cubic Indonesia</td><td class="co">Indo Teknologi</td>
+<td class="st">Cancelled</td><td class="n">Rp 6.930.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00013</td></tr>
+<tr data-staff="(unattributable)" data-conf="none" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00009 pt indonesia polymer compound —">
+<td class="mono">SO-PFIT-2026-00009</td><td class="dt">2026-01-23</td>
+<td>PT INDONESIA POLYMER COMPOUND</td><td class="co">Indo Teknologi</td>
+<td class="st">To Bill</td><td class="n">Rp 2.250.000</td>
+<td class="nm">—</td>
+<td><span class="pill c-none">None</span></td>
+<td class="mono sm">—</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00008-1 pt cubic indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00008-1</td><td class="dt">2026-01-23</td>
+<td>PT Cubic Indonesia</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 8.550.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00013</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00006 pt shindengen indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00006</td><td class="dt">2026-01-21</td>
+<td>PT SHINDENGEN INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 29.970.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-PFIT-2026-00005</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00004 pt. supernova flexible packaging sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00004</td><td class="dt">2026-01-20</td>
+<td>PT. Supernova Flexible Packaging</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 2.957.040</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00007</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00005 pt schlemmer automotive indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00005</td><td class="dt">2026-01-20</td>
+<td>PT SCHLEMMER AUTOMOTIVE INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 410.700</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-PFIT-2026-00012</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Cancelled" data-s="so-pfit-2026-00003 pt. tpi manufacturing indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00003</td><td class="dt">2026-01-15</td>
+<td>PT. TPI MANUFACTURING INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Cancelled</td><td class="n">Rp 1.443.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2025-00036</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00003-1 pt. tpi manufacturing indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00003-1</td><td class="dt">2026-01-15</td>
+<td>PT. TPI MANUFACTURING INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 1.443.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2025-00036</td></tr>
+<tr data-staff="ayu@filtec.co.id" data-conf="high" data-co="PT Filtec Indotama Teknindo" data-ds="Cancelled" data-s="so-fitt-2026-00002 pt. pln nusantara power (pltu indramayu) ayu yudhi">
+<td class="mono">SO-FITT-2026-00002</td><td class="dt">2026-01-12</td>
+<td>PT. PLN NUSANTARA POWER (PLTU INDRAMAYU)</td><td class="co">Indotama Teknindo</td>
+<td class="st">Cancelled</td><td class="n">Rp 170.802.360</td>
+<td class="nm">Ayu Yudhi</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-FITT-2025-00032</td></tr>
+<tr data-staff="ayu@filtec.co.id" data-conf="high" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2026-00012 pt. pln nusantara power (pltu indramayu) ayu yudhi">
+<td class="mono">SO-FITT-2026-00012</td><td class="dt">2026-01-12</td>
+<td>PT. PLN NUSANTARA POWER (PLTU INDRAMAYU)</td><td class="co">Indotama Teknindo</td>
+<td class="st">Completed</td><td class="n">Rp 226.440.000</td>
+<td class="nm">Ayu Yudhi</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-FITT-2025-00032</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00001 pt. nissin foods indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00001</td><td class="dt">2026-01-08</td>
+<td>PT. NISSIN FOODS INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 15.817.500</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2025-00008</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2026-00002 pt. aneka sarivita sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2026-00002</td><td class="dt">2026-01-07</td>
+<td>PT. ANEKA SARIVITA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 5.550.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00001</td></tr>
+<tr data-staff="ayu@filtec.co.id" data-conf="medium" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2026-00001 pt. pelangi lintas sejahtera ayu yudhi">
+<td class="mono">SO-FITT-2026-00001</td><td class="dt">2026-01-05</td>
+<td>PT. PELANGI LINTAS SEJAHTERA</td><td class="co">Indotama Teknindo</td>
+<td class="st">To Deliver</td><td class="n">Rp 112.121.100</td>
+<td class="nm">Ayu Yudhi</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-FITT-2025-00042</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2025-00033 pt unilever indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2025-00033</td><td class="dt">2025-12-23</td>
+<td>PT UNILEVER INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 8.394.200</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2025-00034</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2025-00034 pt unilever indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2025-00034</td><td class="dt">2025-12-23</td>
+<td>PT UNILEVER INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 4.440.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2025-00034</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2025-00032 pt yoshino indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2025-00032</td><td class="dt">2025-12-22</td>
+<td>PT Yoshino Indonesia</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 6.382.500</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2025-00030</td></tr>
+<tr data-staff="heka@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2025-00031 pt tsuchiya manufacturing indonesia heka">
+<td class="mono">SO-PFIT-2025-00031</td><td class="dt">2025-12-08</td>
+<td>PT Tsuchiya Manufacturing Indonesia</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 3.330.000</td>
+<td class="nm">Heka</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-PFIT-2026-00091</td></tr>
+<tr data-staff="heka@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2025-00029 pt yoshino indonesia heka">
+<td class="mono">SO-PFIT-2025-00029</td><td class="dt">2025-12-03</td>
+<td>PT Yoshino Indonesia</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 999.000</td>
+<td class="nm">Heka</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00116</td></tr>
+<tr data-staff="(unattributable)" data-conf="none" data-co="PT Filtec Indotama Teknindo" data-ds="Cancelled" data-s="so-fitt-2025-00014 pt dummy —">
+<td class="mono">SO-FITT-2025-00014</td><td class="dt">2025-12-02</td>
+<td>PT Dummy</td><td class="co">Indotama Teknindo</td>
+<td class="st">Cancelled</td><td class="n">Rp 87.700.000</td>
+<td class="nm">—</td>
+<td><span class="pill c-none">None</span></td>
+<td class="mono sm">—</td></tr>
+<tr data-staff="ayu@filtec.co.id" data-conf="high" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2025-00015 bp berau ltd ayu yudhi">
+<td class="mono">SO-FITT-2025-00015</td><td class="dt">2025-12-02</td>
+<td>BP Berau Ltd</td><td class="co">Indotama Teknindo</td>
+<td class="st">Completed</td><td class="n">Rp 159.840.000</td>
+<td class="nm">Ayu Yudhi</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-FITT-2025-00020</td></tr>
+<tr data-staff="(unattributable)" data-conf="none" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2025-00028 pt dummy —">
+<td class="mono">SO-PFIT-2025-00028</td><td class="dt">2025-12-02</td>
+<td>PT Dummy</td><td class="co">Indo Teknologi</td>
+<td class="st">To Deliver and Bill</td><td class="n">Rp 1.110.000</td>
+<td class="nm">—</td>
+<td><span class="pill c-none">None</span></td>
+<td class="mono sm">—</td></tr>
+<tr data-staff="haerul@filtec.co.id" data-conf="low" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2025-00013 pt. semangat maritim indonesia haerul (back office)">
+<td class="mono">SO-FITT-2025-00013</td><td class="dt">2025-11-28</td>
+<td>PT. SEMANGAT MARITIM INDONESIA</td><td class="co">Indotama Teknindo</td>
+<td class="st">To Deliver</td><td class="n">Rp 77.700.000</td>
+<td class="nm">Haerul (back office)</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-FITT-2025-00036-1</td></tr>
+<tr data-staff="heka@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2025-00027 pt kobe boga utama heka">
+<td class="mono">SO-PFIT-2025-00027</td><td class="dt">2025-11-27</td>
+<td>PT KOBE BOGA UTAMA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 3.330.000</td>
+<td class="nm">Heka</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-PFIT-2026-00134</td></tr>
+<tr data-staff="ayu@filtec.co.id" data-conf="high" data-co="PT Filtec Indotama Teknindo" data-ds="Cancelled" data-s="so-fitt-2025-00012 pt. pln nusantara power (pltu indramayu) ayu yudhi">
+<td class="mono">SO-FITT-2025-00012</td><td class="dt">2025-11-26</td>
+<td>PT. PLN NUSANTARA POWER (PLTU INDRAMAYU)</td><td class="co">Indotama Teknindo</td>
+<td class="st">Cancelled</td><td class="n">Rp 227.736.480</td>
+<td class="nm">Ayu Yudhi</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-FITT-2025-00032</td></tr>
+<tr data-staff="ayu@filtec.co.id" data-conf="high" data-co="PT Filtec Indotama Teknindo" data-ds="Cancelled" data-s="so-fitt-2025-00012-1 pt. pln nusantara power (pltu indramayu) ayu yudhi">
+<td class="mono">SO-FITT-2025-00012-1</td><td class="dt">2025-11-26</td>
+<td>PT. PLN NUSANTARA POWER (PLTU INDRAMAYU)</td><td class="co">Indotama Teknindo</td>
+<td class="st">Cancelled</td><td class="n">Rp 56.934.120</td>
+<td class="nm">Ayu Yudhi</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-FITT-2025-00032</td></tr>
+<tr data-staff="ayu@filtec.co.id" data-conf="high" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2025-00012-2 pt. pln nusantara power (pltu indramayu) ayu yudhi">
+<td class="mono">SO-FITT-2025-00012-2</td><td class="dt">2025-11-26</td>
+<td>PT. PLN NUSANTARA POWER (PLTU INDRAMAYU)</td><td class="co">Indotama Teknindo</td>
+<td class="st">Completed</td><td class="n">Rp 227.736.480</td>
+<td class="nm">Ayu Yudhi</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-FITT-2025-00032</td></tr>
+<tr data-staff="ayu@filtec.co.id" data-conf="high" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2025-00011 cv. ulung jaya mandiri - 1 ayu yudhi">
+<td class="mono">SO-FITT-2025-00011</td><td class="dt">2025-11-25</td>
+<td>CV. ULUNG JAYA MANDIRI - 1</td><td class="co">Indotama Teknindo</td>
+<td class="st">To Bill</td><td class="n">Rp 16.317.000</td>
+<td class="nm">Ayu Yudhi</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-FITT-2025-00029</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2025-00026 pt namicoh indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2025-00026</td><td class="dt">2025-11-25</td>
+<td>PT Namicoh Indonesia</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 15.318.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2025-00026</td></tr>
+<tr data-staff="heka@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2025-00025 pt yoshino indonesia heka">
+<td class="mono">SO-PFIT-2025-00025</td><td class="dt">2025-11-24</td>
+<td>PT Yoshino Indonesia</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 1.600.000</td>
+<td class="nm">Heka</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00116</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2025-00030 pt riken indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2025-00030</td><td class="dt">2025-11-24</td>
+<td>PT Riken Indonesia</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 2.664.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00020</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2025-00023 pt bumi menara internusa sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2025-00023</td><td class="dt">2025-11-21</td>
+<td>PT Bumi Menara Internusa</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 10.833.600</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2025-00016</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2025-00024 pt. nissin foods indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2025-00024</td><td class="dt">2025-11-21</td>
+<td>PT. NISSIN FOODS INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 1.540.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2025-00008</td></tr>
+<tr data-staff="ayu@filtec.co.id" data-conf="medium" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2025-00010 pt. logindo samudramakmur tbk ayu yudhi">
+<td class="mono">SO-FITT-2025-00010</td><td class="dt">2025-11-18</td>
+<td>PT. Logindo Samudramakmur Tbk</td><td class="co">Indotama Teknindo</td>
+<td class="st">Completed</td><td class="n">Rp 49.950.000</td>
+<td class="nm">Ayu Yudhi</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-FITT-2025-00022</td></tr>
+<tr data-staff="ayu@filtec.co.id" data-conf="medium" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2025-00009 pt. tanggamus electric power ayu yudhi">
+<td class="mono">SO-FITT-2025-00009</td><td class="dt">2025-11-14</td>
+<td>PT. TANGGAMUS ELECTRIC POWER</td><td class="co">Indotama Teknindo</td>
+<td class="st">To Deliver</td><td class="n">Rp 433.455.000</td>
+<td class="nm">Ayu Yudhi</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-FITT-2025-00018</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2025-00022 pt eagle industry indonesia - 1 sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2025-00022</td><td class="dt">2025-11-14</td>
+<td>PT EAGLE INDUSTRY INDONESIA - 1</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 3.663.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00046</td></tr>
+<tr data-staff="dedeng.suryaman@filtec.co.id" data-conf="low" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2025-00008 pt unilever oleochemical indonesia dedeng suryaman">
+<td class="mono">SO-FITT-2025-00008</td><td class="dt">2025-11-13</td>
+<td>PT UNILEVER OLEOCHEMICAL INDONESIA</td><td class="co">Indotama Teknindo</td>
+<td class="st">Completed</td><td class="n">Rp 57.176.100</td>
+<td class="nm">Dedeng Suryaman</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">SAL-QTN-2025-00067</td></tr>
+<tr data-staff="ayu@filtec.co.id" data-conf="medium" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2025-00007 pt. multi rotatek indonesia ayu yudhi">
+<td class="mono">SO-FITT-2025-00007</td><td class="dt">2025-11-12</td>
+<td>PT. Multi Rotatek Indonesia</td><td class="co">Indotama Teknindo</td>
+<td class="st">Completed</td><td class="n">Rp 22.200.000</td>
+<td class="nm">Ayu Yudhi</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-FITT-2025-00026</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2025-00021 pt valmet technology center sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2025-00021</td><td class="dt">2025-11-12</td>
+<td>PT Valmet Technology Center</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 24.420.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00073</td></tr>
+<tr data-staff="ayu@filtec.co.id" data-conf="medium" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2025-00006 pt. pelangi lintas sejahtera ayu yudhi">
+<td class="mono">SO-FITT-2025-00006</td><td class="dt">2025-11-11</td>
+<td>PT. PELANGI LINTAS SEJAHTERA</td><td class="co">Indotama Teknindo</td>
+<td class="st">Completed</td><td class="n">Rp 74.675.250</td>
+<td class="nm">Ayu Yudhi</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-FITT-2025-00023</td></tr>
+<tr data-staff="heka@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2025-00020 pt fumira heka">
+<td class="mono">SO-PFIT-2025-00020</td><td class="dt">2025-11-07</td>
+<td>PT Fumira</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 1.785.990</td>
+<td class="nm">Heka</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00131</td></tr>
+<tr data-staff="(unattributable)" data-conf="none" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2025-00017 pt mesin isuzu indonesia —">
+<td class="mono">SO-PFIT-2025-00017</td><td class="dt">2025-11-04</td>
+<td>PT Mesin Isuzu Indonesia</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 10.323.000</td>
+<td class="nm">—</td>
+<td><span class="pill c-none">None</span></td>
+<td class="mono sm">—</td></tr>
+<tr data-staff="(unattributable)" data-conf="none" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2025-00018 pt katsuyama finetech —">
+<td class="mono">SO-PFIT-2025-00018</td><td class="dt">2025-11-04</td>
+<td>PT Katsuyama Finetech</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 4.273.500</td>
+<td class="nm">—</td>
+<td><span class="pill c-none">None</span></td>
+<td class="mono sm">—</td></tr>
+<tr data-staff="ayu@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2025-00019 pt supernova flexible packaging ayu yudhi">
+<td class="mono">SO-PFIT-2025-00019</td><td class="dt">2025-11-04</td>
+<td>PT Supernova Flexible Packaging</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 2.957.040</td>
+<td class="nm">Ayu Yudhi</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00109</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2025-00015 pt oasis waters international sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2025-00015</td><td class="dt">2025-10-30</td>
+<td>PT OASIS WATERS INTERNATIONAL</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 3.885.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">SAL-QTN-2025-00046-1</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2025-00016 pt. djabesmen sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2025-00016</td><td class="dt">2025-10-30</td>
+<td>PT. DJABESMEN</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 15.984.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">SAL-QTN-2025-00052</td></tr>
+<tr data-staff="ayu@filtec.co.id" data-conf="high" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2025-00005 pt karya energi indonesia ayu yudhi">
+<td class="mono">SO-FITT-2025-00005</td><td class="dt">2025-10-29</td>
+<td>PT Karya Energi Indonesia</td><td class="co">Indotama Teknindo</td>
+<td class="st">Completed</td><td class="n">Rp 1.569.984</td>
+<td class="nm">Ayu Yudhi</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-FITT-2025-00006</td></tr>
+<tr data-staff="heka@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2025-00014 pt bumi menara internusa heka">
+<td class="mono">SO-PFIT-2025-00014</td><td class="dt">2025-10-29</td>
+<td>PT Bumi Menara Internusa</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 12.210.000</td>
+<td class="nm">Heka</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00123</td></tr>
+<tr data-staff="ayu@filtec.co.id" data-conf="low" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2025-00004 pt tribuana globalindo energi ayu yudhi">
+<td class="mono">SO-FITT-2025-00004</td><td class="dt">2025-10-28</td>
+<td>PT TRIBUANA GLOBALINDO ENERGI</td><td class="co">Indotama Teknindo</td>
+<td class="st">To Deliver and Bill</td><td class="n">Rp 85.470.000</td>
+<td class="nm">Ayu Yudhi</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">SAL-QTN-2025-00031</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2025-00010 pt schlemmer automotive indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2025-00010</td><td class="dt">2025-10-28</td>
+<td>PT SCHLEMMER AUTOMOTIVE INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 3.607.500</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">SAL-QTN-2025-00047-1</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2025-00011 pt unilever indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2025-00011</td><td class="dt">2025-10-28</td>
+<td>PT UNILEVER INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 4.000.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00066</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Cancelled" data-s="so-pfit-2025-00012 pt unilever indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2025-00012</td><td class="dt">2025-10-28</td>
+<td>PT UNILEVER INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Cancelled</td><td class="n">Rp 83.942</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00066</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2025-00013 pt. marsol abadi indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2025-00013</td><td class="dt">2025-10-28</td>
+<td>PT. MARSOL ABADI INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 1.665.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2025-00006</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2025-00009-1 pt ihara manufacturing indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2025-00009-1</td><td class="dt">2025-10-28</td>
+<td>PT IHARA MANUFACTURING INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 888.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">SAL-QTN-2025-00044-1</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2025-00012-1 pt unilever indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2025-00012-1</td><td class="dt">2025-10-28</td>
+<td>PT UNILEVER INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">To Deliver</td><td class="n">Rp 8.394.200</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00066</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Cancelled" data-s="so-pfit-2025-00009 pt ihara manufacturing indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2025-00009</td><td class="dt">2025-10-27</td>
+<td>PT IHARA MANUFACTURING INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Cancelled</td><td class="n">Rp 888.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">SAL-QTN-2025-00044-1</td></tr>
+<tr data-staff="(unattributable)" data-conf="none" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2025-00007 pt multi color jakarta —">
+<td class="mono">SO-PFIT-2025-00007</td><td class="dt">2025-10-21</td>
+<td>PT Multi Color Jakarta</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 2.109.000</td>
+<td class="nm">—</td>
+<td><span class="pill c-none">None</span></td>
+<td class="mono sm">—</td></tr>
+<tr data-staff="(unattributable)" data-conf="none" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2025-00008 pt onamba indonesia —">
+<td class="mono">SO-PFIT-2025-00008</td><td class="dt">2025-10-21</td>
+<td>PT Onamba Indonesia</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 1.665.000</td>
+<td class="nm">—</td>
+<td><span class="pill c-none">None</span></td>
+<td class="mono sm">—</td></tr>
+<tr data-staff="ayu@filtec.co.id" data-conf="high" data-co="PT Filtec Indotama Teknindo" data-ds="Cancelled" data-s="so-fitt-2025-00003 pt karya energi indonesia ayu yudhi">
+<td class="mono">SO-FITT-2025-00003</td><td class="dt">2025-10-20</td>
+<td>PT Karya Energi Indonesia</td><td class="co">Indotama Teknindo</td>
+<td class="st">Cancelled</td><td class="n">Rp 51.393.000</td>
+<td class="nm">Ayu Yudhi</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-FITT-2025-00006-1</td></tr>
+<tr data-staff="ayu@filtec.co.id" data-conf="high" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2025-00003-1 pt karya energi indonesia ayu yudhi">
+<td class="mono">SO-FITT-2025-00003-1</td><td class="dt">2025-10-20</td>
+<td>PT Karya Energi Indonesia</td><td class="co">Indotama Teknindo</td>
+<td class="st">Completed</td><td class="n">Rp 52.431.960</td>
+<td class="nm">Ayu Yudhi</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-FITT-2025-00006-1</td></tr>
+<tr data-staff="(unattributable)" data-conf="none" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2025-00006 pt eagle industry indonesia —">
+<td class="mono">SO-PFIT-2025-00006</td><td class="dt">2025-10-16</td>
+<td>PT Eagle Industry Indonesia</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 1.332.000</td>
+<td class="nm">—</td>
+<td><span class="pill c-none">None</span></td>
+<td class="mono sm">—</td></tr>
+<tr data-staff="heka@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2025-00004 pt kobe boga utama heka">
+<td class="mono">SO-PFIT-2025-00004</td><td class="dt">2025-10-14</td>
+<td>PT KOBE BOGA UTAMA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 2.331.000</td>
+<td class="nm">Heka</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-PFIT-2026-00134</td></tr>
+<tr data-staff="ayu@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2025-00005 pt. nissin foods indonesia ayu yudhi">
+<td class="mono">SO-PFIT-2025-00005</td><td class="dt">2025-10-14</td>
+<td>PT. NISSIN FOODS INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 3.108.000</td>
+<td class="nm">Ayu Yudhi</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00127</td></tr>
+<tr data-staff="ayu@filtec.co.id" data-conf="medium" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="so-fitt-2025-00002 pt. pln indonesia power ubp bali ayu yudhi">
+<td class="mono">SO-FITT-2025-00002</td><td class="dt">2025-10-13</td>
+<td>PT. PLN INDONESIA POWER UBP BALI</td><td class="co">Indotama Teknindo</td>
+<td class="st">Completed</td><td class="n">Rp 233.632.800</td>
+<td class="nm">Ayu Yudhi</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">SAL-QTN-2025-00041</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="low" data-co="PT Filtec Indotama Teknindo" data-ds="Cancelled" data-s="so-fitt-2025-00001 pt schlemmer automotive indonesia sales@ (shared mailbox)">
+<td class="mono">SO-FITT-2025-00001</td><td class="dt">2025-10-08</td>
+<td>PT SCHLEMMER AUTOMOTIVE INDONESIA</td><td class="co">Indotama Teknindo</td>
+<td class="st">Cancelled</td><td class="n">Rp 2.081.250</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">SAL-QTN-2025-00047-1</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2025-00002 pt. radiant utama interinsco tbk sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2025-00002</td><td class="dt">2025-10-07</td>
+<td>PT. Radiant Utama Interinsco Tbk</td><td class="co">Indo Teknologi</td>
+<td class="st">To Deliver</td><td class="n">Rp 142.568.400</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2025-00001</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2025-00003 pt schlemmer automotive indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2025-00003</td><td class="dt">2025-10-07</td>
+<td>PT SCHLEMMER AUTOMOTIVE INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 2.081.250</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">SAL-QTN-2025-00047-1</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="so-pfit-2025-00001 pt ihara manufacturing indonesia sales@ (shared mailbox)">
+<td class="mono">SO-PFIT-2025-00001</td><td class="dt">2025-09-29</td>
+<td>PT IHARA MANUFACTURING INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 9.768.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">SAL-QTN-2025-00044-1</td></tr>
+<tr data-staff="dedeng.suryaman@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="sal-ord-2025-00012 pt shindengen indonesia dedeng suryaman">
+<td class="mono">SAL-ORD-2025-00012</td><td class="dt">2025-09-25</td>
+<td>PT SHINDENGEN INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 36.630.000</td>
+<td class="nm">Dedeng Suryaman</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">SAL-QTN-2025-00003</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Cancelled" data-s="sal-ord-2025-00013 pt ateja tritunggal sales@ (shared mailbox)">
+<td class="mono">SAL-ORD-2025-00013</td><td class="dt">2025-09-25</td>
+<td>PT Ateja Tritunggal</td><td class="co">Indo Teknologi</td>
+<td class="st">Cancelled</td><td class="n">Rp 3.774.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">SAL-QTN-2025-00074</td></tr>
+<tr data-staff="ayu@filtec.co.id" data-conf="high" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="sal-ord-2025-00011 cv devina teknik ayu yudhi">
+<td class="mono">SAL-ORD-2025-00011</td><td class="dt">2025-09-24</td>
+<td>CV Devina Teknik</td><td class="co">Indotama Teknindo</td>
+<td class="st">Completed</td><td class="n">Rp 42.180.000</td>
+<td class="nm">Ayu Yudhi</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">SAL-QTN-2025-00033</td></tr>
+<tr data-staff="haerul@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Cancelled" data-s="sal-ord-2025-00013-1 pt ateja tritunggal haerul (back office)">
+<td class="mono">SAL-ORD-2025-00013-1</td><td class="dt">2025-09-24</td>
+<td>PT Ateja Tritunggal</td><td class="co">Indo Teknologi</td>
+<td class="st">Cancelled</td><td class="n">Rp 3.774.000</td>
+<td class="nm">Haerul (back office)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2025-00012</td></tr>
+<tr data-staff="haerul@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="sal-ord-2025-00013-2 pt ateja tritunggal haerul (back office)">
+<td class="mono">SAL-ORD-2025-00013-2</td><td class="dt">2025-09-24</td>
+<td>PT Ateja Tritunggal</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 3.774.000</td>
+<td class="nm">Haerul (back office)</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2025-00012</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="sal-ord-2025-00014 pt ihara manufacturing indonesia sales@ (shared mailbox)">
+<td class="mono">SAL-ORD-2025-00014</td><td class="dt">2025-09-19</td>
+<td>PT IHARA MANUFACTURING INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 888.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">SAL-QTN-2025-00044-1</td></tr>
+<tr data-staff="(unattributable)" data-conf="none" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="sal-ord-2025-00010 pt dai moto indonesia —">
+<td class="mono">SAL-ORD-2025-00010</td><td class="dt">2025-09-12</td>
+<td>PT DAI MOTO INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 1.942.500</td>
+<td class="nm">—</td>
+<td><span class="pill c-none">None</span></td>
+<td class="mono sm">—</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Cancelled" data-s="sal-ord-2025-00006 pt yoshino indonesia - 1 sales@ (shared mailbox)">
+<td class="mono">SAL-ORD-2025-00006</td><td class="dt">2025-09-11</td>
+<td>PT Yoshino Indonesia - 1</td><td class="co">Indo Teknologi</td>
+<td class="st">Cancelled</td><td class="n">Rp 1.776.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">SAL-QTN-2025-00048-1</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Cancelled" data-s="sal-ord-2025-00005 pt schlemmer automotive indonesia sales@ (shared mailbox)">
+<td class="mono">SAL-ORD-2025-00005</td><td class="dt">2025-09-10</td>
+<td>PT SCHLEMMER AUTOMOTIVE INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Cancelled</td><td class="n">Rp 1.554.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">SAL-QTN-2025-00047-1</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Cancelled" data-s="sal-ord-2025-00005-1 pt schlemmer automotive indonesia sales@ (shared mailbox)">
+<td class="mono">SAL-ORD-2025-00005-1</td><td class="dt">2025-09-10</td>
+<td>PT SCHLEMMER AUTOMOTIVE INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Cancelled</td><td class="n">Rp 1.554.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">SAL-QTN-2025-00047-1</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Cancelled" data-s="sal-ord-2025-00005-2 pt schlemmer automotive indonesia sales@ (shared mailbox)">
+<td class="mono">SAL-ORD-2025-00005-2</td><td class="dt">2025-09-10</td>
+<td>PT SCHLEMMER AUTOMOTIVE INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Cancelled</td><td class="n">Rp 1.554.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">SAL-QTN-2025-00047-1</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="sal-ord-2025-00005-3 pt schlemmer automotive indonesia sales@ (shared mailbox)">
+<td class="mono">SAL-ORD-2025-00005-3</td><td class="dt">2025-09-10</td>
+<td>PT SCHLEMMER AUTOMOTIVE INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 1.554.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">SAL-QTN-2025-00047-1</td></tr>
+<tr data-staff="heka@filtec.co.id" data-conf="medium" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="sal-ord-2025-00008 pt yoshino indonesia heka">
+<td class="mono">SAL-ORD-2025-00008</td><td class="dt">2025-09-09</td>
+<td>PT Yoshino Indonesia</td><td class="co">Indo Teknologi</td>
+<td class="st">To Deliver</td><td class="n">Rp 1.776.000</td>
+<td class="nm">Heka</td>
+<td><span class="pill c-med">Medium</span></td>
+<td class="mono sm">QTN-PFIT-2026-00116</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="sal-ord-2025-00015 pt ihara manufacturing indonesia sales@ (shared mailbox)">
+<td class="mono">SAL-ORD-2025-00015</td><td class="dt">2025-09-09</td>
+<td>PT IHARA MANUFACTURING INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">Completed</td><td class="n">Rp 1.110.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">SAL-QTN-2025-00044-1</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="sal-ord-2025-00002 pt dragon pack sales@ (shared mailbox)">
+<td class="mono">SAL-ORD-2025-00002</td><td class="dt">2025-08-29</td>
+<td>PT DRAGON PACK</td><td class="co">Indo Teknologi</td>
+<td class="st">To Deliver and Bill</td><td class="n">Rp 8.783.430</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2025-00019</td></tr>
+<tr data-staff="dedeng.suryaman@filtec.co.id" data-conf="low" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="sal-ord-2025-00004 pt schlemmer automotive indonesia dedeng suryaman">
+<td class="mono">SAL-ORD-2025-00004</td><td class="dt">2025-08-28</td>
+<td>PT SCHLEMMER AUTOMOTIVE INDONESIA</td><td class="co">Indo Teknologi</td>
+<td class="st">To Deliver and Bill</td><td class="n">Rp 5.133.750</td>
+<td class="nm">Dedeng Suryaman</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">SAL-QTN-2025-00008</td></tr>
+<tr data-staff="marshel@filtec.co.id" data-conf="low" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="sal-ord-2025-00001 pt tribuana globalindo energi marshel">
+<td class="mono">SAL-ORD-2025-00001</td><td class="dt">2025-08-25</td>
+<td>PT TRIBUANA GLOBALINDO ENERGI</td><td class="co">Indotama Teknindo</td>
+<td class="st">Completed</td><td class="n">Rp 99.900.000</td>
+<td class="nm">Marshel</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">SAL-QTN-2025-00029</td></tr>
+<tr data-staff="marshel@filtec.co.id" data-conf="low" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="sal-ord-2025-00003 pt tribuana globalindo energi marshel">
+<td class="mono">SAL-ORD-2025-00003</td><td class="dt">2025-08-25</td>
+<td>PT TRIBUANA GLOBALINDO ENERGI</td><td class="co">Indotama Teknindo</td>
+<td class="st">To Deliver</td><td class="n">Rp 85.470.000</td>
+<td class="nm">Marshel</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">SAL-QTN-2025-00029</td></tr>
+<tr data-staff="sales@filtec.co.id" data-conf="high" data-co="PT Filtec Indo Teknologi" data-ds="Submitted" data-s="sal-ord-2025-00009 pt valmet technology center sales@ (shared mailbox)">
+<td class="mono">SAL-ORD-2025-00009</td><td class="dt">2025-07-15</td>
+<td>PT Valmet Technology Center</td><td class="co">Indo Teknologi</td>
+<td class="st">To Bill</td><td class="n">Rp 6.600.000</td>
+<td class="nm">sales@ (shared mailbox)</td>
+<td><span class="pill c-high">High</span></td>
+<td class="mono sm">QTN-PFIT-2026-00073</td></tr>
+<tr data-staff="dedeng.suryaman@filtec.co.id" data-conf="low" data-co="PT Filtec Indotama Teknindo" data-ds="Submitted" data-s="sal-ord-2025-00007 pt pln indonesia power ubp priok dedeng suryaman">
+<td class="mono">SAL-ORD-2025-00007</td><td class="dt">2025-06-11</td>
+<td>PT PLN Indonesia Power UBP Priok</td><td class="co">Indotama Teknindo</td>
+<td class="st">To Deliver</td><td class="n">Rp 281.579.250</td>
+<td class="nm">Dedeng Suryaman</td>
+<td><span class="pill c-low">Low</span></td>
+<td class="mono sm">QTN-FITT-2026-00105</td></tr></tbody>
+  </table></div>
+</section>
+
+<section style="border-bottom:none">
+  <h2>How to make this report real</h2>
+  <p class="sec-lead">Four changes in ERPNext turn this from an inference into a fact. None require custom code.</p>
+  <ol>
+    <li><b>Create one Sales Person record per rep.</b> Today there are three, and they are teams
+      (<code>Sales Team</code>, <code>TIM FITT</code>, <code>Tim FIT</code>). Add each rep, linked to their Employee
+      record, under the right team as parent.</li>
+    <li><b>Make the Sales Team table mandatory on Quotation and Sales Order.</b> Set
+      <code>sales_team</code> as required (or add a validation hook) so an order cannot be submitted without a
+      named Sales Person and an allocated percentage.</li>
+    <li><b>Stop entering orders from one shared account.</b> 225 of 230 orders were created by
+      <code>haerul@filtec.co.id</code> and the <code>sales@filtec.co.id</code> mailbox is shared. Give each rep their own
+      login so <code>owner</code> becomes a usable fallback signal.</li>
+    <li><b>Always create Sales Orders from their Quotation.</b> That carries the sales team through automatically
+      and preserves the trail this report had to reconstruct by hand.</li>
+  </ol>
+  <p class="sec-lead" style="margin-top:18px">Once (1) and (2) are in place, the native ERPNext report
+  <b>Sales Person-wise Transaction Summary</b> answers this question directly, with per-line contribution
+  percentages — no custom reporting needed.</p>
+</section>
+
+<footer>
+  Filtec Group Sales Reporting · Generated 2026-08-13 from live ERPNext data<br>
+  Quotation figures are recorded fact. Order-to-staff attribution is inferred and marked with a confidence band.
+</footer>
+</div>
+
+<script>
+(function(){
+  var q=document.getElementById('q'),fs=document.getElementById('fstaff'),
+      fc=document.getElementById('fconf'),fo=document.getElementById('fco'),
+      fd=document.getElementById('fds'),cnt=document.getElementById('cnt'),
+      rows=[].slice.call(document.querySelectorAll('#ot tbody tr'));
+  function apply(){
+    var t=q.value.trim().toLowerCase(),s=fs.value,c=fc.value,o=fo.value,ds=fd.value,n=0;
+    rows.forEach(function(r){
+      var ok=(!t||r.dataset.s.indexOf(t)>-1)&&(!s||r.dataset.staff===s)&&
+             (!c||r.dataset.conf===c)&&(!o||r.dataset.co===o)&&(!ds||r.dataset.ds===ds);
+      r.style.display=ok?'':'none'; if(ok)n++;
+    });
+    cnt.textContent=n+' of '+rows.length+' orders';
+  }
+  [q,fs,fc,fo,fd].forEach(function(e){e.addEventListener('input',apply)});
+  apply();
+})();
+</script>
+</body>
+</html>

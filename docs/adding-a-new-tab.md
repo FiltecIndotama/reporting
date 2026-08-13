@@ -406,8 +406,19 @@ git commit -m "Add Q&A tab: common questions on data sources and methodology"
 git push -u origin claude/add-qa-tab
 ```
 
-Then open a pull request against `main`. The site deploys from `main`
-(paulsworld.vercel.app), so merging is what publishes the change.
+Then open a pull request against `main`. The site deploys from `main`, so
+merging is what publishes the change.
+
+The live dashboard is:
+
+```
+https://reporting-rouge-six.vercel.app/filtec-sales-dashboard.html
+```
+
+It is built by the Vercel project `filtec1/reporting`, which tracks `main`.
+Pushing a branch also produces a preview deployment (Vercel comments the link on
+the pull request) — use it to check your tab before merging. Work is not
+finished until it is on `main` and visible at the URL above.
 
 ### Commit message style
 

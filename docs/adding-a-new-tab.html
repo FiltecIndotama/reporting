@@ -1,0 +1,718 @@
+<title>Adding a Dashboard Tab</title>
+<style>
+/* ---- tokens: light (default) ---- */
+:root {
+  --ground:      #fbfbfd;
+  --surface:     #ffffff;
+  --surface-2:   #f1f3fa;
+  --ink:         #14172a;
+  --ink-soft:    #3d4361;
+  --ink-mute:    #5f6584;
+  --rule:        #e3e7f2;
+  --rule-strong: #ccd3e6;
+  --accent:      #3355e8;
+  --accent-ink:  #2440c4;
+  --accent-wash: rgba(51,85,232,0.07);
+  --warn:        #b8480d;
+  --warn-wash:   rgba(196,88,20,0.09);
+  --good:        #15803d;
+  --shadow:      0 1px 2px rgba(20,23,42,.05), 0 8px 24px -12px rgba(20,23,42,.18);
+
+  --display: Georgia, 'Iowan Old Style', 'Source Serif 4', 'Times New Roman', serif;
+  --body: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+}
+/* ---- tokens: dark — deliberately the dashboard's own palette ---- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground:      #0d0f1a;
+    --surface:     #151826;
+    --surface-2:   #1b1f30;
+    --ink:         #e8eaf0;
+    --ink-soft:    #c3c7d6;
+    --ink-mute:    #8b8fa8;
+    --rule:        rgba(255,255,255,0.10);
+    --rule-strong: rgba(255,255,255,0.20);
+    --accent:      #7d97ff;
+    --accent-ink:  #9db0ff;
+    --accent-wash: rgba(74,108,247,0.14);
+    --warn:        #f4813f;
+    --warn-wash:   rgba(244,129,63,0.12);
+    --good:        #3fb950;
+    --shadow:      0 1px 2px rgba(0,0,0,.4), 0 10px 30px -14px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"] {
+  --ground:      #0d0f1a;
+  --surface:     #151826;
+  --surface-2:   #1b1f30;
+  --ink:         #e8eaf0;
+  --ink-soft:    #c3c7d6;
+  --ink-mute:    #8b8fa8;
+  --rule:        rgba(255,255,255,0.10);
+  --rule-strong: rgba(255,255,255,0.20);
+  --accent:      #7d97ff;
+  --accent-ink:  #9db0ff;
+  --accent-wash: rgba(74,108,247,0.14);
+  --warn:        #f4813f;
+  --warn-wash:   rgba(244,129,63,0.12);
+  --good:        #3fb950;
+  --shadow:      0 1px 2px rgba(0,0,0,.4), 0 10px 30px -14px rgba(0,0,0,.7);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.65;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 24px 96px;
+}
+
+/* ---- masthead ---- */
+.masthead {
+  border-bottom: 2px solid var(--ink);
+  padding: 56px 0 22px;
+  margin-bottom: 40px;
+}
+.eyebrow {
+  font-family: var(--mono);
+  font-size: .7rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 18px;
+}
+.masthead h1 {
+  font-family: var(--display);
+  font-size: clamp(2.1rem, 6vw, 3.1rem);
+  line-height: 1.08;
+  font-weight: 700;
+  letter-spacing: -.015em;
+  text-wrap: balance;
+  margin: 0 0 14px;
+}
+.masthead h1 em { color: var(--accent); font-style: italic; }
+.standfirst {
+  font-family: var(--display);
+  font-size: 1.16rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  max-width: 60ch;
+  margin: 0 0 26px;
+}
+.factbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 30px;
+  font-family: var(--mono);
+  font-size: .74rem;
+  color: var(--ink-mute);
+}
+.factbar b { color: var(--ink); font-weight: 600; }
+
+/* ---- table of contents ---- */
+.toc {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 22px 26px;
+  margin-bottom: 52px;
+  box-shadow: var(--shadow);
+}
+.toc h2 {
+  font-family: var(--mono);
+  font-size: .7rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin: 0 0 14px;
+  font-weight: 600;
+}
+.toc ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 8px 28px;
+  counter-reset: toc;
+}
+.toc li { counter-increment: toc; display: flex; gap: 10px; align-items: baseline; }
+.toc li::before {
+  content: counter(toc, decimal-leading-zero);
+  font-family: var(--mono);
+  font-size: .7rem;
+  color: var(--accent);
+  flex: none;
+}
+.toc a { color: var(--ink-soft); text-decoration: none; font-size: .92rem; }
+.toc a:hover { color: var(--accent); text-decoration: underline; }
+
+/* ---- sections ---- */
+section { margin-bottom: 58px; scroll-margin-top: 20px; }
+section > h2 {
+  font-family: var(--display);
+  font-size: 1.65rem;
+  line-height: 1.2;
+  letter-spacing: -.01em;
+  text-wrap: balance;
+  margin: 0 0 6px;
+  padding-top: 14px;
+  border-top: 1px solid var(--rule-strong);
+}
+.sec-num {
+  display: block;
+  font-family: var(--mono);
+  font-size: .7rem;
+  letter-spacing: .16em;
+  color: var(--accent);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+h3 {
+  font-family: var(--body);
+  font-size: 1.02rem;
+  font-weight: 650;
+  letter-spacing: -.005em;
+  margin: 34px 0 10px;
+}
+p { margin: 0 0 16px; max-width: 68ch; }
+ul, ol { max-width: 68ch; padding-left: 22px; margin: 0 0 16px; }
+li { margin-bottom: 7px; }
+strong { font-weight: 650; }
+em { font-style: italic; }
+a { color: var(--accent); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+
+code {
+  font-family: var(--mono);
+  font-size: .855em;
+  background: var(--surface-2);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: .1em .38em;
+  color: var(--ink);
+  white-space: nowrap;
+}
+pre {
+  background: var(--surface-2);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  margin: 0 0 20px;
+  font-size: .82rem;
+  line-height: 1.62;
+}
+pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 1em;
+  white-space: pre;
+  color: var(--ink-soft);
+}
+pre .hl { color: var(--accent-ink); font-weight: 600; }
+pre .cm { color: var(--ink-mute); font-style: italic; }
+
+/* ---- the four edit points ---- */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 14px;
+  margin: 26px 0 24px;
+}
+.step {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 18px 18px 20px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.step .n {
+  font-family: var(--mono);
+  font-size: .7rem;
+  letter-spacing: .1em;
+  color: var(--accent);
+  font-weight: 600;
+}
+.step .t { font-weight: 650; font-size: .95rem; line-height: 1.35; }
+.step .d { font-size: .83rem; color: var(--ink-mute); line-height: 1.5; }
+.step.req { border-color: var(--accent); }
+
+/* ---- callouts ---- */
+.call {
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--ink-mute);
+  border-radius: 8px;
+  background: var(--surface);
+  padding: 16px 20px;
+  margin: 0 0 22px;
+}
+.call p:last-child { margin-bottom: 0; }
+.call .lab {
+  display: block;
+  font-family: var(--mono);
+  font-size: .68rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  margin-bottom: 7px;
+  font-weight: 600;
+  color: var(--ink-mute);
+}
+.call.danger { border-left-color: var(--warn); background: var(--warn-wash); }
+.call.danger .lab { color: var(--warn); }
+.call.note { border-left-color: var(--accent); background: var(--accent-wash); }
+.call.note .lab { color: var(--accent); }
+
+/* ---- tables ---- */
+.tw { overflow-x: auto; margin: 0 0 22px; border: 1px solid var(--rule); border-radius: 10px; background: var(--surface); }
+table { width: 100%; border-collapse: collapse; font-size: .87rem; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+thead th {
+  font-family: var(--mono);
+  font-size: .68rem;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  font-weight: 600;
+  background: var(--surface-2);
+  white-space: nowrap;
+}
+tbody tr:last-child td { border-bottom: none; }
+td code { white-space: nowrap; }
+.num { text-align: right; font-variant-numeric: tabular-nums; font-family: var(--mono); font-size: .8rem; }
+
+/* ---- checklist ---- */
+.check { list-style: none; padding: 0; max-width: 68ch; }
+.check li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  padding: 11px 0;
+  border-top: 1px solid var(--rule);
+  font-size: .93rem;
+  margin: 0;
+}
+.check li:first-child { border-top: none; }
+.check li::before {
+  content: "";
+  width: 15px; height: 15px;
+  margin-top: 5px;
+  border: 1.5px solid var(--rule-strong);
+  border-radius: 4px;
+  flex: none;
+}
+
+/* ---- trilingual demo ---- */
+.tri { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 0 0 22px; }
+.tri div { background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 13px 15px; }
+.tri .k { font-family: var(--mono); font-size: .68rem; color: var(--accent); margin-bottom: 6px; letter-spacing: .08em; }
+.tri .v { font-size: .93rem; }
+
+footer {
+  border-top: 1px solid var(--rule-strong);
+  padding-top: 20px;
+  color: var(--ink-mute);
+  font-size: .8rem;
+  font-family: var(--mono);
+  line-height: 1.7;
+}
+</style>
+
+<div class="wrap">
+
+<header class="masthead">
+  <p class="eyebrow">Filtec Reporting · Training Manual</p>
+  <h1>Adding a Tab to the <em>Sales Dashboard</em></h1>
+  <p class="standfirst">A step-by-step procedure for anyone who can edit HTML, worked end to end by building a new <strong>Q&amp;A</strong> tab. Four edits, one file, no build step.</p>
+  <div class="factbar">
+    <span><b>File</b> filtec-sales-dashboard.html</span>
+    <span><b>Size</b> ~2,426 lines</span>
+    <span><b>Tabs today</b> 8</span>
+    <span><b>Reference commit</b> 6f62901</span>
+  </div>
+</header>
+
+<nav class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#file">What you are editing</a></li>
+    <li><a href="#model">How a tab actually works</a></li>
+    <li><a href="#points">The four edit points</a></li>
+    <li><a href="#build">Building the Q&amp;A tab</a></li>
+    <li><a href="#lang">The trilingual rule</a></li>
+    <li><a href="#components">Component library</a></li>
+    <li><a href="#numbering">Numbering conventions</a></li>
+    <li><a href="#test">Testing before you commit</a></li>
+    <li><a href="#ship">Committing and deploying</a></li>
+    <li><a href="#trouble">Troubleshooting</a></li>
+  </ol>
+</nav>
+
+<section id="file">
+  <span class="sec-num">SECTION 01</span>
+  <h2>What you are editing</h2>
+  <p>The entire website is <strong>one file</strong>: <code>filtec-sales-dashboard.html</code>. Everything lives inside it — HTML, CSS in a single <code>&lt;style&gt;</code> block near the top, and JavaScript in a single <code>&lt;script&gt;</code> block at the bottom. There is no framework, no npm, no build step. What you commit is what the browser runs.</p>
+  <p>Two external scripts load at the end (<code>/view-counter.js</code>, <code>/sw-register.js</code>). You never need to touch them to add a tab.</p>
+
+  <h3>The file's five regions</h3>
+  <div class="tw">
+  <table>
+    <thead><tr><th>Lines</th><th>Region</th><th>What's there</th></tr></thead>
+    <tbody>
+      <tr><td class="num">1–11</td><td><code>&lt;head&gt;</code></td><td>Title, icons, Google Fonts</td></tr>
+      <tr><td class="num">12–214</td><td><code>&lt;style&gt;</code></td><td>All CSS. Design tokens at <code>:root</code>, then components</td></tr>
+      <tr><td class="num">216–258</td><td><code>.hero</code></td><td>Language buttons, ⋮ menu, breadcrumb, title</td></tr>
+      <tr><td class="num">260–269</td><td><code>.tabs-bar</code></td><td><strong>The row of tab buttons — edit point 1</strong></td></tr>
+      <tr><td class="num">271–2304</td><td><code>.content</code></td><td><strong>One <code>.page-panel</code> per tab — edit point 2</strong></td></tr>
+      <tr><td class="num">2314–2420</td><td><code>&lt;script&gt;</code></td><td><code>setPage()</code>, <code>setLang()</code>, toggles — <strong>edit point 3</strong></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="call note">
+    <span class="lab">Locating things</span>
+    <p>Line numbers drift every time content is added. Always find a region by searching for its marker text — <code>tabs-bar</code>, <code>id="page-8"</code> — never by jumping to a memorised line number.</p>
+  </div>
+</section>
+
+<section id="model">
+  <span class="sec-num">SECTION 02</span>
+  <h2>How a tab actually works</h2>
+  <p>There is no router and no framework. Tabs are <strong>CSS visibility, nothing more.</strong> Every tab is two pieces of HTML that share a number:</p>
+<pre><code>&lt;button class="tab-btn"  id="<span class="hl">tab-8</span>" onclick="setPage(<span class="hl">8</span>)"&gt;   <span class="cm">← the button</span>
+&lt;div    class="page-panel" id="<span class="hl">page-8</span>"&gt;                <span class="cm">← the content</span></code></pre>
+  <p>All panels are always in the DOM. Only the active one is visible, because of two CSS rules:</p>
+<pre><code>.page-panel        { display: none;  }
+.page-panel.active { display: block; }</code></pre>
+  <p>And one JavaScript function that moves the <code>active</code> class around:</p>
+<pre><code>function setPage(n) {
+  <span class="hl">[1, 2, 3, 4, 5, 6, 7, 8]</span>.forEach(function(i) {
+    document.getElementById('page-' + i).classList.toggle('active', i === n);
+    document.getElementById('tab-'  + i).classList.toggle('active', i === n);
+  });
+  window.scrollTo({ top: document.querySelector('.tabs-bar').offsetTop, behavior: 'smooth' });
+}</code></pre>
+
+  <div class="call danger">
+    <span class="lab">The one thing that trips everybody up</span>
+    <p>That array <code>[1, 2, 3, 4, 5, 6, 7, 8]</code> is <strong>hard-coded</strong>. If you add <code>page-9</code> and <code>tab-9</code> but forget to add <code>9</code> to it, your tab button will do <strong>nothing at all</strong> when clicked — no error, no console message, just a dead button. This is the number one mistake when adding a tab.</p>
+  </div>
+</section>
+
+<section id="points">
+  <span class="sec-num">SECTION 03</span>
+  <h2>The four edit points</h2>
+  <p>Adding any tab is always these four edits, in this order. The first three are mandatory for every tab; the fourth depends on your content.</p>
+  <div class="steps">
+    <div class="step req">
+      <span class="n">EDIT 1 · REQUIRED</span>
+      <span class="t">Tab button</span>
+      <span class="d">Add one <code>&lt;button&gt;</code> to <code>.tabs-bar</code></span>
+    </div>
+    <div class="step req">
+      <span class="n">EDIT 2 · REQUIRED</span>
+      <span class="t">Content panel</span>
+      <span class="d">Add one <code>&lt;div class="page-panel" id="page-N"&gt;</code> inside <code>.content</code></span>
+    </div>
+    <div class="step req">
+      <span class="n">EDIT 3 · REQUIRED</span>
+      <span class="t">Register the number</span>
+      <span class="d">Add <code>N</code> to the array in <code>setPage()</code>. Skip this and the button is dead.</span>
+    </div>
+    <div class="step">
+      <span class="n">EDIT 4 · IF NEEDED</span>
+      <span class="t">New toggles or CSS</span>
+      <span class="d">Only if your tab uses a collapsible table or a component that doesn't exist yet</span>
+    </div>
+  </div>
+</section>
+
+<section id="build">
+  <span class="sec-num">SECTION 04</span>
+  <h2>Building the Q&amp;A tab</h2>
+  <p>Our new tab is number <strong>9</strong> — there are eight today: Brand, Key Accounts, GP %, Retention, Segmentation, Expenses, Net Profit, Staff.</p>
+
+  <h3>4.1 — Add the tab button</h3>
+  <p>Find the <code>.tabs-bar</code> block. It ends with the Staff button. Add yours as the last line before <code>&lt;/div&gt;</code>:</p>
+<pre><code>  &lt;button class="tab-btn" id="tab-8" onclick="setPage(8)"&gt;&lt;span class="en"&gt;Staff&lt;/span&gt;&lt;span class="zh"&gt;销售人员&lt;/span&gt;&lt;span class="id"&gt;Staf&lt;/span&gt;&lt;/button&gt;
+<span class="hl">  &lt;button class="tab-btn" id="tab-9" onclick="setPage(9)"&gt;&lt;span class="en"&gt;Q&amp;amp;A&lt;/span&gt;&lt;span class="zh"&gt;问答&lt;/span&gt;&lt;span class="id"&gt;Tanya Jawab&lt;/span&gt;&lt;/button&gt;</span>
+&lt;/div&gt;</code></pre>
+  <ul>
+    <li><strong>No <code>active</code> class.</strong> Only <code>tab-1</code> carries it, because Brand is the tab shown on load. Never add a second one.</li>
+    <li><strong><code>&amp;amp;</code> not <code>&amp;</code>.</strong> A bare <code>&amp;</code> starts an HTML entity. <code>Q&amp;amp;A</code> is correct, and matches what the file already does for <code>Boll &amp;amp; Kirch</code>.</li>
+    <li><strong>Keep the label short.</strong> The bar is <code>flex-wrap: wrap</code> and <code>position: sticky</code>, so a long label wraps it onto an extra row that then sits pinned to the top of the screen on every scroll. One or two words.</li>
+  </ul>
+
+  <h3>4.2 — Add the content panel</h3>
+  <p>Scroll to the end of the <code>.content</code> region and find where <code>page-8</code> closes:</p>
+<pre><code>      &lt;/ul&gt;
+    &lt;/div&gt;          <span class="cm">← closes the last insight-card of page-8</span>
+  &lt;/div&gt;            <span class="cm">← closes &lt;div class="page-panel" id="page-8"&gt;</span>
+
+  &lt;script src="/view-counter.js"&gt;&lt;/script&gt;
+
+&lt;/div&gt;              <span class="cm">← closes &lt;div class="content"&gt;</span></code></pre>
+  <p>Insert your panel <strong>between the close of <code>page-8</code> and the <code>view-counter.js</code> script tag</strong>:</p>
+<pre><code>  <span class="cm">&lt;!-- ============ TAB 9 : Q&amp;A ============ --&gt;</span>
+  &lt;div class="page-panel" id="page-9"&gt;
+    &lt;div class="page-head"&gt;
+      &lt;span class="en"&gt;Questions &amp;amp; Answers&lt;/span&gt;&lt;span class="zh"&gt;问答&lt;/span&gt;&lt;span class="id"&gt;Tanya Jawab&lt;/span&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;
+      &lt;span class="en"&gt;Common questions about how the numbers on this dashboard are built.&lt;/span&gt;
+      &lt;span class="zh"&gt;关于本仪表板数据如何生成的常见问题。&lt;/span&gt;
+      &lt;span class="id"&gt;Pertanyaan umum tentang bagaimana angka di dasbor ini dibangun.&lt;/span&gt;
+    &lt;/p&gt;
+
+    &lt;div class="chart-card"&gt;
+      &lt;div class="qa-list"&gt;
+        <span class="cm">&lt;!-- Q&amp;A items go here --&gt;</span>
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;</code></pre>
+  <p>Keep the comment banner. Every tab has one — it's the only navigation aid in a 2,400-line file.</p>
+
+  <h3>4.3 — Register the tab number</h3>
+  <p>Find <code>function setPage(n)</code> near the bottom and extend the array:</p>
+<pre><code>function setPage(n) {
+  [1, 2, 3, 4, 5, 6, 7, 8<span class="hl">, 9</span>].forEach(function(i) {</code></pre>
+
+  <h3>4.4 — Add the Q&amp;A accordion component</h3>
+  <p>A Q&amp;A tab is mostly text, and the file has no accordion yet, so this one tab needs a little new CSS and one new function. Most tabs need neither — they reuse the components in section 6.</p>
+  <p><strong>CSS</strong> — add at the end of the <code>&lt;style&gt;</code> block, just before <code>footer</code>. Keep to the existing tokens so it matches automatically:</p>
+<pre><code>.qa-list { display:flex; flex-direction:column; gap:10px; }
+.qa-item { background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:10px; overflow:hidden; }
+.qa-q { display:flex; align-items:flex-start; gap:10px; width:100%; background:none; border:none;
+        color:#fff; text-align:left; padding:14px 16px; font-size:0.9rem; font-weight:700;
+        line-height:1.45; cursor:pointer; font-family:'Source Serif 4',serif; }
+.qa-q::after { content:'+'; margin-left:auto; color:var(--blue); font-size:1.15rem; font-weight:800; flex:none; }
+.qa-item.open .qa-q::after { content:'−'; }
+.qa-q:hover { background:rgba(255,255,255,0.04); }
+.qa-a { display:none; padding:0 16px 16px; font-size:0.88rem; color:var(--text); line-height:1.65; }
+.qa-item.open .qa-a { display:block; }
+.qa-tag { display:inline-block; font-size:0.66rem; font-weight:700; padding:2px 8px; border-radius:10px;
+          margin-bottom:10px; background:rgba(74,108,247,0.18); color:var(--blue); }</code></pre>
+  <p><strong>JavaScript</strong> — one function, next to the other toggles:</p>
+<pre><code>function toggleQa(btn){ btn.parentElement.classList.toggle('open'); }</code></pre>
+  <div class="call note">
+    <span class="lab">Why this differs from the existing toggles</span>
+    <p>The existing <code>toggleXxxTable()</code> functions each hard-code one element ID. That works for eight tables, but not for twenty questions. This version takes the clicked button as an argument and toggles its parent, so <strong>one function serves every Q&amp;A item</strong> — no new JavaScript when you add question twenty-one.</p>
+  </div>
+  <p><strong>One Q&amp;A item</strong> — repeat per question, inside <code>.qa-list</code>:</p>
+<pre><code>&lt;div class="qa-item"&gt;
+  &lt;button class="qa-q" onclick="toggleQa(<span class="hl">this</span>)"&gt;
+    &lt;span class="en"&gt;Why don't the revenue totals match between tabs?&lt;/span&gt;
+    &lt;span class="zh"&gt;为什么各标签页的收入总额对不上？&lt;/span&gt;
+    &lt;span class="id"&gt;Mengapa total pendapatan berbeda antar tab?&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;div class="qa-a"&gt;
+    &lt;span class="qa-tag"&gt;&lt;span class="en"&gt;Data&lt;/span&gt;&lt;span class="zh"&gt;数据&lt;/span&gt;&lt;span class="id"&gt;Data&lt;/span&gt;&lt;/span&gt;
+    &lt;p&gt;
+      &lt;span class="en"&gt;Because the tabs deliberately measure different things. Segmentation uses
+        Sales Invoice &lt;code&gt;grand_total&lt;/code&gt;, which includes ~11% PPN/VAT. Brand
+        (Rp 6,171,563,874) and GP % (Rp 6,139,939,624) are net of tax. The ~11% gap is the
+        expected tax difference, not an error.&lt;/span&gt;
+      &lt;span class="zh"&gt;因为各标签页衡量的口径不同……&lt;/span&gt;
+      &lt;span class="id"&gt;Karena tiap tab sengaja mengukur hal yang berbeda……&lt;/span&gt;
+    &lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  <p>That is the complete tab. Four edits, done.</p>
+</section>
+
+<section id="lang">
+  <span class="sec-num">SECTION 05</span>
+  <h2>The trilingual rule</h2>
+  <p><strong>Every string a user can read must exist in English, Chinese and Bahasa Indonesia.</strong> This is the rule most easily broken and the hardest to notice — a missing translation looks perfect in English and leaves a <strong>blank gap</strong> for a Chinese or Indonesian reader.</p>
+  <p>The mechanism is pure CSS. All three versions are always in the HTML; the body class decides which is visible.</p>
+<pre><code>.zh { display: none; }                  <span class="cm">/* hidden by default */</span>
+.id { display: none; }
+body.lang-zh .zh { display: inline; }   <span class="cm">/* shown when 中文 picked */</span>
+body.lang-zh .en { display: none;   }
+body.lang-id .id { display: inline; }
+body.lang-id .en { display: none;   }</code></pre>
+  <p><code>setLang()</code> sets <code>document.body.className</code> to <code>''</code>, <code>lang-zh</code> or <code>lang-id</code>. The pattern you write is always three adjacent spans:</p>
+  <div class="tri">
+    <div><div class="k">.en</div><div class="v">Sales by Brand</div></div>
+    <div><div class="k">.zh</div><div class="v">按品牌划分的销售额</div></div>
+    <div><div class="k">.id</div><div class="v">Penjualan berdasarkan Merek</div></div>
+  </div>
+
+  <h3>Inline vs block</h3>
+  <div class="tw">
+  <table>
+    <thead><tr><th>Use</th><th>When</th><th>Renders as</th></tr></thead>
+    <tbody>
+      <tr><td><code>.en</code> / <code>.zh</code> / <code>.id</code></td><td>Inside a sentence, label, table cell, heading</td><td><code>inline</code></td></tr>
+      <tr><td><code>.en-block</code> / <code>.zh-block</code> / <code>.id-block</code></td><td>A whole paragraph or block element</td><td><code>block</code></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Rules of thumb</h3>
+  <ul>
+    <li><strong>Never leave a bare untranslated string.</strong> The only exceptions in the file are proper nouns identical in all three languages — <code>Boll &amp; Kirch</code>, staff names, <code>GP %</code>, currency figures — which sit outside the spans deliberately.</li>
+    <li><strong>Keep the three spans adjacent, with no whitespace between them.</strong> Putting them on separate lines injects spaces into the rendered sentence.</li>
+    <li><strong>Numbers aren't translated, but their punctuation is.</strong> English and Chinese use <code>Rp 6,171,563,874</code>; Indonesian uses <code>Rp 6.171.563.874</code>. The existing tabs follow this — match it.</li>
+    <li><strong>Test all three</strong> before committing.</li>
+  </ul>
+</section>
+
+<section id="components">
+  <span class="sec-num">SECTION 06</span>
+  <h2>Component library — reuse, don't invent</h2>
+  <p>Before writing new CSS, check this table. Almost everything you need already exists, and reusing it is what keeps eight tabs looking like one product.</p>
+  <div class="tw">
+  <table>
+    <thead><tr><th>Component</th><th>Class</th><th>Use for</th></tr></thead>
+    <tbody>
+      <tr><td>Section heading</td><td><code>.page-head</code></td><td>Tab title, “Chart 9: …”, “Table 1320: …”</td></tr>
+      <tr><td>Card container</td><td><code>.chart-card</code></td><td>Wraps a chart plus its table and notes</td></tr>
+      <tr><td>Warning box</td><td><code>.caveat</code></td><td>Data-quality caveats. Used heavily — be honest about limits</td></tr>
+      <tr><td>KPI tiles</td><td><code>.stat-row</code> › <code>.stat-mini</code></td><td>Headline numbers at the top of a tab</td></tr>
+      <tr><td>Bar chart</td><td><code>.chart</code> › <code>.bar-row</code> › <code>.track</code> › <code>.fill</code></td><td>The house chart</td></tr>
+      <tr><td>Bar colours</td><td><code>.fill.s1</code>–<code>.s4</code>, <code>.o1</code>–<code>.o4</code></td><td>Blue, orange, grey, red; blue ramp</td></tr>
+      <tr><td>Chart legend</td><td><code>.legend</code> › <code>.legend-item</code> › <code>.swatch</code></td><td>Above a chart</td></tr>
+      <tr><td>Axis note</td><td><code>.baseline-axis</code></td><td>“0 — scaled to Rp X (Name) · date range”</td></tr>
+      <tr><td>Data table</td><td><code>&lt;table id&gt;</code> + <code>.toggle-btn</code></td><td>Hidden by default; <code>.show</code> reveals it</td></tr>
+      <tr><td>Wide table</td><td><code>.so-scroll</code> › <code>table.so-wide</code></td><td>Many columns; scrolls with sticky header</td></tr>
+      <tr><td>Numeric cell</td><td><code>td.num</code></td><td>Right-aligned, tabular figures</td></tr>
+      <tr><td>Name cell</td><td><code>td.name</code></td><td>Bold white first column</td></tr>
+      <tr><td>Recommendations</td><td><code>.insight-card</code> › <code>.insight-list</code></td><td>The numbered list that closes every tab</td></tr>
+      <tr><td>Positive / negative</td><td><code>.pos</code> / <code>.neg</code></td><td>Green / red figures</td></tr>
+      <tr><td>Confidence pill</td><td><code>.cf</code> + <code>.cf-h</code>/<code>.cf-m</code>/<code>.cf-l</code>/<code>.cf-n</code></td><td>High / medium / low / none badges</td></tr>
+      <tr><td>Footnote</td><td><code>.foot-note</code></td><td>Source line under a table</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Design tokens</h3>
+  <p>Never hard-code a hex colour that already has a token:</p>
+<pre><code>--blue: #4a6cf7;   --accent: #f4813f;   --bg: #0d0f1a;    --card: #151826;
+--text: #e8eaf0;   --muted: #8b8fa8;    --border: rgba(255,255,255,0.08);
+--gold: #f59e0b;   --red: #f85149;      --green: #3fb950;
+--series-1: #3987e5;  --series-2: #d95926;</code></pre>
+  <p>Font family for any new button: <code>'Source Serif 4', serif</code>. Buttons don't inherit it, which is why every button rule in the file restates it.</p>
+
+  <h3>Charts are static HTML</h3>
+  <p>There is no charting library. A bar is a <code>div</code> with an inline percentage width, computed by hand relative to the largest value:</p>
+<pre><code>&lt;div class="bar-row"&gt;
+  &lt;div class="bar-label-row"&gt;&lt;span class="bar-name"&gt;Dedeng Suryaman&lt;/span&gt;&lt;span class="bar-value"&gt;Rp 3,584,174,562 · 17.5%&lt;/span&gt;&lt;/div&gt;
+  &lt;div class="track"&gt;&lt;div class="fill s1" style="<span class="hl">width:100.0%</span>"&gt;Rp 3.58B&lt;/div&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  <p>The largest bar gets <code>width:100.0%</code>; the rest are <code>value / max × 100</code>. Give zero-value bars <code>width:0.5%</code> so the row stays visible.</p>
+</section>
+
+<section id="numbering">
+  <span class="sec-num">SECTION 07</span>
+  <h2>Numbering conventions</h2>
+  <p>Charts and tables are numbered <strong>globally, not per tab</strong>, so figures can be cited unambiguously across tabs (“see Table 1314”).</p>
+  <div class="tw">
+  <table>
+    <thead><tr><th>Series</th><th>Last used</th><th>Your Q&amp;A tab starts at</th></tr></thead>
+    <tbody>
+      <tr><td>Charts</td><td>Chart 11 <span style="color:var(--ink-mute)">(Staff)</span></td><td><strong>Chart 12</strong></td></tr>
+      <tr><td>Tables</td><td>Table 1322 <span style="color:var(--ink-mute)">(Staff)</span></td><td><strong>Table 1323</strong></td></tr>
+      <tr><td>Tabs / pages</td><td>Tab 8 <span style="color:var(--ink-mute)">(Staff)</span></td><td><strong>Tab 9</strong></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>A Q&amp;A tab usually has no charts or tables at all. If yours does, take the next number in sequence and never reuse one.</p>
+</section>
+
+<section id="test">
+  <span class="sec-num">SECTION 08</span>
+  <h2>Testing before you commit</h2>
+  <p>No test suite exists, so this checklist <em>is</em> the test suite. Open the file directly in a browser — <code>file://</code> works fine, nothing needs a server.</p>
+  <ul class="check">
+    <li>The new tab button appears in the tab bar, at the end of the row.</li>
+    <li>Clicking it shows your panel and hides the previous one. <em>If nothing happens, you forgot step 4.3.</em></li>
+    <li>Every other tab still works — 1 through 9, in order. A stray unclosed <code>&lt;/div&gt;</code> silently swallows the tabs after it.</li>
+    <li>Only one tab is highlighted at a time. Two highlighted means a duplicate <code>active</code> class.</li>
+    <li>Brand (Tab 1) is still the tab shown on page load.</li>
+    <li>Switch to 🇨🇳 中文 and read your whole tab. No English left behind, no blank gaps.</li>
+    <li>Switch to 🇮🇩 Bahasa — same check.</li>
+    <li>Switch back to 🇬🇧 English — no Chinese or Indonesian leaking through.</li>
+    <li>Q&amp;A accordions open and close, and the <code>+</code> flips to <code>−</code>.</li>
+    <li>At phone width (~390px), the bar wraps onto more rows. Since it's <code>position: sticky</code>, every extra row permanently eats vertical space — check there's still room to read.</li>
+    <li>Browser console (F12) shows no red errors.</li>
+  </ul>
+  <p>Quick structural sanity check from the terminal — the two counts must match:</p>
+<pre><code>grep -c 'class="tab-btn'    filtec-sales-dashboard.html
+grep -c 'class="page-panel' filtec-sales-dashboard.html</code></pre>
+</section>
+
+<section id="ship">
+  <span class="sec-num">SECTION 09</span>
+  <h2>Committing and deploying</h2>
+  <p>Work on a branch, never directly on <code>main</code>:</p>
+<pre><code>git checkout -b claude/add-qa-tab
+git add filtec-sales-dashboard.html
+git commit -m "Add Q&amp;A tab: common questions on data sources and methodology"
+git push -u origin claude/add-qa-tab</code></pre>
+  <p>Then open a pull request against <code>main</code>. The site deploys from <code>main</code>, so merging is what publishes the change.</p>
+  <h3>Commit message style</h3>
+  <p>Follow the existing convention — a one-line summary, then a body explaining what was added and, crucially, <em>what the data does and does not prove</em>:</p>
+<pre><code>Add Staff tab: sales-order attribution by sales staff (#1)
+
+Adds an eighth tab, Staff, to filtec-sales-dashboard.html covering sales-staff
+attribution across all 230 Sales Orders: quotation ownership per staff (recorded
+fact), derived per-order attribution with confidence bands (indicative), and
+remediation steps for ERPNext.
+
+Adds Chart 9, Chart 10, Chart 11 and Tables 1320, 1321, 1322 in the dashboard's
+existing trilingual idiom.</code></pre>
+</section>
+
+<section id="trouble">
+  <span class="sec-num">SECTION 10</span>
+  <h2>Troubleshooting</h2>
+  <div class="tw">
+  <table>
+    <thead><tr><th>Symptom</th><th>Cause</th><th>Fix</th></tr></thead>
+    <tbody>
+      <tr><td>Tab button does nothing when clicked</td><td><code>9</code> missing from the <code>setPage()</code> array</td><td>Step 4.3</td></tr>
+      <tr><td>Button works but the panel is blank</td><td><code>id="page-9"</code> typo, or panel pasted outside <code>.content</code></td><td>Check the id spelling; confirm it sits before the <code>&lt;/div&gt;</code> closing <code>.content</code></td></tr>
+      <tr><td>Two tabs highlighted at once</td><td>You copied <code>class="tab-btn active"</code></td><td>Remove <code>active</code> — only <code>tab-1</code> has it</td></tr>
+      <tr><td>Your tab shows on load, stacked under Brand</td><td>You copied <code>class="page-panel active"</code></td><td>Remove <code>active</code> — only <code>page-1</code> has it</td></tr>
+      <tr><td>Tabs after yours stopped working</td><td>Unbalanced <code>&lt;div&gt;</code> in your panel</td><td>Count opening vs closing tags; your panel must close exactly once</td></tr>
+      <tr><td>Text disappears when switching language</td><td>Missing <code>.zh</code> or <code>.id</code> span</td><td>Add the translation — section 5</td></tr>
+      <tr><td>Sentence has odd extra spaces</td><td>Newlines between the language spans</td><td>Put the three spans adjacent, no whitespace between</td></tr>
+      <tr><td>Accordion won't open</td><td><code>onclick="toggleQa(this)"</code> missing the <code>this</code></td><td>Pass <code>this</code> — the function needs the clicked element</td></tr>
+      <tr><td>New button uses the wrong font</td><td>Buttons don't inherit <code>font-family</code></td><td>Add <code>font-family:'Source Serif 4',serif</code></td></tr>
+      <tr><td>Chart bars all the same length</td><td>Widths not scaled to the max value</td><td>Recompute: <code>value / max × 100</code></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Known limits, worth knowing but not required</h3>
+  <ul>
+    <li><strong>No deep links.</strong> <code>setPage()</code> doesn't touch the URL, so you can't link straight to a tab. Reading <code>location.hash</code> on load would fix it — a change to shared machinery, so do it as its own commit.</li>
+    <li><strong>Page <code>&lt;title&gt;</code> is fixed</strong> at “Filtec Sales Dashboard — Brand” and doesn't follow the active tab.</li>
+    <li><strong>File size.</strong> At ~273 KB and 2,426 lines the single-file approach is nearing its comfortable limit. Splitting per-tab HTML is a significant refactor — worth discussing before tab 12, not while adding a tab.</li>
+  </ul>
+</section>
+
+<footer>
+  Filtec Reporting · Training manual for filtec-sales-dashboard.html<br>
+  Full markdown source with copy-paste starter code: docs/adding-a-new-tab.md
+</footer>
+
+</div>

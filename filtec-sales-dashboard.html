@@ -279,6 +279,7 @@ footer a { color: var(--blue); text-decoration: none; }
   <button class="tab-btn" id="tab-7" onclick="setPage(7)"><span class="en">Net Profit</span><span class="zh">净利润</span><span class="id">Laba Bersih</span></button>
   <button class="tab-btn" id="tab-8" onclick="setPage(8)"><span class="en">Staff</span><span class="zh">销售人员</span><span class="id">Staf</span></button>
   <button class="tab-btn" id="tab-9" onclick="setPage(9)"><span class="en">Q&amp;A</span><span class="zh">问答</span><span class="id">Tanya Jawab</span></button>
+  <button class="tab-btn" id="tab-10" onclick="setPage(10)"><span class="en">Last Updated</span><span class="zh">更新时间</span><span class="id">Terakhir Diperbarui</span></button>
 </div>
 
 <div class="content">
@@ -2464,6 +2465,152 @@ footer a { color: var(--blue); text-decoration: none; }
     </div>
   </div>
 
+  <!-- ============ TAB 10 : Last Updated ============ -->
+  <div class="page-panel" id="page-10">
+    <div class="page-head">
+      <span class="en">Data Freshness — When Each Tab Was Last Updated</span><span class="zh">数据更新情况——各标签页最后更新时间</span><span class="id">Kesegaran Data — Kapan Setiap Tab Terakhir Diperbarui</span>
+    </div>
+
+    <p>
+      <span class="en">This dashboard is a snapshot, not a live feed — it is refreshed by pulling from ERPNext and republishing this page. Because each tab's figures come from a separate query, the data window is not identical across tabs. This page collects the "as of" date and source window stated on every tab in one place.</span>
+      <span class="zh">本仪表板为快照数据，并非实时数据流——通过从ERPNext提取数据后重新发布本页面进行更新。由于各标签页的数字来自不同的查询，各标签页的数据时间范围并不完全一致。本页汇总了各标签页所标注的"截至"日期与数据来源时间范围。</span>
+      <span class="id">Dasbor ini adalah snapshot, bukan data langsung — diperbarui dengan menarik data dari ERPNext lalu menerbitkan ulang halaman ini. Karena angka di tiap tab berasal dari query yang terpisah, rentang datanya tidak selalu sama antar tab. Halaman ini mengumpulkan tanggal "per tanggal" dan rentang sumber data yang tercantum di setiap tab dalam satu tempat.</span>
+    </p>
+
+    <div class="caveat">
+      <span aria-hidden="true">⚠️</span>
+      <span>
+        <span class="en"><strong>Two tabs are running behind the rest.</strong> Key Accounts and Retention are both built from the same 40-invoice sample (26 May – 22 Jul 2026) because the live ERPNext customer-level query has been blocked by a connector approval issue since that pull. Every other dated tab reaches into late July 2026. Read numbers from those two tabs as "as of 22 Jul 2026," not "as of today."</span>
+        <span class="zh"><strong>有两个标签页的数据滞后于其他标签页。</strong>重点客户和客户留存均基于同一份40笔发票样本（2026年5月26日–7月22日），因为自那次数据提取以来，ERPNext客户级实时查询一直因连接器授权问题被阻断。其余已标注日期的标签页数据均延伸至2026年7月下旬。这两个标签页中的数字应理解为"截至2026年7月22日"，而非"截至今日"。</span>
+        <span class="id"><strong>Dua tab tertinggal dari yang lain.</strong> Akun Utama dan Retensi Pelanggan sama-sama dibangun dari sampel 40 faktur yang sama (26 Mei – 22 Jul 2026) karena query customer-level ERPNext langsung terblokir oleh masalah otorisasi connector sejak penarikan data tersebut. Semua tab lain yang bertanggal mencapai akhir Juli 2026. Baca angka dari kedua tab itu sebagai "per 22 Jul 2026", bukan "per hari ini".</span>
+      </span>
+    </div>
+
+    <div class="chart-card">
+      <div class="stat-row">
+        <div class="stat-mini">
+          <div class="sv">29 Jul 2026</div>
+          <div class="sl"><span class="en">Most Recent Data Point</span><span class="zh">最新数据点</span><span class="id">Titik Data Terbaru</span></div>
+          <div class="sb"><span class="en">Net Profit tab &amp; Retention reference date</span><span class="zh">净利润标签页与客户留存参考日期</span><span class="id">Tab Laba Bersih &amp; tanggal acuan Retensi</span></div>
+        </div>
+        <div class="stat-mini">
+          <div class="sv">22 Jul 2026</div>
+          <div class="sl"><span class="en">Oldest Window Still Live</span><span class="zh">仍在使用的最早数据窗口</span><span class="id">Jendela Data Tertua yang Masih Berlaku</span></div>
+          <div class="sb"><span class="en">Key Accounts &amp; Retention (blocked connector)</span><span class="zh">重点客户与客户留存（连接器受阻）</span><span class="id">Akun Utama &amp; Retensi (connector terblokir)</span></div>
+        </div>
+        <div class="stat-mini">
+          <div class="sv">2 / 9</div>
+          <div class="sl"><span class="en">Tabs Behind the Latest Pull</span><span class="zh">落后于最新提取的标签页数</span><span class="id">Tab yang Tertinggal dari Penarikan Terbaru</span></div>
+          <div class="sb"><span class="en">Key Accounts, Retention</span><span class="zh">重点客户、客户留存</span><span class="id">Akun Utama, Retensi</span></div>
+        </div>
+      </div>
+
+      <div class="page-head" style="margin-top:4px"><span class="en">Table 1323: Data Window by Tab</span><span class="zh">表1323：各标签页数据时间范围</span><span class="id">Tabel 1323: Rentang Data per Tab</span></div>
+      <table id="freshnessTable" class="show">
+        <thead>
+          <tr>
+            <th><span class="en">Tab</span><span class="zh">标签页</span><span class="id">Tab</span></th>
+            <th><span class="en">Source</span><span class="zh">数据来源</span><span class="id">Sumber</span></th>
+            <th><span class="en">Data Window / As Of</span><span class="zh">数据时间范围 / 截至日期</span><span class="id">Rentang Data / Per Tanggal</span></th>
+            <th class="num"><span class="en">Records</span><span class="zh">记录数</span><span class="id">Jumlah Data</span></th>
+            <th><span class="en">Freshness</span><span class="zh">更新状态</span><span class="id">Kesegaran</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="name"><span class="en">Brand</span><span class="zh">品牌</span><span class="id">Merek</span></td>
+            <td>Sales Invoice Item × Item.brand</td>
+            <td><span class="en">No explicit window stated — all submitted invoices</span><span class="zh">未标注具体时间范围——覆盖全部已提交发票</span><span class="id">Tidak ada rentang eksplisit — seluruh faktur yang disubmit</span></td>
+            <td class="num"><span class="en">168 invoices</span><span class="zh">168笔发票</span><span class="id">168 faktur</span></td>
+            <td><span class="cf cf-n"><span class="en">Not Dated</span><span class="zh">未标注日期</span><span class="id">Tidak Bertanggal</span></span></td>
+          </tr>
+          <tr>
+            <td class="name"><span class="en">Key Accounts</span><span class="zh">重点客户</span><span class="id">Akun Utama</span></td>
+            <td><span class="en">40 most recent submitted invoices</span><span class="zh">40笔最近提交的发票</span><span class="id">40 faktur yang paling baru disubmit</span></td>
+            <td>26 May – 22 Jul 2026</td>
+            <td class="num"><span class="en">40 invoices · 28 customers</span><span class="zh">40笔发票 · 28个客户</span><span class="id">40 faktur · 28 pelanggan</span></td>
+            <td><span class="cf cf-l"><span class="en">Behind</span><span class="zh">滞后</span><span class="id">Tertinggal</span></span></td>
+          </tr>
+          <tr>
+            <td class="name">GP %</td>
+            <td><span class="en">Sales Invoice Item + item cost</span><span class="zh">销售发票明细 + 商品成本</span><span class="id">Item Faktur Penjualan + biaya item</span></td>
+            <td><span class="en">Aug 2025 – Jul 2026 (13-month view)</span><span class="zh">2025年8月–2026年7月（13个月）</span><span class="id">Agu 2025 – Jul 2026 (tampilan 13 bulan)</span></td>
+            <td class="num"><span class="en">164 invoices</span><span class="zh">164笔发票</span><span class="id">164 faktur</span></td>
+            <td><span class="cf cf-h"><span class="en">Current</span><span class="zh">最新</span><span class="id">Terkini</span></span></td>
+          </tr>
+          <tr>
+            <td class="name"><span class="en">Retention</span><span class="zh">客户留存</span><span class="id">Retensi Pelanggan</span></td>
+            <td><span class="en">Same 40-invoice sample as Key Accounts</span><span class="zh">与重点客户相同的40笔发票样本</span><span class="id">Sampel 40 faktur yang sama dengan Akun Utama</span></td>
+            <td><span class="en">26 May – 22 Jul 2026 · reference date 29 Jul 2026</span><span class="zh">2026年5月26日–7月22日 · 参考日期2026年7月29日</span><span class="id">26 Mei – 22 Jul 2026 · tanggal acuan 29 Jul 2026</span></td>
+            <td class="num"><span class="en">40 invoices</span><span class="zh">40笔发票</span><span class="id">40 faktur</span></td>
+            <td><span class="cf cf-l"><span class="en">Behind</span><span class="zh">滞后</span><span class="id">Tertinggal</span></span></td>
+          </tr>
+          <tr>
+            <td class="name"><span class="en">Segmentation</span><span class="zh">客户细分</span><span class="id">Segmentasi</span></td>
+            <td><span class="en">Complete submitted invoice history</span><span class="zh">全部已提交发票历史记录</span><span class="id">Seluruh riwayat faktur yang disubmit</span></td>
+            <td><span class="en">No explicit start date stated — pulled after connector was restored</span><span class="zh">未标注具体起始日期——于连接器恢复后提取</span><span class="id">Tidak ada tanggal mulai eksplisit — ditarik setelah connector dipulihkan</span></td>
+            <td class="num"><span class="en">71 customers · 164 invoices</span><span class="zh">71个客户 · 164笔发票</span><span class="id">71 pelanggan · 164 faktur</span></td>
+            <td><span class="cf cf-n"><span class="en">Not Dated</span><span class="zh">未标注日期</span><span class="id">Tidak Bertanggal</span></span></td>
+          </tr>
+          <tr>
+            <td class="name"><span class="en">Expenses</span><span class="zh">支出</span><span class="id">Biaya</span></td>
+            <td><span class="en">General Ledger, both companies</span><span class="zh">总账，两家公司</span><span class="id">General Ledger, kedua perusahaan</span></td>
+            <td>31 Jul 2025 – 27 Jul 2026</td>
+            <td class="num"><span class="en">878 GL entries</span><span class="zh">878条总账分录</span><span class="id">878 entri GL</span></td>
+            <td><span class="cf cf-h"><span class="en">Current</span><span class="zh">最新</span><span class="id">Terkini</span></span></td>
+          </tr>
+          <tr>
+            <td class="name"><span class="en">Net Profit</span><span class="zh">净利润</span><span class="id">Laba Bersih</span></td>
+            <td><span class="en">ERPNext Profit and Loss Statement</span><span class="zh">ERPNext损益表</span><span class="id">Laporan Laba Rugi ERPNext</span></td>
+            <td><span class="en">1 Jan – 29 Jul 2026 (calendar YTD)</span><span class="zh">2026年1月1日–7月29日（年初至今）</span><span class="id">1 Jan – 29 Jul 2026 (tahun berjalan)</span></td>
+            <td class="num"><span class="en">Both companies</span><span class="zh">两家公司</span><span class="id">Kedua perusahaan</span></td>
+            <td><span class="cf cf-h"><span class="en">Current</span><span class="zh">最新</span><span class="id">Terkini</span></span></td>
+          </tr>
+          <tr>
+            <td class="name"><span class="en">Staff</span><span class="zh">销售人员</span><span class="id">Staf</span></td>
+            <td><span class="en">Quotations + Sales Orders</span><span class="zh">报价单 + 销售订单</span><span class="id">Kuotasi + Sales Order</span></td>
+            <td>Jul 2025 – Aug 2026</td>
+            <td class="num"><span class="en">230 sales orders</span><span class="zh">230笔销售订单</span><span class="id">230 sales order</span></td>
+            <td><span class="cf cf-h"><span class="en">Current</span><span class="zh">最新</span><span class="id">Terkini</span></span></td>
+          </tr>
+          <tr>
+            <td class="name">Q&amp;A</td>
+            <td><span class="en">Static reference content</span><span class="zh">静态参考内容</span><span class="id">Konten referensi statis</span></td>
+            <td><span class="en">Not date-bound</span><span class="zh">不受日期限制</span><span class="id">Tidak terikat tanggal</span></td>
+            <td class="num">—</td>
+            <td><span class="cf cf-n"><span class="en">Not Dated</span><span class="zh">未标注日期</span><span class="id">Tidak Bertanggal</span></span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="foot-note">
+        <span class="en">Source: date windows and record counts as stated in each tab's own data-quality note or axis caption. This table is a manually maintained summary, not a live query — update it if a tab's window changes.</span>
+        <span class="zh">来源：各项数据时间范围与记录数均取自各标签页自身的数据质量说明或坐标轴注释。本表为人工维护的汇总信息，并非实时查询——如某标签页的数据窗口发生变化，请同步更新本表。</span>
+        <span class="id">Sumber: rentang data dan jumlah data diambil dari catatan kualitas data atau keterangan sumbu masing-masing tab. Tabel ini adalah ringkasan yang dikelola secara manual, bukan query langsung — perbarui jika rentang data suatu tab berubah.</span>
+      </div>
+    </div>
+
+    <div class="insight-card">
+      <h3><span class="en">What To Do About the Gaps</span><span class="zh">如何应对这些差距</span><span class="id">Yang Perlu Dilakukan Soal Kesenjangan Ini</span></h3>
+      <ul class="insight-list">
+        <li><span class="insight-num">1</span><span>
+          <span class="en"><strong>Get the ERPNext connector reauthorized.</strong> Key Accounts and Retention can't move past 22 Jul 2026 until the blocked customer-level query is restored — that is the single fix that brings every tab onto the same data window.</span>
+          <span class="zh"><strong>重新授权ERPNext连接器。</strong>在被阻断的客户级查询恢复之前，重点客户与客户留存两个标签页的数据无法推进到2026年7月22日之后——这是让所有标签页统一到同一数据窗口的唯一关键修复。</span>
+          <span class="id"><strong>Otorisasi ulang connector ERPNext.</strong> Akun Utama dan Retensi tidak bisa maju melewati 22 Jul 2026 sampai query customer-level yang terblokir itu dipulihkan — inilah satu-satunya perbaikan yang membawa semua tab ke jendela data yang sama.</span>
+        </span></li>
+        <li><span class="insight-num">2</span><span>
+          <span class="en"><strong>Print an explicit "as of" date on every tab.</strong> Only some tabs state their data window today; Brand, Segmentation and Q&amp;A don't, which makes it easy to assume they're as current as the ones that do.</span>
+          <span class="zh"><strong>在每个标签页上明确标注"截至"日期。</strong>目前只有部分标签页标注了数据时间范围；品牌、客户细分和问答尚未标注，容易让人误以为它们和其他标签页一样是最新的。</span>
+          <span class="id"><strong>Cantumkan tanggal "per tanggal" secara eksplisit di setiap tab.</strong> Saat ini hanya sebagian tab yang mencantumkan rentang datanya; Merek, Segmentasi, dan Tanya Jawab belum, sehingga mudah dianggap sama terkininya dengan tab yang sudah mencantumkannya.</span>
+        </span></li>
+        <li><span class="insight-num">3</span><span>
+          <span class="en"><strong>Agree on a refresh cadence.</strong> Nothing on this dashboard is a live feed. Pick a schedule (e.g. weekly) for re-pulling ERPNext and republishing, and record the pull date somewhere a reader can find without opening this tab.</span>
+          <span class="zh"><strong>确定统一的数据更新周期。</strong>本仪表板上没有任何数据是实时数据流。请确定重新从ERPNext提取数据并发布页面的固定周期（如每周一次），并将提取日期记录在读者无需打开本标签页即可查看的位置。</span>
+          <span class="id"><strong>Sepakati jadwal pembaruan data.</strong> Tidak ada data di dasbor ini yang bersifat langsung (live). Tentukan jadwal (misalnya mingguan) untuk menarik ulang data dari ERPNext dan menerbitkan ulang halaman, lalu catat tanggal penarikan datanya di tempat yang bisa dilihat pembaca tanpa perlu membuka tab ini.</span>
+        </span></li>
+      </ul>
+    </div>
+  </div>
+
   <script src="/view-counter.js"></script>
 
 </div>
@@ -2485,7 +2632,7 @@ function setLang(lang) {
   });
 }
 function setPage(n) {
-  [1, 2, 3, 4, 5, 6, 7, 8, 9].forEach(function(i) {
+  [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].forEach(function(i) {
     document.getElementById('page-' + i).classList.toggle('active', i === n);
     document.getElementById('tab-' + i).classList.toggle('active', i === n);
   });

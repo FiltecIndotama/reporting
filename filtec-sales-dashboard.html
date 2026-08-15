@@ -219,6 +219,8 @@ td.name { font-weight: 700; color: #fff; }
 .qa-item.open .qa-a { display:block; }
 .qa-a p + p { margin-top:10px; }
 .qa-a code { overflow-wrap:anywhere; }
+.qa-a a { color:var(--blue); text-decoration:none; border-bottom:1px solid rgba(74,108,247,0.45); }
+.qa-a a:hover { border-bottom-color:var(--blue); }
 .qa-tag { display:inline-block; font-size:0.66rem; font-weight:700; padding:2px 8px; border-radius:10px; margin-bottom:10px; background:rgba(74,108,247,0.18); color:var(--blue); }
 
 footer { text-align: center; padding: 40px 20px; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.85rem; margin-top: 60px; }
@@ -2466,6 +2468,27 @@ footer a { color: var(--blue); text-decoration: none; }
               <span class="en">The procedure is written down in <code>docs/adding-a-new-tab.md</code>: add the tab button, add the page panel, register the tab number in <code>setPage()</code>, and add any new component CSS. The work is done on a branch and checked on a Vercel preview build first, then merged to <code>main</code> — merging is what publishes it to the link above.</span>
               <span class="zh">具体步骤记录于<code>docs/adding-a-new-tab.md</code>：新增标签按钮、新增页面面板、在<code>setPage()</code>中注册标签编号，并按需添加新组件的CSS。改动先在分支上完成并通过Vercel预览版本检查，再合并至<code>main</code>分支——合并即发布至上述链接。</span>
               <span class="id">Prosedurnya tercatat di <code>docs/adding-a-new-tab.md</code>: tambahkan tombol tab, tambahkan panel halaman, daftarkan nomor tab di <code>setPage()</code>, lalu tambahkan CSS komponen baru bila perlu. Pengerjaannya dilakukan di branch dan diperiksa dulu lewat build preview Vercel, kemudian di-merge ke <code>main</code> — merge itulah yang menerbitkannya ke tautan di atas.</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="qa-item">
+          <button class="qa-q" onclick="toggleQa(this)">
+            <span class="en">Which report would put us ahead of competitors?</span>
+            <span class="zh">哪份报告能让我们领先于竞争对手？</span>
+            <span class="id">Laporan mana yang bisa membuat kami unggul dari pesaing?</span>
+          </button>
+          <div class="qa-a">
+            <span class="qa-tag"><span class="en">Analysis</span><span class="zh">分析</span><span class="id">Analisis</span></span>
+            <p>
+              <span class="en">A Win/Loss report — quotation-to-order conversion. Every tab on this dashboard measures revenue Filtec won; none measures revenue it lost, and competitive position is decided by the second one. Of 451 quotations in ERPNext only 3 have ever been marked <code>Lost</code> and 274 have never left <code>Draft</code>, so the company does not currently know its own win rate.</span>
+              <span class="zh">赢单/失单报告——即报价单到订单的转化率。本仪表板的每个标签页衡量的都是已赢得的收入，没有一个衡量失去的收入，而竞争地位恰恰由后者决定。ERPNext中的451份报价单里，仅3份被标记为<code>Lost</code>（失单），274份从未离开<code>Draft</code>（草稿）状态，因此公司目前并不掌握自身的赢单率。</span>
+              <span class="id">Laporan Win/Loss — konversi quotation ke order. Setiap tab di dasbor ini mengukur pendapatan yang dimenangkan Filtec; tidak ada yang mengukur yang hilang, padahal posisi kompetitif ditentukan oleh yang kedua. Dari 451 quotation di ERPNext hanya 3 yang pernah ditandai <code>Lost</code> dan 274 belum pernah keluar dari <code>Draft</code>, sehingga perusahaan belum mengetahui win rate-nya sendiri.</span>
+            </p>
+            <p>
+              <span class="en">The full write-up — the figures behind it, what can be built from today's data, and the two ERPNext fields needed before any report can name a competitor — is here: <a href="/docs/win-loss-report.html" target="_blank" rel="noopener">The Report That Names Your Competitors</a>.</span>
+              <span class="zh">完整分析——包括支撑数据、基于现有数据即可构建的内容，以及报告要能指名竞争对手所需的两个ERPNext字段——详见：<a href="/docs/win-loss-report.html" target="_blank" rel="noopener">点名竞争对手的报告</a>。</span>
+              <span class="id">Analisis lengkapnya — angka pendukungnya, apa yang bisa dibangun dari data saat ini, dan dua field ERPNext yang diperlukan agar laporan bisa menyebut nama pesaing — ada di sini: <a href="/docs/win-loss-report.html" target="_blank" rel="noopener">Laporan yang Menyebut Nama Pesaing Anda</a>.</span>
             </p>
           </div>
         </div>

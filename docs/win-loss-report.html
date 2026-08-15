@@ -1,0 +1,554 @@
+<title>The Win/Loss Report</title>
+<style>
+/* ---- tokens: light (default) ---- */
+:root {
+  --ground:      #fbfbfd;
+  --surface:     #ffffff;
+  --surface-2:   #f1f3fa;
+  --ink:         #14172a;
+  --ink-soft:    #3d4361;
+  --ink-mute:    #5f6584;
+  --rule:        #e3e7f2;
+  --rule-strong: #ccd3e6;
+  --accent:      #3355e8;
+  --accent-ink:  #2440c4;
+  --accent-wash: rgba(51,85,232,0.07);
+  --warn:        #b8480d;
+  --warn-wash:   rgba(196,88,20,0.09);
+  --good:        #15803d;
+  --shadow:      0 1px 2px rgba(20,23,42,.05), 0 8px 24px -12px rgba(20,23,42,.18);
+
+  --display: Georgia, 'Iowan Old Style', 'Source Serif 4', 'Times New Roman', serif;
+  --body: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+}
+/* ---- tokens: dark — deliberately the dashboard's own palette ---- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground:      #0d0f1a;
+    --surface:     #151826;
+    --surface-2:   #1b1f30;
+    --ink:         #e8eaf0;
+    --ink-soft:    #c3c7d6;
+    --ink-mute:    #8b8fa8;
+    --rule:        rgba(255,255,255,0.10);
+    --rule-strong: rgba(255,255,255,0.20);
+    --accent:      #7d97ff;
+    --accent-ink:  #9db0ff;
+    --accent-wash: rgba(74,108,247,0.14);
+    --warn:        #f4813f;
+    --warn-wash:   rgba(244,129,63,0.12);
+    --good:        #3fb950;
+    --shadow:      0 1px 2px rgba(0,0,0,.4), 0 10px 30px -14px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"] {
+  --ground:      #0d0f1a;
+  --surface:     #151826;
+  --surface-2:   #1b1f30;
+  --ink:         #e8eaf0;
+  --ink-soft:    #c3c7d6;
+  --ink-mute:    #8b8fa8;
+  --rule:        rgba(255,255,255,0.10);
+  --rule-strong: rgba(255,255,255,0.20);
+  --accent:      #7d97ff;
+  --accent-ink:  #9db0ff;
+  --accent-wash: rgba(74,108,247,0.14);
+  --warn:        #f4813f;
+  --warn-wash:   rgba(244,129,63,0.12);
+  --good:        #3fb950;
+  --shadow:      0 1px 2px rgba(0,0,0,.4), 0 10px 30px -14px rgba(0,0,0,.7);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.65;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 24px 96px;
+}
+
+/* ---- masthead ---- */
+.masthead {
+  border-bottom: 2px solid var(--ink);
+  padding: 56px 0 22px;
+  margin-bottom: 40px;
+}
+.eyebrow {
+  font-family: var(--mono);
+  font-size: .7rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 18px;
+}
+.masthead h1 {
+  font-family: var(--display);
+  font-size: clamp(2.1rem, 6vw, 3.1rem);
+  line-height: 1.08;
+  font-weight: 700;
+  letter-spacing: -.015em;
+  text-wrap: balance;
+  margin: 0 0 14px;
+}
+.masthead h1 em { color: var(--accent); font-style: italic; }
+.standfirst {
+  font-family: var(--display);
+  font-size: 1.16rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  max-width: 60ch;
+  margin: 0 0 26px;
+}
+.factbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 30px;
+  font-family: var(--mono);
+  font-size: .74rem;
+  color: var(--ink-mute);
+}
+.factbar b { color: var(--ink); font-weight: 600; }
+
+/* ---- table of contents ---- */
+.toc {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 22px 26px;
+  margin-bottom: 52px;
+  box-shadow: var(--shadow);
+}
+.toc h2 {
+  font-family: var(--mono);
+  font-size: .7rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin: 0 0 14px;
+  font-weight: 600;
+}
+.toc ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 8px 28px;
+  counter-reset: toc;
+}
+.toc li { counter-increment: toc; display: flex; gap: 10px; align-items: baseline; }
+.toc li::before {
+  content: counter(toc, decimal-leading-zero);
+  font-family: var(--mono);
+  font-size: .7rem;
+  color: var(--accent);
+  flex: none;
+}
+.toc a { color: var(--ink-soft); text-decoration: none; font-size: .92rem; }
+.toc a:hover { color: var(--accent); text-decoration: underline; }
+
+/* ---- sections ---- */
+section { margin-bottom: 58px; scroll-margin-top: 20px; }
+section > h2 {
+  font-family: var(--display);
+  font-size: 1.65rem;
+  line-height: 1.2;
+  letter-spacing: -.01em;
+  text-wrap: balance;
+  margin: 0 0 6px;
+  padding-top: 14px;
+  border-top: 1px solid var(--rule-strong);
+}
+.sec-num {
+  display: block;
+  font-family: var(--mono);
+  font-size: .7rem;
+  letter-spacing: .16em;
+  color: var(--accent);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+h3 {
+  font-family: var(--body);
+  font-size: 1.02rem;
+  font-weight: 650;
+  letter-spacing: -.005em;
+  margin: 34px 0 10px;
+}
+p { margin: 0 0 16px; max-width: 68ch; }
+ul, ol { max-width: 68ch; padding-left: 22px; margin: 0 0 16px; }
+li { margin-bottom: 7px; }
+strong { font-weight: 650; }
+em { font-style: italic; }
+a { color: var(--accent); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+
+code {
+  font-family: var(--mono);
+  font-size: .855em;
+  background: var(--surface-2);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: .1em .38em;
+  color: var(--ink);
+  white-space: nowrap;
+}
+pre {
+  background: var(--surface-2);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  margin: 0 0 20px;
+  font-size: .82rem;
+  line-height: 1.62;
+}
+pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 1em;
+  white-space: pre;
+  color: var(--ink-soft);
+}
+pre .hl { color: var(--accent-ink); font-weight: 600; }
+pre .cm { color: var(--ink-mute); font-style: italic; }
+
+/* ---- the four edit points ---- */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 14px;
+  margin: 26px 0 24px;
+}
+.step {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 18px 18px 20px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.step .n {
+  font-family: var(--mono);
+  font-size: .7rem;
+  letter-spacing: .1em;
+  color: var(--accent);
+  font-weight: 600;
+}
+.step .t { font-weight: 650; font-size: .95rem; line-height: 1.35; }
+.step .d { font-size: .83rem; color: var(--ink-mute); line-height: 1.5; }
+.step.req { border-color: var(--accent); }
+
+/* ---- callouts ---- */
+.call {
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--ink-mute);
+  border-radius: 8px;
+  background: var(--surface);
+  padding: 16px 20px;
+  margin: 0 0 22px;
+}
+.call p:last-child { margin-bottom: 0; }
+.call .lab {
+  display: block;
+  font-family: var(--mono);
+  font-size: .68rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  margin-bottom: 7px;
+  font-weight: 600;
+  color: var(--ink-mute);
+}
+.call.danger { border-left-color: var(--warn); background: var(--warn-wash); }
+.call.danger .lab { color: var(--warn); }
+.call.note { border-left-color: var(--accent); background: var(--accent-wash); }
+.call.note .lab { color: var(--accent); }
+
+/* ---- tables ---- */
+.tw { overflow-x: auto; margin: 0 0 22px; border: 1px solid var(--rule); border-radius: 10px; background: var(--surface); }
+table { width: 100%; border-collapse: collapse; font-size: .87rem; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+thead th {
+  font-family: var(--mono);
+  font-size: .68rem;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  font-weight: 600;
+  background: var(--surface-2);
+  white-space: nowrap;
+}
+tbody tr:last-child td { border-bottom: none; }
+td code { white-space: nowrap; }
+.num { text-align: right; font-variant-numeric: tabular-nums; font-family: var(--mono); font-size: .8rem; }
+
+/* ---- checklist ---- */
+.check { list-style: none; padding: 0; max-width: 68ch; }
+.check li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  padding: 11px 0;
+  border-top: 1px solid var(--rule);
+  font-size: .93rem;
+  margin: 0;
+}
+.check li:first-child { border-top: none; }
+.check li::before {
+  content: "";
+  width: 15px; height: 15px;
+  margin-top: 5px;
+  border: 1.5px solid var(--rule-strong);
+  border-radius: 4px;
+  flex: none;
+}
+
+/* ---- trilingual demo ---- */
+.tri { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 0 0 22px; }
+.tri div { background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 13px 15px; }
+.tri .k { font-family: var(--mono); font-size: .68rem; color: var(--accent); margin-bottom: 6px; letter-spacing: .08em; }
+.tri .v { font-size: .93rem; }
+
+footer {
+  border-top: 1px solid var(--rule-strong);
+  padding-top: 20px;
+  color: var(--ink-mute);
+  font-size: .8rem;
+  font-family: var(--mono);
+  line-height: 1.7;
+}
+</style>
+
+<div class="wrap">
+
+<header class="masthead">
+  <p class="eyebrow">Filtec Reporting · Analysis</p>
+  <h1>The Report That <em>Names Your Competitors</em></h1>
+  <p class="standfirst">The Sales Dashboard has eight data tabs, and every one of them measures money Filtec <strong>won</strong>. None measures money Filtec <strong>lost</strong> — which is the whole of the competitive question.</p>
+  <div class="factbar">
+    <span><b>Data as of</b> 15 Aug 2026</span>
+    <span><b>Source</b> ERPNext (Filtec), both companies</span>
+    <span><b>Quotations examined</b> 451</span>
+    <span><b>Sales Orders examined</b> 230</span>
+  </div>
+</header>
+
+<nav class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#today">What the dashboard measures today</a></li>
+    <li><a href="#data">What the quotation data shows</a></li>
+    <li><a href="#findings">Three findings</a></li>
+    <li><a href="#report">What the report should contain</a></li>
+    <li><a href="#runners">Two runners-up</a></li>
+    <li><a href="#read">How to read this document</a></li>
+  </ol>
+</nav>
+
+<section id="summary">
+  <span class="sec-num">SUMMARY</span>
+  <h2>The gap, in one paragraph</h2>
+  <p>Competitive position is not defined by the revenue you booked — it is defined by the revenue that went to somebody else. Every quotation that does not convert is an order a competitor took. The single highest-value report Filtec does not have is a <strong>Win/Loss (quote → order conversion) report</strong>. This document sets out what the current data supports, what it does not, and what has to change in ERPNext before the report can name a competitor.</p>
+
+  <div class="steps">
+    <div class="step req">
+      <span class="n">QUOTATIONS</span>
+      <span class="t">451 raised</span>
+      <span class="d">274 of them (60.8%) have never left <code>Draft</code></span>
+    </div>
+    <div class="step req">
+      <span class="n">MARKED LOST</span>
+      <span class="t">3 in total</span>
+      <span class="d">All three from the legacy 2025 series. None since.</span>
+    </div>
+    <div class="step req">
+      <span class="n">POST-WIN LEAK</span>
+      <span class="t">43 of 230</span>
+      <span class="d">Sales Orders cancelled after the deal was won — 18.7%</span>
+    </div>
+  </div>
+</section>
+
+<section id="today">
+  <span class="sec-num">SECTION 01</span>
+  <h2>What the dashboard measures today</h2>
+  <div class="tw">
+  <table>
+    <thead><tr><th>Tab</th><th>What it measures</th><th>Direction</th></tr></thead>
+    <tbody>
+      <tr><td>Brand</td><td>Revenue by item brand</td><td>Won revenue</td></tr>
+      <tr><td>Key Accounts</td><td>Revenue concentration by customer</td><td>Won revenue</td></tr>
+      <tr><td>GP %</td><td>Margin on invoiced lines</td><td>Won revenue</td></tr>
+      <tr><td>Retention</td><td>Repeat purchasing by existing customers</td><td>Won revenue</td></tr>
+      <tr><td>Segmentation</td><td>Revenue by customer segment</td><td>Won revenue</td></tr>
+      <tr><td>Expenses</td><td>Cost base</td><td>Internal</td></tr>
+      <tr><td>Net Profit</td><td>Revenue less cost</td><td>Internal</td></tr>
+      <tr><td>Staff</td><td>Attribution of orders to salespeople</td><td>Won revenue</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Eight tabs, one direction. This is a well-built rear-view mirror. It answers <em>“how did we do?”</em> with real precision, and it cannot answer <em>“why did we not win that one?”</em> at all.</p>
+</section>
+
+<section id="data">
+  <span class="sec-num">SECTION 02</span>
+  <h2>What the quotation data shows</h2>
+  <p>Every quotation ever raised in ERPNext, across PT Filtec Indotama Teknindo and PT Filtec Indo Teknologi:</p>
+  <div class="tw">
+  <table>
+    <thead><tr><th>Quotation status</th><th class="num">Count</th><th class="num">Share</th></tr></thead>
+    <tbody>
+      <tr><td>Draft — never issued or never advanced</td><td class="num">274</td><td class="num">60.8%</td></tr>
+      <tr><td>Ordered</td><td class="num">85</td><td class="num">18.8%</td></tr>
+      <tr><td>Expired</td><td class="num">46</td><td class="num">10.2%</td></tr>
+      <tr><td>Cancelled</td><td class="num">31</td><td class="num">6.9%</td></tr>
+      <tr><td>Partially Ordered</td><td class="num">12</td><td class="num">2.7%</td></tr>
+      <tr><td><strong>Lost</strong></td><td class="num"><strong>3</strong></td><td class="num"><strong>0.7%</strong></td></tr>
+      <tr><td><strong>Total</strong></td><td class="num"><strong>451</strong></td><td class="num"><strong>100%</strong></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>Two conversion readings are possible, and they disagree:</p>
+  <ul>
+    <li><strong>85 of 451 (18.8%)</strong> of all quotation records became orders.</li>
+    <li>Of the 146 quotations that reached a <em>decided</em> outcome — Ordered, Partially Ordered, Expired or Lost — <strong>97 (66%) were won at least in part</strong>.</li>
+  </ul>
+
+  <div class="call note">
+    <span class="lab">The finding</span>
+    <p>Neither figure is a true win rate. With 274 quotations sitting in <code>Draft</code>, the denominator is not trustworthy in either direction. <strong>Filtec does not currently know its own win rate.</strong></p>
+  </div>
+</section>
+
+<section id="findings">
+  <span class="sec-num">SECTION 03</span>
+  <h2>Three findings</h2>
+
+  <h3>3.1 &nbsp;Losses are not being recorded</h3>
+  <p>Three quotations in the entire history carry the status <code>Lost</code>. All three are from the legacy <code>SAL-QTN-2025</code> series. Not one quotation raised under the current <code>QTN-FITT</code> or <code>QTN-PFIT</code> numbering has ever been marked lost.</p>
+  <p>This is not a 99% win rate. It is an absent habit. The 46 <code>Expired</code> quotations are the losses nobody wrote down — deals that aged out of validity with no disposition, no reason, and no competitor named. On present practice, a lost bid leaves no trace in the system at all.</p>
+  <div class="call danger">
+    <span class="lab">Consequence</span>
+    <p>Filtec cannot answer <strong>who beat it, on what, or by how much</strong> — not because the answer is hard to compute, but because nobody is writing the answer down.</p>
+  </div>
+
+  <h3>3.2 &nbsp;Nearly one order in five is lost <em>after</em> it is won</h3>
+  <div class="tw">
+  <table>
+    <thead><tr><th>Sales Order status</th><th class="num">Count</th></tr></thead>
+    <tbody>
+      <tr><td>Total Sales Orders</td><td class="num">230</td></tr>
+      <tr><td>Cancelled</td><td class="num">43 &nbsp;(18.7%)</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Forty-three cancelled Sales Orders is a larger leak than most companies' entire win-rate problem, and it is invisible on the dashboard today. These are deals already won — quoted, negotiated, accepted — and then lost anyway. Some will be administrative re-issues rather than genuine losses; the point is that nobody currently knows the split, because the reason is not captured.</p>
+  <p>Won-then-lost revenue is the cheapest revenue in the business to recover. It needs no new customer, no new quote and no new price.</p>
+
+  <h3>3.3 &nbsp;The bid channel is opaque</h3>
+  <p>On 11 June 2026, eight quotations were raised on the same day, each for exactly <strong>Rp 285,936,000</strong>, to eight different customers:</p>
+<pre><code>QTN-FITT-2026-00096   PT Kilang Pertamina Internasional RU II Dumai
+QTN-FITT-2026-00097   PT. Dua Lion Internasional
+QTN-FITT-2026-00098   PT PETRO INDONESIA
+QTN-FITT-2026-00099   PT LIENETIC JAYA
+QTN-FITT-2026-00100   CV ANGELINE ENGINEERING
+QTN-FITT-2026-00101   PT. LAMBANG MAS SEJATI
+QTN-FITT-2026-00102   CV. ENERGI KARUNIA ABADI
+QTN-FITT-2026-00103   PT. CENTRA GLOBAL INDO</code></pre>
+  <p>Identical value, identical date, eight counterparties. The natural reading is one end-user requirement bid through eight trading channels at once.</p>
+  <div class="call danger">
+    <span class="lab">Inference, not recorded fact</span>
+    <p>No field in ERPNext links these eight quotations to a common tender — which is precisely the problem. All eight remain in <code>Draft</code>. There is no report that says which channel converts, so the same requirement is quoted eight ways without learning which route wins. That is margin spent to buy information the system then discards.</p>
+  </div>
+</section>
+
+<section id="report">
+  <span class="sec-num">SECTION 04</span>
+  <h2>What the report should contain</h2>
+  <p>The report is best built in two stages, because half of it is available today and half of it requires a change to how quotations are dispositioned.</p>
+
+  <h3>Stage 1 — buildable now, from existing data</h3>
+  <p>Nothing here needs a new ERPNext field. All of it is computable from Quotation, Sales Order and Sales Invoice records as they stand:</p>
+  <ol>
+    <li><strong>Conversion rate over time</strong> — quotations raised vs converted, by month, showing the trend rather than a single lifetime average.</li>
+    <li><strong>Conversion by brand</strong> — which product lines Filtec wins with and which it merely quotes. The Brand tab shows the revenue; this shows the hit rate behind it.</li>
+    <li><strong>Conversion by deal size</strong> — bucketed by quotation value. A hit rate that collapses above a threshold is a pricing signal; one that collapses below a threshold is a service-cost signal.</li>
+    <li><strong>Conversion by salesperson</strong> — with the same confidence-band caveat the Staff tab already applies, since order-level attribution is derived rather than recorded.</li>
+    <li><strong>Silent losses</strong> — total value sitting in <code>Expired</code>, aged and ranked. The backlog of deals never formally lost, only abandoned.</li>
+    <li><strong>The draft backlog</strong> — 274 quotations, by age and value. Some are live work; some are dead. Nobody currently knows which.</li>
+    <li><strong>The post-win leak</strong> — cancelled Sales Orders by value and, where recoverable, by cause.</li>
+    <li><strong>Quote turnaround time</strong> — days from quotation to order for won deals. Slow quoting loses deals that price alone would have won.</li>
+  </ol>
+  <div class="call note">
+    <span class="lab">Numbering</span>
+    <p>Charts and tables in this report should start at <strong>Chart 12</strong> and <strong>Table 1324</strong>, continuing the dashboard's global numbering. The highest currently in use are Chart 11 and Table 1323.</p>
+  </div>
+
+  <h3>Stage 2 — requires a data-capture change</h3>
+  <p>The competitive half of the report cannot be built from what ERPNext holds today. It needs three things, in order:</p>
+  <div class="steps">
+    <div class="step req">
+      <span class="n">CHANGE 1</span>
+      <span class="t">Lost reason on Quotation</span>
+      <span class="d">ERPNext ships <code>order_lost_reason</code>; it is unused. A short controlled list beats free text — price, lead time, technical spec, payment terms, incumbent supplier, no budget.</span>
+    </div>
+    <div class="step req">
+      <span class="n">CHANGE 2</span>
+      <span class="t">Competitor name</span>
+      <span class="d">Free text is acceptable at first. The list of names that matter will be short, and can be tightened into a Link field once known.</span>
+    </div>
+    <div class="step req">
+      <span class="n">CHANGE 3</span>
+      <span class="t">Disposition discipline</span>
+      <span class="d">Every quotation marked <code>Ordered</code> or <code>Lost</code>. Letting one expire stops being an acceptable outcome. A process change, not a software change.</span>
+    </div>
+  </div>
+  <p>Given that discipline, within roughly one quarter the same tab begins answering the question originally asked — <em>what makes us ahead of competitors?</em> — in the only form that is actionable:</p>
+  <div class="call note">
+    <span class="lab">The sentence worth having</span>
+    <p>“We lose to Competitor X on lead time, in the power-generation segment, on orders above Rp 300 million.”</p>
+  </div>
+  <p>That sentence is worth more than every chart currently on the dashboard, because it is the only one that can be acted on directly.</p>
+</section>
+
+<section id="runners">
+  <span class="sec-num">SECTION 05</span>
+  <h2>Two runners-up</h2>
+  <p><strong>Delivery reliability (OTIF).</strong> Across the 200 most recent Sales Orders, promised lead time runs from same-day to 156 days, with a median of 4 days and a 90th percentile of 32. Promise-versus-actual is not tracked anywhere. In industrial filtration, delivery reliability is frequently the thing a supplier is actually beaten on, and it is measurable from existing Delivery Note dates without any new fields.</p>
+  <p><strong>Price realization.</strong> Quoted price versus invoiced price, per item. This exposes where discount is being given away to hold business, and complements the GP % tab by showing <em>why</em> margin moves rather than only that it did.</p>
+</section>
+
+<section id="read">
+  <span class="sec-num">SECTION 06</span>
+  <h2>How to read this document</h2>
+  <ul>
+    <li>Every count in sections 2 and 3 is a direct record count from ERPNext as of 15 August 2026, not an estimate.</li>
+    <li>The eight-way tender in section 3.3 is an <strong>inference</strong> from identical value and date. It is not recorded as a tender anywhere in the system.</li>
+    <li>Lead-time figures in section 5 are drawn from the 200 most recent Sales Orders, not all 230.</li>
+    <li>Section 4's Stage 2 describes work that has <strong>not</strong> been done. No ERPNext fields have been created or modified. Changing the Quotation doctype affects the live system and is a decision for the business, not a reporting change.</li>
+  </ul>
+</section>
+
+<footer>
+  Filtec Reporting · companion to the Filtec Sales Dashboard<br>
+  Source: ERPNext (Filtec) — Quotation, Sales Order and Sales Invoice records, both companies<br>
+  Markdown source: docs/win-loss-report.md
+</footer>
+
+</div>
